@@ -3,6 +3,7 @@
 namespace App\Actions;
 
 use App\Helpers\PardisanHelper;
+use App\Http\Resources\StudentResource;
 use App\Models\StudentModel;
 use Genocide\Radiocrud\Exceptions\CustomException;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
@@ -20,6 +21,7 @@ class StudentAction extends ActionService
 
         $this
             ->setModel(StudentModel::class)
+            ->setResource(StudentResource::class)
             ->setValidationRules([
                 'storeByAdmin' => [
                     'first_name' => ['required', 'string', 'max:150'],
