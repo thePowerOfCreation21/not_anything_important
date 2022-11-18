@@ -21,6 +21,7 @@ class StudentController extends Controller
             'data' => (new StudentAction())
                 ->setRequest($request)
                 ->setValidationRule('storeByAdmin')
+                ->setDefaultRegisterStatus('added_by_admin')
                 ->storeByRequest()
         ]);
     }

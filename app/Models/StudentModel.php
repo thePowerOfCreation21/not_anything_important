@@ -79,8 +79,9 @@ class StudentModel extends Model
         'educational_year',
         'wallet_amount',
         'is_block',
+        'reason_for_blocking',
         'should_change_password',
         'password',
-        'reason_for_blocking',
+        'register_status'
     ];
 }

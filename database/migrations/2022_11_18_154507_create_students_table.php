@@ -80,9 +80,10 @@ return new class extends Migration
             $table->string('educational_year', 25);
             $table->integer('wallet_amount')->default(0);
             $table->boolean('is_block')->default(false);
+            $table->text('reason_for_blocking')->nullable();
             $table->boolean('should_change_password')->default(false);
             $table->string('password', 150);
-            $table->text('reason_for_blocking')->nullable();
+            $table->string('register_status', 50);
             $table->timestamps();
         });
     }

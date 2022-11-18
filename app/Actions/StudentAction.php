@@ -10,8 +10,12 @@ use Illuminate\Support\Str;
 
 class StudentAction extends ActionService
 {
+    protected string $defaultRegisterStatus = 'pending';
+
     public function __construct()
     {
+        $allowedRegisterStatusesString = implode(',', $this->getAllowedRegisterStatuses());
+
         $this
             ->setModel(StudentModel::class)
             ->setValidationRules([
@@ -79,6 +83,7 @@ class StudentAction extends ActionService
                     'report_card_pdf' => ['nullable', 'file', 'mimes:pdf', 'max:2000'],
                     'educational_year' => ['required', 'string', 'max:25'],
                     'password' => ['required', 'string', 'max:100'],
+                    // 'register_status' => ['in:' . $allowedRegisterStatusesString]
                 ]
             ])
             ->setCasts([
@@ -87,6 +92,35 @@ class StudentAction extends ActionService
             ]);
 
         parent::__construct();
+    }
+
+    /**
+     * @param string $defaultRegisterStatus
+     * @return $this
+     */
+    public function setDefaultRegisterStatus (string $defaultRegisterStatus): static
+    {
+        if (in_array($defaultRegisterStatus, $this->getAllowedRegisterStatuses()))
+        {
+            $this->defaultRegisterStatus = $defaultRegisterStatus;
+        }
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultRegisterStatus (): string
+    {
+        return $this->defaultRegisterStatus;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getAllowedRegisterStatuses (): array
+    {
+        return ['added_by_admin', 'accepted', 'rejected', 'pending'];
     }
 
     /**
@@ -107,6 +141,12 @@ class StudentAction extends ActionService
         return $file->storeAs($path, $file->getClientOriginalName());
     }
 
+    /**
+     * @param array $data
+     * @param callable|null $storing
+     * @return mixed
+     * @throws CustomException
+     */
     public function store(array $data, callable $storing = null): mixed
     {
         if (StudentModel::where('meli_code', $data['meli_code'])->exists())
@@ -115,6 +155,11 @@ class StudentAction extends ActionService
         }
 
         $data['full_name'] = $data['first_name'] . ' ' . @$data['last_name'];
+
+        if (! isset($data['register_status']))
+        {
+            $data['register_status'] = $this->getDefaultRegisterStatus();
+        }
 
         return parent::store($data, $storing);
     }
