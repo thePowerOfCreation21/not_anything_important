@@ -15,4 +15,6 @@ use App\Http\Controllers\StudentController;
 |
 */
 
+Route::post('/student/register_request', [StudentController::class, 'registerRequest']);
+
 Route::post('/admin/student', [StudentController::class, 'storeByAdmin']); //TODO: require admin authorization for this route
