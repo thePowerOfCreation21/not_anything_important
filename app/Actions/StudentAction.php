@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Helpers\PardisanHelper;
 use App\Models\StudentModel;
 use Genocide\Radiocrud\Exceptions\CustomException;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
@@ -230,7 +231,7 @@ class StudentAction extends ActionService
 
         if (! isset($data['educational_year']))
         {
-            $data['educational_year'] = CalendarUtils::date('n') < 7 ? CalendarUtils::date('Y') - 1 : CalendarUtils::date('Y');
+            $data['educational_year'] = PardisanHelper::getCurrentEducationalYear();
         }
 
         return parent::store($data, $storing);
