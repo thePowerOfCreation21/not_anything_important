@@ -7,6 +7,7 @@ use Genocide\Radiocrud\Exceptions\CustomException;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
+use Morilog\Jalali\CalendarUtils;
 
 class StudentAction extends ActionService
 {
@@ -81,7 +82,7 @@ class StudentAction extends ActionService
                     'level' => ['nullable', 'string', 'max:100'],
                     'file' => ['nullable', 'file', 'mimes:zip,rar,pdf', 'max:5000'],
                     'report_card_pdf' => ['nullable', 'file', 'mimes:pdf', 'max:2000'],
-                    'educational_year' => ['required', 'string', 'max:25'],
+                    'educational_year' => ['string', 'max:25'],
                     'password' => ['required', 'string', 'max:100'],
                     // 'register_status' => ['in:' . $allowedRegisterStatusesString]
                 ]
@@ -159,6 +160,11 @@ class StudentAction extends ActionService
         if (! isset($data['register_status']))
         {
             $data['register_status'] = $this->getDefaultRegisterStatus();
+        }
+
+        if (! isset($data['educational_year']))
+        {
+            $data['educational_year'] = CalendarUtils::date('n') < 7 ? CalendarUtils::date('Y') - 1 : CalendarUtils::date('Y');
         }
 
         return parent::store($data, $storing);
