@@ -154,6 +154,10 @@ class StudentAction extends ActionService
                     // 'educational_year' => ['string', 'max:25'],
                     'password' => ['required', 'string', 'max:100'],
                     // 'register_status' => ['in:' . $allowedRegisterStatusesString]
+                ],
+                'block' => [
+                    'student_id' => ['required', 'string', 'max:20'],
+                    'reason' => ['nullable', 'string', 'max:2500']
                 ]
             ])
             ->setCasts([
@@ -237,5 +241,20 @@ class StudentAction extends ActionService
         }
 
         return parent::store($data, $storing);
+    }
+
+    /**
+     * @return mixed
+     * @throws CustomException
+     */
+    public function blockByRequest (): mixed
+    {
+        $data = $this->getDataFromRequest();
+
+        return StudentModel::where('id', $data['student_id'])
+            ->update([
+                'is_block' => true,
+                'reason_for_blocking' => @$data['reason']
+            ]);
     }
 }
