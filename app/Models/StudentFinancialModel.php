@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use App\Casts\CustomDateCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class StudentFinancialModel extends Model
 {
@@ -25,4 +25,9 @@ class StudentFinancialModel extends Model
     ];
 
     public $timestamps = false;
+
+    public function Student (): BelongsTo
+    {
+        return $this->belongsTo(StudentModel::class, 'student_id', 'id');
+    }
 }
