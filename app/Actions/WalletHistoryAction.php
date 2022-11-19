@@ -18,8 +18,18 @@ class WalletHistoryAction extends ActionService
             ->setValidationRules([
                 'store' => [
                     'amount' => ['required', 'int']
+                ],
+                'getQuery' => [
+                    'student_id' => ['string', 'max:15']
                 ]
+            ])
+            ->setQueryToEloquentClosures([
+                'student_id' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('student_id', $query['student_id']);
+                }
             ]);
+
         parent::__construct();
     }
 
