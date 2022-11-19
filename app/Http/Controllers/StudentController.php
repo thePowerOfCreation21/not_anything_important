@@ -32,6 +32,23 @@ class StudentController extends Controller
      * @return JsonResponse
      * @throws CustomException
      */
+    public function updateById (string $studentId, Request $request): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new StudentAction())
+                ->setRequest($request)
+                ->setValidationRule('updateByAdmin')
+                ->updateByIdAndRequest($studentId)
+        ]);
+    }
+
+    /**
+     * @param string $studentId
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
     public function block (string $studentId, Request $request): JsonResponse
     {
         return response()->json([

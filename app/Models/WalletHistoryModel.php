@@ -24,7 +24,7 @@ class WalletHistoryModel extends Model
         'amount' => 'integer'
     ];
 
-    public function Student (): BelongsTo
+    public function student (): BelongsTo
     {
         return $this->belongsTo(StudentModel::class, 'student_id', 'id');
     }
