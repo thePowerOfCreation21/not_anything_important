@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('wallets', function (Blueprint $table) {
+        Schema::create('wallet_histories', function (Blueprint $table) {
             $table->id()->startingValue(1000);
-            $table->string('charged_by_id');
-            $table->string('student_id');
+            $table->string('charged_by_id')->default('admin');
+            $table->string('student_id', '20');
             $table->integer('amount');
             $table->string('action');
             $table->string('status');
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('wallets');
+        Schema::dropIfExists('wallet_histories');
     }
 };
