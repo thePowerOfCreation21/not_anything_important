@@ -20,6 +20,7 @@ class StudentFinancialResource extends JsonResource
             'amount' => $this->amount,
             'paid' => $this->paid,
             'date' => Helpers::getCustomDateCast($this->date),
+            'student' => $this->whenLoaded('student', new StudentResource($this->student))
         ];
     }
 }
