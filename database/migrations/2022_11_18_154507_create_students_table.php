@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('meli_code', 25);
             $table->string('birth_certificate_number', 25)->nullable();
             $table->string('birth_certificate_serie_number', 25)->nullable();
+            $table->string('birth_certificate_serial_number', 25)->nullable();
             $table->text('birth_certificate_issued_location')->nullable();
             $table->text('birth_location')->nullable();
             $table->string('birth_date', 50)->nullable();
@@ -43,6 +44,7 @@ return new class extends Migration
             $table->string('father_father_name', 150)->nullable();
             $table->string('father_birth_certificate_number', 25)->nullable();
             $table->string('father_birth_certificate_serie_number', 25)->nullable();
+            $table->string('father_birth_certificate_serial_number', 25)->nullable();
             $table->text('father_birth_certificate_issued_location')->nullable();
             $table->text('father_birth_location')->nullable();
             $table->string('father_birth_date', 50)->nullable();
@@ -60,6 +62,7 @@ return new class extends Migration
             $table->string('mother_father_name', 150)->nullable();
             $table->string('mother_birth_certificate_number', 25)->nullable();
             $table->string('mother_birth_certificate_serie_number', 25)->nullable();
+            $table->string('mother_birth_certificate_serial_number', 25)->nullable();
             $table->string('mother_birth_certificate_issued_location', 1500)->nullable();
             $table->text('mother_birth_location')->nullable();
             $table->string('mother_birth_date', 50)->nullable();
