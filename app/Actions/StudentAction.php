@@ -257,4 +257,17 @@ class StudentAction extends ActionService
                 'reason_for_blocking' => @$data['reason']
             ]);
     }
+
+    /**
+     * @param string $studentId
+     * @return mixed
+     */
+    public function unblock (string $studentId): mixed
+    {
+        return StudentModel::where('id', $studentId)
+            ->update([
+                'is_block' => false,
+                'reason_for_blocking' => null
+            ]);
+    }
 }
