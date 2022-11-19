@@ -327,11 +327,6 @@ class StudentAction extends ActionService
 
             $updateData['full_name'] = ($updateData['first_name'] ?? $entity->first_name) . ' ' . ($updateData['last_name'] ?? $entity->last_name);
 
-            if (! isset($updateData['register_status']))
-            {
-                $updateData['register_status'] = $this->getDefaultRegisterStatus();
-            }
-
             if (array_key_exists('file', $updateData) && is_file($entity->file))
             {
                 unlink($entity->file);
