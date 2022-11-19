@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Sanctum\HasApiTokens;
 
 class StudentModel extends Model
@@ -84,4 +85,9 @@ class StudentModel extends Model
         'password',
         'register_status'
     ];
+
+    public function financials (): HasMany
+    {
+        return $this->hasMany(StudentFinancialModel::class, 'student_id', 'id');
+    }
 }
