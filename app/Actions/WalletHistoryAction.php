@@ -17,7 +17,6 @@ class WalletHistoryAction extends ActionService
             ->setResource(WalletHistoryResource::class)
             ->setValidationRules([
                 'store' => [
-                    'student_id' => ['required', 'string', 'max:20'],
                     'amount' => ['required', 'int']
                 ]
             ]);
@@ -27,7 +26,7 @@ class WalletHistoryAction extends ActionService
     public function storeAmountById(string $id): mixed
     {
         $data = $this->getDataFromRequest();
-        $student = (new StudentAction())->getById($data['student_id']);
+        $student = (new StudentAction())->getById($id);
 
         $newAmount = 0;
 
@@ -50,6 +49,7 @@ class WalletHistoryAction extends ActionService
         }
 
         $data['status'] = 'successful'; //this should change later
+        $data['student_id'] = $id;
 
         $student->update([
             'wallet_amount' => $newAmount
