@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('charged_by_id')->default('admin');
             $table->string('student_id', '20');
             $table->integer('amount');
-            $table->string('action');
-            $table->string('status');
+            $table->string('action', 20);
+            $table->string('status', 25);
             $table->timestamps();
         });
     }
