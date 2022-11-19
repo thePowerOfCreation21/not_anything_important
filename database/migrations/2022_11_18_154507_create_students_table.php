@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('religion', 150)->nullable();
             $table->string('religion_orientation', 150)->nullable();
             $table->text('illness_record')->nullable();
-            $table->text('medicine_in_us')->nullable();
+            $table->text('medicine_in_use')->nullable();
             $table->string('family_child_number', 100)->nullable();
             $table->string('all_family_children_count', 100)->nullable();
             $table->string('is_disabled', 150)->nullable();

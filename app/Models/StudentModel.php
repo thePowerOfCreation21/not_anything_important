@@ -28,7 +28,7 @@ class StudentModel extends Model
         'religion',
         'religion_orientation',
         'illness_record',
-        'medicine_in_us',
+        'medicine_in_use',
         'family_child_number',
         'all_family_children_count',
         'is_disabled',
