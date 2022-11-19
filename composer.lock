@@ -577,12 +577,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thePowerOfCreation21/genocide_radiocrud.git",
-                "reference": "35f997755c1cd0467c69f19ca75e1d7b88368993"
+                "reference": "c6c6acfa40f21d215cd338998afe7cc841bac65f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thePowerOfCreation21/genocide_radiocrud/zipball/35f997755c1cd0467c69f19ca75e1d7b88368993",
-                "reference": "35f997755c1cd0467c69f19ca75e1d7b88368993",
+                "url": "https://api.github.com/repos/thePowerOfCreation21/genocide_radiocrud/zipball/c6c6acfa40f21d215cd338998afe7cc841bac65f",
+                "reference": "c6c6acfa40f21d215cd338998afe7cc841bac65f",
                 "shasum": ""
             },
             "require": {
@@ -610,7 +610,7 @@
                 "issues": "https://github.com/thePowerOfCreation21/genocide_radiocrud/issues",
                 "source": "https://github.com/thePowerOfCreation21/genocide_radiocrud/tree/master"
             },
-            "time": "2022-11-18T19:28:33+00:00"
+            "time": "2022-11-19T05:59:35+00:00"
         },
         {
             "name": "graham-campbell/result-type",
