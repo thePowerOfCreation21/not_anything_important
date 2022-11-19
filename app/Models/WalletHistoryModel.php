@@ -6,25 +6,23 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class StudentFinancialModel extends Model
+class WalletHistoryModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'student_financials';
+    protected $table = 'wallet_histories';
 
     protected $fillable = [
+        'charged_by_id',
         'student_id',
         'amount',
-        'date',
-        'paid'
+        'action',
+        'status'
     ];
 
     protected $casts = [
-        'amount' => 'integer',
-        'paid' => 'boolean'
+        'amount' => 'integer'
     ];
-
-    public $timestamps = false;
 
     public function student (): BelongsTo
     {
