@@ -89,6 +89,72 @@ class StudentAction extends ActionService
                     'password' => ['required', 'string', 'max:100'],
                     // 'register_status' => ['in:' . $allowedRegisterStatusesString]
                 ],
+                'updateByAdmin' => [
+                    'first_name' => ['string', 'max:150'],
+                    'last_name' => ['nullable', 'string', 'max:150'],
+                    'meli_code' => ['string', 'max:25'],
+                    'birth_certificate_number' => ['nullable', 'string', 'max:25'],
+                    'birth_certificate_serie_number' => ['nullable', 'string', 'max:25'],
+                    'birth_certificate_issued_location' => ['nullable', 'string', 'max:1500'],
+                    'birth_location' => ['nullable', 'string', 'max:1500'],
+                    'birth_date' => ['nullable', 'string', 'max:150'],
+                    'nationality' => ['nullable', 'string', 'max:150'],
+                    'religion' => ['nullable', 'string', 'max:150'],
+                    'religion_orientation' => ['nullable', 'string', 'max:150'],
+                    'illness_record' => ['nullable', 'string', 'max:2500'],
+                    'medicine_in_us' => ['nullable', 'string', 'max:2500'],
+                    'family_child_number' => ['nullable', 'string', 'max:100'],
+                    'all_family_children_count' => ['nullable', 'string', '100'],
+                    'is_disabled' => ['nullable', 'string', 'max:150'],
+                    'divorced_parents' => ['nullable', 'string', 'max:150'],
+                    'dominant_hand' => ['nullable', 'string', 'max:150'],
+                    'living_with' => ['nullable', 'string', 'max:150'],
+                    'address' => ['nullable', 'string', 'max:1500'],
+                    'mobile_number' => ['nullable', 'string', 'max:50'],
+                    'phone_number' => ['nullable', 'string', 'max:50'],
+                    'father_first_name' => ['nullable', 'string', 'max:150'],
+                    'father_last_name' => ['nullable', 'string', 'max:150'],
+                    'father_father_name' => ['nullable', 'string', 'max:150'],
+                    'father_birth_certificate_number' => ['nullable', 'string', 'max:25'],
+                    'father_birth_certificate_serie_number' => ['nullable', 'string', 'max:25'],
+                    'father_birth_certificate_issued_location' => ['nullable', 'string', 'max:1500'],
+                    'father_birth_location' => ['nullable', 'string', 'max:1500'],
+                    'father_birth_date' => ['nullable', 'string', 'max:50'],
+                    'father_nationality' => ['nullable', 'string', 'max:150'],
+                    'father_religion' => ['nullable', 'string', 'max:150'],
+                    'father_religion_orientation' => ['nullable', 'string', 'max:150'],
+                    'father_meli_code' => ['nullable', 'string', 'max:25'],
+                    'father_education' => ['nullable', 'string', 'max:100'],
+                    'father_job' => ['nullable', 'string', 'max:150'],
+                    'father_health_status' => ['nullable', 'string', 'max:1500'],
+                    'father_mobile_number' => ['nullable', 'string', 'max:50'],
+                    'father_work_address' => ['nullable', 'string', 'max:1500'],
+                    'mother_first_name' => ['nullable', 'string', 'max:150'],
+                    'mother_last_name' => ['nullable', 'string', 'max:150'],
+                    'mother_father_name' => ['nullable', 'string', 'max:150'],
+                    'mother_birth_certificate_number' => ['nullable', 'string', 'max:25'],
+                    'mother_birth_certificate_serie_number' => ['nullable', 'string', 'max:25'],
+                    'mother_birth_certificate_issued_location' => ['nullable', 'string', 'max:1500'],
+                    'mother_birth_location' => ['nullable', 'string', 'max:1500'],
+                    'mother_birth_date' => ['nullable', 'string', 'max:50'],
+                    'mother_nationality' => ['nullable', 'string', 'max:150'],
+                    'mother_religion' => ['nullable', 'string', 'max:150'],
+                    'mother_religion_orientation' => ['nullable', 'string', 'max:150'],
+                    'mother_meli_code' => ['nullable', 'string', 'max:25'],
+                    'mother_education' => ['nullable', 'string', 'max:100'],
+                    'mother_job' => ['nullable', 'string', 'max:150'],
+                    'mother_health_status' => ['nullable', 'string', 'max:1500'],
+                    'mother_mobile_number' => ['nullable', 'string', 'max:50'],
+                    'mother_work_address' => ['nullable', 'string', 'max:1500'],
+                    'non_contagious_illness' => ['nullable', 'string', 'max:2500'],
+                    'mental_illness' => ['nullable', 'string', 'max:2500'],
+                    'level' => ['nullable', 'string', 'max:100'],
+                    'file' => ['nullable', 'file', 'mimes:zip,rar,pdf', 'max:5000'],
+                    'report_card_pdf' => ['nullable', 'file', 'mimes:pdf', 'max:2000'],
+                    'educational_year' => ['string', 'max:25'],
+                    'password' => ['string', 'max:100'],
+                    // 'register_status' => ['in:' . $allowedRegisterStatusesString]
+                ],
                 'registerRequest' => [
                     'first_name' => ['required', 'string', 'max:150'],
                     'last_name' => ['required', 'string', 'max:150'],
@@ -240,6 +306,49 @@ class StudentAction extends ActionService
         }
 
         return parent::store($data, $storing);
+    }
+
+    /**
+     * @param array $updateData
+     * @param callable|null $updating
+     * @return bool|int
+     * @throws CustomException
+     */
+    public function update(array $updateData, callable $updating = null): bool|int
+    {
+        $updating = function ($eloquent, &$updateData) use ($updating)
+        {
+            $entity = $this->getFirstByEloquent($eloquent);
+
+            if (StudentModel::where('id', '!=', $entity->id)->where('meli_code', $updateData['meli_code'])->exists())
+            {
+                throw new CustomException('this meli_code is already taken', 1000);
+            }
+
+            $updateData['full_name'] = ($updateData['first_name'] ?? $entity->first_name) . ' ' . ($updateData['last_name'] ?? $entity->last_name);
+
+            if (! isset($updateData['register_status']))
+            {
+                $updateData['register_status'] = $this->getDefaultRegisterStatus();
+            }
+
+            if (array_key_exists('file', $updateData) && is_file($entity->file))
+            {
+                unlink($entity->file);
+            }
+
+            if (array_key_exists('report_card_pdf', $updateData) && is_file($entity->report_card_pdf))
+            {
+                unlink($entity->report_card_pdf);
+            }
+
+            if (is_callable($updating))
+            {
+                $updating($eloquent, $updateData);
+            }
+        };
+
+        return parent::update($updateData, $updating);
     }
 
     /**
