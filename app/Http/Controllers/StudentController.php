@@ -31,14 +31,14 @@ class StudentController extends Controller
      * @return JsonResponse
      * @throws CustomException
      */
-    public function block (Request $request): JsonResponse
+    public function block (string $studentId, Request $request): JsonResponse
     {
         return response()->json([
             'message' => 'ok',
             'data' => (new StudentAction())
                 ->setRequest($request)
                 ->setValidationRule('block')
-                ->blockByRequest()
+                ->blockByRequest($studentId)
         ]);
     }
 

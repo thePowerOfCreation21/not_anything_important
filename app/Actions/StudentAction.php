@@ -156,9 +156,8 @@ class StudentAction extends ActionService
                     // 'register_status' => ['in:' . $allowedRegisterStatusesString]
                 ],
                 'block' => [
-                    'student_id' => ['required', 'string', 'max:20'],
                     'reason' => ['nullable', 'string', 'max:2500']
-                ]
+                ],
             ])
             ->setCasts([
                 'file' => ['nullable', 'file'],
@@ -244,14 +243,15 @@ class StudentAction extends ActionService
     }
 
     /**
+     * @param string $studentId
      * @return mixed
      * @throws CustomException
      */
-    public function blockByRequest (): mixed
+    public function blockByRequest (string $studentId): mixed
     {
         $data = $this->getDataFromRequest();
 
-        return StudentModel::where('id', $data['student_id'])
+        return StudentModel::where('id', $studentId)
             ->update([
                 'is_block' => true,
                 'reason_for_blocking' => @$data['reason']
