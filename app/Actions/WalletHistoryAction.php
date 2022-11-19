@@ -17,7 +17,6 @@ class WalletHistoryAction extends ActionService
             ->setResource(WalletHistoryResource::class)
             ->setValidationRules([
                 'store' => [
-                    'student_id' => ['required', 'string', 'max:20'],
                     'amount' => ['required', 'int']
                 ]
             ]);
