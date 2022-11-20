@@ -38,4 +38,22 @@ class StudentFinancialController extends Controller
                 ->getByRequestAndEloquent()
         );
     }
+
+    /**
+     * @param Request $request
+     * @param string $id
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function updateById(Request $request, string $id)
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new StudentFinancialAction())
+                ->setRequest($request)
+                ->setValidationRule('update')
+                ->queryEloquentById($id)
+                ->updateByRequest()
+        ]);
+    }
 }

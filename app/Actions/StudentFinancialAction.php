@@ -20,6 +20,11 @@ class StudentFinancialAction extends ActionService
                     'amount' => ['int', 'required'],
                     'date' => ['date', 'required'],
                     'paid' => ['bool'],
+                ],
+                'update' => [
+                    'amount' => ['int'],
+                    'date' => ['date'],
+                    'paid' => ['bool']
                 ]
             ]);
 
