@@ -33,3 +33,4 @@ Route::post('/admin/teacher/skill/{id}', [TeacherSkillController::class, 'update
 
 Route::post('/admin/student/financial/{id}', [StudentFinancialController::class, 'store']); //TODO: require admin authorization for this route
 Route::get('/admin/student/financial', [StudentFinancialController::class, 'get']); //TODO: require admin authorization for this route
+Route::put('/admin/student/financial/{id}', [StudentFinancialController::class, 'updateById']); //TODO: require admin authorization for this route
