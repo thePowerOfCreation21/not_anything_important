@@ -17,6 +17,7 @@ class TeacherSkillAction extends ActionService
             ->setResource(TeacherSkillResource::class)
             ->setValidationRules([
                 'storeByAdmin' => [
+                    'teacher_id' => ['required', 'string', 'max:20'],
                     'course_title' => ['required', 'string', 'max:350'],
                     'educational_institution' => ['string', 'max:350'],
                     'skill_level' => ['string', 'max:350']

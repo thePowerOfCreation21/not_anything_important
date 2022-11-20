@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('teacher_skill', function (Blueprint $table) {
             $table->id();
+            $table->string('teacher_id', 20);
             $table->string('course_title', 350)->nullable();
             $table->string('educational_institution', 350)->nullable();
             $table->string('skill_level', 100)->nullable();
