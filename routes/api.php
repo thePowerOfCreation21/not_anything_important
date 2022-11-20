@@ -31,4 +31,5 @@ Route::get('/admin/student/wallet', [WalletHistoryController::class, 'get']); //
 Route::post('/admin/teacher/skill', [TeacherSkillController::class, 'storeByAdmin']);
 Route::post('/admin/teacher/skill/{id}', [TeacherSkillController::class, 'updateById']);
 
-Route::post('/admin/student/financial/{id}', [StudentFinancialController::class, 'store']);
+Route::post('/admin/student/financial/{id}', [StudentFinancialController::class, 'store']); //TODO: require admin authorization for this route
+Route::get('/admin/student/financial', [StudentFinancialController::class, 'get']); //TODO: require admin authorization for this route
