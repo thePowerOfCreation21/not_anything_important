@@ -3,9 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
-use App\Http\Controllers\WalletHistoryController;
 use App\Http\Controllers\TeacherSkillController;
-
+use App\Http\Controllers\WalletHistoryController;
+use App\Http\Controllers\StudentFinancialController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,3 +30,5 @@ Route::get('/admin/student/wallet', [WalletHistoryController::class, 'get']); //
 
 Route::post('/admin/teacher/skill', [TeacherSkillController::class, 'storeByAdmin']);
 Route::post('/admin/teacher/skill/{id}', [TeacherSkillController::class, 'updateById']);
+
+Route::post('/admin/student/financial/{id}', [StudentFinancialController::class, 'store']);
