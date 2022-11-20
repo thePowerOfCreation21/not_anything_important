@@ -12,11 +12,11 @@ class WalletHistoryController extends Controller
 {
     /**
      * @param Request $request
-     * @param $id
+     * @param string $id
      * @return JsonResponse
      * @throws CustomException
      */
-    public function store(Request $request, $id): JsonResponse
+    public function store(Request $request, string $id): JsonResponse
     {
         return response()->json([
             'message' => 'ok',

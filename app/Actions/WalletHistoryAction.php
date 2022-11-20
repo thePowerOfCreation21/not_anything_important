@@ -33,10 +33,10 @@ class WalletHistoryAction extends ActionService
         parent::__construct();
     }
 
-    public function storeAmountById(string $id): mixed
+    public function storeAmountById(string $student_id): mixed
     {
         $data = $this->getDataFromRequest();
-        $student = (new StudentAction())->getById($id);
+        $student = (new StudentAction())->getById($student_id);
 
         $newAmount = 0;
 
@@ -59,7 +59,7 @@ class WalletHistoryAction extends ActionService
         }
 
         $data['status'] = 'successful'; //this should change later
-        $data['student_id'] = $id;
+        $data['student_id'] = $student_id;
 
         $student->update([
             'wallet_amount' => $newAmount
