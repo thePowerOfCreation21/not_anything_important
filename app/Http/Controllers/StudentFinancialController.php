@@ -25,4 +25,17 @@ class StudentFinancialController extends Controller
                 ->storeStudentFinancialById($id)
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function get(Request $request): JsonResponse
+    {
+        return response()->json(
+            (new StudentFinancialAction())
+                ->setRequest($request)
+                ->getByRequestAndEloquent()
+        );
+    }
 }
