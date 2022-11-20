@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('teacher_skill', function (Blueprint $table) {
+        Schema::create('teacher_skills', function (Blueprint $table) {
             $table->id();
             $table->string('teacher_id', 20);
             $table->string('course_title', 350)->nullable();
