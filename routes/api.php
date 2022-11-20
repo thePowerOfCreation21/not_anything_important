@@ -3,9 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
-use App\Http\Controllers\WalletHistoryController;
 use App\Http\Controllers\TeacherSkillController;
-
+use App\Http\Controllers\WalletHistoryController;
+use App\Http\Controllers\StudentFinancialController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +24,14 @@ Route::post('/admin/student', [StudentController::class, 'storeByAdmin']); //TOD
 Route::put('/admin/student/{id}', [StudentController::class, 'updateById']); //TODO: require admin authorization for this route
 Route::post('/admin/student/{id}/block', [StudentController::class, 'block']); //TODO: require admin authorization for this route
 Route::get('/admin/student/{id}/unblock', [StudentController::class, 'unblock']); //TODO: require admin authorization for this route
+
 Route::post('/admin/student/wallet/{id}', [WalletHistoryController::class, 'store']); //TODO: require admin authorization for this route
+Route::get('/admin/student/wallet', [WalletHistoryController::class, 'get']); //TODO: require admin authorization for this route
 
 Route::post('/admin/teacher/skill', [TeacherSkillController::class, 'storeByAdmin']);
 Route::post('/admin/teacher/skill/{id}', [TeacherSkillController::class, 'updateById']);
+
+Route::post('/admin/student/financial/{id}', [StudentFinancialController::class, 'store']); //TODO: require admin authorization for this route
+Route::put('/admin/student/financial/{id}', [StudentFinancialController::class, 'updateById']); //TODO: require admin authorization for this route
+Route::delete('/admin/student/financial/{id}', [StudentFinancialController::class, 'deleteById']); //TODO: require admin authorization for this route
+Route::get('/admin/student/financial', [StudentFinancialController::class, 'get']); //TODO: require admin authorization for this route
