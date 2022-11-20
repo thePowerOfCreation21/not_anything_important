@@ -39,6 +39,7 @@ return new class extends Migration
             $table->text('address')->nullable();
             $table->string('mobile_number', 50)->nullable();
             $table->string('phone_number', 50)->nullable();
+            $table->string('phone_number_of_close_relative', 50)->nullable();
             $table->string('father_first_name', 150)->nullable();
             $table->string('father_last_name', 150)->nullable();
             $table->string('father_father_name', 150)->nullable();
@@ -57,6 +58,7 @@ return new class extends Migration
             $table->text('father_health_status')->nullable();
             $table->string('father_mobile_number', 50)->nullable();
             $table->text('father_work_address')->nullable();
+            $table->string('father_file', 500)->nullable();
             $table->string('mother_first_name', 150)->nullable();
             $table->string('mother_last_name', 150)->nullable();
             $table->string('mother_father_name', 150)->nullable();
@@ -75,6 +77,7 @@ return new class extends Migration
             $table->text('mother_health_status')->nullable();
             $table->string('mother_mobile_number', 25)->nullable();
             $table->text('mother_work_address')->nullable();
+            $table->string('mother_file', 500)->nullable();
             $table->text('non_contagious_illness')->nullable();
             $table->text('mental_illness')->nullable();
             $table->string('level', 100)->nullable();
