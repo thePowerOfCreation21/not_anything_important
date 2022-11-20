@@ -30,5 +30,13 @@ class TeacherSkillController extends Controller
                 ->updateByIdAndRequest($id)
         ]);
     }
+    public function deleteById (string $id): JsonResponse
+    {
+        (new TeacherSkillAction())->deleteById($id);
+
+        return response()->json([
+            'message' => 'deleted'
+        ]);
+    }
 
 }

@@ -12,6 +12,7 @@ class TeacherSkillModel extends Model
     protected $table = 'teacher_skill';
 
     protected $fillable = [
+        'teacher_id',
         'course_title',
         'educational_institution',
         'skill_level'
