@@ -45,7 +45,7 @@ class StudentFinancialController extends Controller
      * @return JsonResponse
      * @throws CustomException
      */
-    public function updateById(Request $request, string $id)
+    public function updateById(Request $request, string $id): JsonResponse
     {
         return response()->json([
             'message' => 'ok',
@@ -54,6 +54,19 @@ class StudentFinancialController extends Controller
                 ->setValidationRule('update')
                 ->queryEloquentById($id)
                 ->updateByRequest()
+        ]);
+    }
+
+    /**
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function deleteById(string $id): JsonResponse
+    {
+        return response()->json([
+            'message' => 'deleted',
+            'data' => (new StudentFinancialAction())
+                ->deleteById($id)
         ]);
     }
 }
