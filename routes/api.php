@@ -25,7 +25,7 @@ Route::put('/admin/student/{id}', [StudentController::class, 'updateById']); //T
 Route::post('/admin/student/{id}/block', [StudentController::class, 'block']); //TODO: require admin authorization for this route
 Route::get('/admin/student/{id}/unblock', [StudentController::class, 'unblock']); //TODO: require admin authorization for this route
 
-Route::post('/admin/student/wallet/{id}', [WalletHistoryController::class, 'store']); //TODO: require admin authorization for this route
+Route::post('/admin/student/wallet', [WalletHistoryController::class, 'store']); //TODO: require admin authorization for this route
 Route::get('/admin/student/wallet', [WalletHistoryController::class, 'get']); //TODO: require admin authorization for this route
 
 Route::post('/admin/teacher/skill', [TeacherSkillController::class, 'storeByAdmin']);//TODO: same as others

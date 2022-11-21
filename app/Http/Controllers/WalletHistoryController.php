@@ -12,18 +12,17 @@ class WalletHistoryController extends Controller
 {
     /**
      * @param Request $request
-     * @param string $id
      * @return JsonResponse
      * @throws CustomException
      */
-    public function store(Request $request, string $id): JsonResponse
+    public function store(Request $request): JsonResponse
     {
         return response()->json([
             'message' => 'ok',
             'data' => (new WalletHistoryAction())
                 ->setRequest($request)
                 ->setValidationRule('store')
-                ->storeAmountById($id)
+                ->storeByAdminViaRequest()
         ]);
     }
 
