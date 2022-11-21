@@ -21,7 +21,7 @@ class WalletHistoryAction extends ActionService
             ->setValidationRules([
                 'store' => [
                     'student_id' => ['required', 'string', 'max:20'],
-                    'amount' => ['required', 'int']
+                    'amount' => ['required', 'int', 'min:-10000000', 'max:10000000']
                 ],
                 'getQuery' => [
                     'student_id' => ['string', 'max:15']
