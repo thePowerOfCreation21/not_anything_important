@@ -25,10 +25,19 @@ class StudentFinancialAction extends ActionService
                     'amount' => ['int', 'min:0', 'max:100000000'],
                     'date' => ['date_format:Y-m-d'],
                     'paid' => ['bool']
+                ],
+                'getQuery' => [
+                    'student_id' => ['string', 'max:20']
                 ]
             ])
             ->setCasts([
                 'date' => ['jalali_to_gregorian:Y-m-d']
+            ])
+            ->setQueryToEloquentClosures([
+                'student_id' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('student_id', $query['student_id']);
+                }
             ]);
 
         parent::__construct();

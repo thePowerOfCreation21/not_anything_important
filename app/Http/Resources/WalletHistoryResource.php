@@ -22,7 +22,7 @@ class WalletHistoryResource extends JsonResource
             'created_at' => Helpers::getCustomDateCast($this->created_at),
             'updated_at' => $this->updated_at,
             'student_id' => $this->student_id,
-            'student' => $this->whenLoaded('student'),
+            'student' => new StudentResource($this->whenLoaded('student')),
             'charged_by_id' => $this->charged_by_id
         ];
     }
