@@ -7,18 +7,18 @@ use Morilog\Jalali\CalendarUtils;
 class PardisanHelper
 {
     /**
-     * @return mixed
+     * @return string
      */
-    public static function getCurrentEducationalYear (): mixed
+    public static function getCurrentEducationalYear (): string
     {
         return self::getEducationalYearByTime(time());
     }
 
     /**
      * @param string $date
-     * @return mixed
+     * @return string
      */
-    public static function getEducationalYearByGregorianDate (string $date): mixed
+    public static function getEducationalYearByGregorianDate (string $date): string
     {
         return self::getEducationalYearByTime(strtotime($date));
     }
@@ -26,9 +26,9 @@ class PardisanHelper
     /**
      * @param string $date
      * @param string $format
-     * @return mixed
+     * @return string
      */
-    public static function getEducationalYearByJalaliDate (string $date, string $format = 'Y-m-d H:i:s'): mixed
+    public static function getEducationalYearByJalaliDate (string $date, string $format = 'Y-m-d H:i:s'): string
     {
         return self::getEducationalYearByTime(
           CalendarUtils::createCarbonFromFormat($format, $date)->timestamp
@@ -37,9 +37,9 @@ class PardisanHelper
 
     /**
      * @param int $time
-     * @return mixed
+     * @return string
      */
-    public static function getEducationalYearByTime (int $time): mixed
+    public static function getEducationalYearByTime (int $time): string
     {
         return CalendarUtils::strftime('n', $time) < 7 ? CalendarUtils::strftime('Y', $time) - 1 : CalendarUtils::strftime('Y', $time);
     }

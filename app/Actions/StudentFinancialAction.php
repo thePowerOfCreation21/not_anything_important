@@ -2,11 +2,10 @@
 
 namespace App\Actions;
 
+use App\Helpers\PardisanHelper;
 use App\Http\Resources\StudentFinancialResource;
 use App\Models\StudentFinancialModel;
-use Genocide\Radiocrud\Exceptions\CustomException;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
-use App\Actions\StudentAction;
 
 class StudentFinancialAction extends ActionService
 {
@@ -35,9 +34,15 @@ class StudentFinancialAction extends ActionService
         parent::__construct();
     }
 
+    /**
+     * @param array $data
+     * @param callable|null $storing
+     * @return mixed
+     */
     public function store(array $data, callable $storing = null): mixed
     {
-        dd($data);
+        $data['educational_year'] = PardisanHelper::getEducationalYearByGregorianDate($data['date']);
+
         return parent::store($data, $storing);
     }
 }
