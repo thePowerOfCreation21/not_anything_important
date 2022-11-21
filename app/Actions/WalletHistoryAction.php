@@ -24,7 +24,7 @@ class WalletHistoryAction extends ActionService
                     'amount' => ['required', 'int', 'min:-10000000', 'max:10000000']
                 ],
                 'getQuery' => [
-                    'student_id' => ['string', 'max:15']
+                    'student_id' => ['string', 'max:20']
                 ]
             ])
             ->setQueryToEloquentClosures([
