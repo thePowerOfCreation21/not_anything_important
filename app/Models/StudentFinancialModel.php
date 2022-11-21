@@ -16,6 +16,7 @@ class StudentFinancialModel extends Model
         'student_id',
         'amount',
         'date',
+        'educational_year',
         'paid'
     ];
 

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('amount');
             $table->boolean('paid')->default(false);
             $table->timestamp('date');
+            $table->string('educational_year', 50);
         });
     }
 

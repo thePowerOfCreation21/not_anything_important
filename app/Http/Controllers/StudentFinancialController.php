@@ -11,18 +11,17 @@ class StudentFinancialController extends Controller
 {
     /**
      * @param Request $request
-     * @param string $id
      * @return JsonResponse
      * @throws CustomException
      */
-    public function store(Request $request, string $id): JsonResponse
+    public function store(Request $request): JsonResponse
     {
         return response()->json([
             'message' => 'ok',
             'data' => (new StudentFinancialAction())
                 ->setRequest($request)
                 ->setValidationRule('store')
-                ->storeStudentFinancialById($id)
+                ->storeByRequest()
         ]);
     }
 

@@ -17,31 +17,27 @@ class StudentFinancialAction extends ActionService
             ->setResource(StudentFinancialResource::class)
             ->setValidationRules([
                 'store' => [
-                    'amount' => ['int', 'required'],
-                    'date' => ['date', 'required'],
+                    'student_id' => ['required', 'string', 'max:20'],
+                    'amount' => ['required', 'int', 'min:0', 'max:100000000'],
+                    'date' => ['required', 'date_format:Y-m-d'],
                     'paid' => ['bool'],
                 ],
                 'update' => [
-                    'amount' => ['int'],
-                    'date' => ['date'],
+                    'amount' => ['int', 'min:0', 'max:100000000'],
+                    'date' => ['date_format:Y-m-d'],
                     'paid' => ['bool']
                 ]
+            ])
+            ->setCasts([
+                'date' => ['jalali_to_gregorian:Y-m-d']
             ]);
 
         parent::__construct();
     }
 
-    /**
-     * @param string $student_id
-     * @return mixed
-     * @throws CustomException
-     */
-    public function storeStudentFinancialById(string $student_id): mixed
+    public function store(array $data, callable $storing = null): mixed
     {
-        $data = $this->getDataFromRequest();
-
-        $data['student_id'] = (new StudentAction())->getById($student_id)->id;
-
-        return parent::store($data);
+        dd($data);
+        return parent::store($data, $storing);
     }
 }
