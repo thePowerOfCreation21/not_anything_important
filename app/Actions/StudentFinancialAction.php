@@ -45,4 +45,16 @@ class StudentFinancialAction extends ActionService
 
         return parent::store($data, $storing);
     }
+
+    /**
+     * @param array $updateData
+     * @param callable|null $updating
+     * @return bool|int
+     */
+    public function update(array $updateData, callable $updating = null): bool|int
+    {
+        $updateData['educational_year'] = PardisanHelper::getEducationalYearByGregorianDate($updateData['date']);
+
+        return parent::update($updateData, $updating);
+    }
 }

@@ -51,8 +51,7 @@ class StudentFinancialController extends Controller
             'data' => (new StudentFinancialAction())
                 ->setRequest($request)
                 ->setValidationRule('update')
-                ->queryEloquentById($id)
-                ->updateByRequest()
+                ->updateByIdAndRequest($id)
         ]);
     }
 
