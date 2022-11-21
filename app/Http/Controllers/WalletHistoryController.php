@@ -37,9 +37,8 @@ class WalletHistoryController extends Controller
             (new WalletHistoryAction())
             ->setRequest($request)
             ->setValidationRule('getQuery')
-            ->setRelations(['student'])
-            ->mergeQueryWithQueryFromRequest()
-            ->makeEloquent()
+            // ->setRelations(['student'])
+            ->makeEloquentViaRequest()
             ->getByRequestAndEloquent()
         );
     }
