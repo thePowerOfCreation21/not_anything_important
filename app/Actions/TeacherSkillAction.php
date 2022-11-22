@@ -30,7 +30,13 @@ class TeacherSkillAction extends ActionService
                 'get_query' => [
                     'search' => ['string', 'max:255'],
                 ]
-        ]);
+            ])
+            ->setQueryToEloquentClosures([
+                'search' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('course_title', 'LIKE', "%{$query['search']}%");
+                }
+            ]);
 
         parent::__construct();
     }

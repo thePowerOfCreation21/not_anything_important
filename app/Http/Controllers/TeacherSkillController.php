@@ -30,6 +30,7 @@ class TeacherSkillController extends Controller
                 ->updateByIdAndRequest($id)
         ]);
     }
+
     public function deleteById (string $id): JsonResponse
     {
         (new TeacherSkillAction())->deleteById($id);
@@ -37,6 +38,22 @@ class TeacherSkillController extends Controller
         return response()->json([
             'message' => 'deleted'
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function get (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new TeacherSkillAction())
+                ->setRequest($request)
+                ->setValidationRule('get_query')
+                ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
     }
 
 }
