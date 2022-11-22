@@ -52,6 +52,21 @@ class StudentFinancialAction extends ActionService
     {
         $data['educational_year'] = PardisanHelper::getEducationalYearByGregorianDate($data['date']);
 
+        $data['paid'] = $data['paid'] ?? false;
+
+        $generalStatistic = (new GeneralStatisticAction())->getFirstByLabelAndEducationalYearOrCreate('student_financial', $data['educational_year']);
+
+        if ($data['paid'])
+        {
+            $generalStatistic->paid += $data['amount'];
+        }
+        else
+        {
+            $generalStatistic->not_paid += $data['amount'];
+        }
+
+        $generalStatistic->save();
+
         return parent::store($data, $storing);
     }
 
@@ -63,6 +78,43 @@ class StudentFinancialAction extends ActionService
     public function update(array $updateData, callable $updating = null): bool|int
     {
         $updateData['educational_year'] = PardisanHelper::getEducationalYearByGregorianDate($updateData['date']);
+
+        $updating = function (&$eloquent, $updateData) use ($updating)
+        {
+            foreach ($eloquent->get() AS $studentFinancial)
+            {
+                $studentFinancialGeneralStatistic = (new GeneralStatisticAction())->getFirstByLabelAndEducationalYearOrCreate('student_financial', $studentFinancial->educational_year);
+
+                if ($studentFinancial->paid)
+                {
+                    $studentFinancialGeneralStatistic->paid -= $studentFinancial->amount;
+                }
+                else
+                {
+                    $studentFinancialGeneralStatistic->not_paid -= $studentFinancial->amount;
+                }
+
+                $studentFinancialGeneralStatistic->save();
+
+                $newGeneralStatistic = (new GeneralStatisticAction())->getFirstByLabelAndEducationalYearOrCreate('student_financial', $updateData['educational_year'] ?? $studentFinancial->educational_year);
+
+                if ($updateData['paid'] ?? $studentFinancial->paid)
+                {
+                    $newGeneralStatistic->paid += $updateData['amount'] ?? $studentFinancial->amount;
+                }
+                else
+                {
+                    $newGeneralStatistic->not_paid += $updateData['amount'] ?? $studentFinancial->amount;
+                }
+
+                $newGeneralStatistic->save();
+            }
+
+            if (is_callable($updating))
+            {
+                $updating($eloquent, $updateData);
+            }
+        };
 
         return parent::update($updateData, $updating);
     }

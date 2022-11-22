@@ -16,4 +16,19 @@ class GeneralStatisticAction extends ActionService
 
         parent::__construct();
     }
+
+    /**
+     * @param string $label
+     * @param string $educationalYear
+     * @return mixed
+     */
+    public function getFirstByLabelAndEducationalYearOrCreate(string $label, string $educationalYear): mixed
+    {
+        $generalStatistic = GeneralStatisticModel::where('label', $label)->where('educational_year', $educationalYear)->first();
+
+        return empty($generalStatistic) ? GeneralStatisticModel::create([
+            'label' => $label,
+            'educational_year' => $educationalYear
+        ]) : $generalStatistic;
+    }
 }
