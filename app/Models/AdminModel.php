@@ -12,12 +12,10 @@ class AdminModel extends Model
     protected $table = 'admins';
 
     protected $fillable = [
-        'first_name',
-        'last_name',
         'user_name',
         'password',
-        'is_primary',
-        'privileges'
+//        'is_primary',
+//        'privileges'
     ];
 
     protected $hidden = [
