@@ -21,7 +21,8 @@ class WalletHistoryAction extends ActionService
             ->setValidationRules([
                 'store' => [
                     'student_id' => ['required', 'string', 'max:20'],
-                    'amount' => ['required', 'int', 'min:-10000000', 'max:10000000']
+                    'amount' => ['required', 'int', 'min:0', 'max:10000000'],
+                    'action' => ['required', 'in:increase,decrease']
                 ],
                 'getQuery' => [
                     'student_id' => ['string', 'max:20']
@@ -47,6 +48,14 @@ class WalletHistoryAction extends ActionService
     {
         $student = (new StudentAction())->getById($data['student_id']);
 
+        $newAmount = $data['action'] == 'increase' ? $student->wallet_amount + $data['amount'] : $student->wallet_amount - $data['amount'];
+
+        if($newAmount < 0)
+        {
+            throw new CustomException('the value you entered is greater than the current amount in student wallet', 30, Response::HTTP_BAD_REQUEST);
+        }
+
+        /*
         if($data['amount'] > 0)
         {
             $newAmount = $data['amount'] + $student->wallet_amount;
@@ -66,6 +75,7 @@ class WalletHistoryAction extends ActionService
 
             $data['action'] = "decrease";
         }
+        */
 
         $data['status'] = $data['status'] ?? 'failed';
 
