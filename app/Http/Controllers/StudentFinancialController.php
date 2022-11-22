@@ -42,6 +42,18 @@ class StudentFinancialController extends Controller
     }
 
     /**
+     * @param string $id
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getById (string $id): JsonResponse
+    {
+        return response()->json(
+            (new StudentFinancialAction())->getById($id)
+        );
+    }
+
+    /**
      * @param Request $request
      * @param string $id
      * @return JsonResponse

@@ -38,3 +38,4 @@ Route::post('/admin/student/financial', [StudentFinancialController::class, 'sto
 Route::put('/admin/student/financial/{id}', [StudentFinancialController::class, 'updateById']); //TODO: require admin authorization for this route
 Route::delete('/admin/student/financial/{id}', [StudentFinancialController::class, 'deleteById']); //TODO: require admin authorization for this route
 Route::get('/admin/student/financial', [StudentFinancialController::class, 'get']); //TODO: require admin authorization for this route
+Route::get('/admin/student/financial/{id}', [StudentFinancialController::class, 'getById']); //TODO: require admin authorization for this route
