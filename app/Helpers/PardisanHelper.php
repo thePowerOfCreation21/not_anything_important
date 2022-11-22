@@ -41,6 +41,6 @@ class PardisanHelper
      */
     public static function getEducationalYearByTime (int $time): string
     {
-        return CalendarUtils::strftime('n', $time) < 7 ? CalendarUtils::strftime('Y', $time) - 1 : CalendarUtils::strftime('Y', $time);
+        return CalendarUtils::strftime('n', $time) < 4 ? CalendarUtils::strftime('Y', $time) - 1 : CalendarUtils::strftime('Y', $time);
     }
 }

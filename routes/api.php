@@ -19,7 +19,7 @@ use App\Http\Controllers\AdminController;
 */
 
 
-Route::post('/admin/login', [AdminController::class, 'login']); //TODO: require admin authorization for this route
+Route::post('/admin/login', [AdminController::class, 'login']);
 
 Route::post('/student/register_request', [StudentController::class, 'registerRequest']);
 
