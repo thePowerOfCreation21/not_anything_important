@@ -52,6 +52,21 @@ class StudentFinancialAction extends ActionService
     {
         $data['educational_year'] = PardisanHelper::getEducationalYearByGregorianDate($data['date']);
 
+        $data['paid'] = $data['paid'] ?? false;
+
+        $generalStatistic = (new GeneralStatisticAction())->getFirstByLabelAndEducationalYearOrCreate('student_financial', $data['educational_year']);
+
+        if ($data['paid'])
+        {
+            $generalStatistic->paid += $data['amount'];
+        }
+        else
+        {
+            $generalStatistic->not_paid += $data['amount'];
+        }
+
+        $generalStatistic->save();
+
         return parent::store($data, $storing);
     }
 
