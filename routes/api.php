@@ -6,7 +6,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherSkillController;
 use App\Http\Controllers\WalletHistoryController;
 use App\Http\Controllers\StudentFinancialController;
-
+use App\Http\Controllers\AdminController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,6 +17,9 @@ use App\Http\Controllers\StudentFinancialController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::post('/admin/register', [AdminController::class, 'register']); //TODO: require admin authorization for this route
+Route::post('/admin/login', [AdminController::class, 'login']); //TODO: require admin authorization for this route
 
 Route::post('/student/register_request', [StudentController::class, 'registerRequest']);
 

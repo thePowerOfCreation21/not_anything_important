@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('user_name', 25)->unique();
             $table->string('password', 150);
-            $table->boolean('is_primary')->default(false)->nullable();
-            $table->string('privileges', 1500)->nullable();
+//            $table->boolean('is_primary')->default(false)->nullable();
+//            $table->string('privileges', 1500)->nullable();
             $table->timestamps();
         });
     }
