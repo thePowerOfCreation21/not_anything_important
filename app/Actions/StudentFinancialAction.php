@@ -79,6 +79,43 @@ class StudentFinancialAction extends ActionService
     {
         $updateData['educational_year'] = PardisanHelper::getEducationalYearByGregorianDate($updateData['date']);
 
+        $updating = function (&$eloquent, $updateData) use ($updating)
+        {
+            foreach ($eloquent->get() AS $studentFinancial)
+            {
+                $studentFinancialGeneralStatistic = (new GeneralStatisticAction())->getFirstByLabelAndEducationalYearOrCreate('student_financial', $studentFinancial->educational_year);
+
+                if ($studentFinancial->paid)
+                {
+                    $studentFinancialGeneralStatistic->paid -= $studentFinancial->amount;
+                }
+                else
+                {
+                    $studentFinancialGeneralStatistic->not_paid -= $studentFinancial->amount;
+                }
+
+                $studentFinancialGeneralStatistic->save();
+
+                $newGeneralStatistic = (new GeneralStatisticAction())->getFirstByLabelAndEducationalYearOrCreate('student_financial', $updateData['educational_year'] ?? $studentFinancial->educational_year);
+
+                if ($updateData['paid'] ?? $studentFinancial->paid)
+                {
+                    $newGeneralStatistic->paid += $updateData['amount'] ?? $studentFinancial->amount;
+                }
+                else
+                {
+                    $newGeneralStatistic->not_paid += $updateData['amount'] ?? $studentFinancial->amount;
+                }
+
+                $newGeneralStatistic->save();
+            }
+
+            if (is_callable($updating))
+            {
+                $updating($eloquent, $updateData);
+            }
+        };
+
         return parent::update($updateData, $updating);
     }
 }
