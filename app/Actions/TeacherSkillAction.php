@@ -23,7 +23,7 @@ class TeacherSkillAction extends ActionService
                     'skill_level' => ['string', 'max:350']
                 ],
                 'update' => [
-                    'course_title' => ['required', 'string', 'max:350'],
+                    'course_title' => ['string', 'max:350'],
                     'educational_institution' => ['string', 'max:350'],
                     'skill_level' => ['string', 'max:350']
                 ],
