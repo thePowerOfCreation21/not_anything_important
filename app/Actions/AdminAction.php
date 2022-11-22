@@ -34,16 +34,17 @@ class AdminAction extends ActionService
 
         parent::__construct();
     }
-    public function storeByRequest(callable $storing = null): mixed
+
+    /**
+     * @param array $data
+     * @param callable|null $storing
+     * @return mixed
+     */
+    public function store(array $data, callable $storing = null): mixed
     {
-        if (is_null($storing))
-        {
-            $storing = function(&$data)
-            {
-                $data['password'] = Hash::make($data['password']);
-            };
-        }
-        return parent::storeByRequest($storing);
+        $data['password'] = Hash::make($data['password']);
+
+        return parent::store($data, $storing);
     }
 
     public function login (array $data): NewAccessToken
@@ -61,10 +62,10 @@ class AdminAction extends ActionService
         throw new CustomException('name or password is wrong', 2, 400);
     }
 
-    public function loginByRequest (Request $request, array|string $validation_rule = 'login'): NewAccessToken
+    public function loginByRequest (): NewAccessToken
     {
         return $this->login(
-            $this->getDataFromRequest($request, $validation_rule)
+            $this->getDataFromRequest()
         );
     }
 }

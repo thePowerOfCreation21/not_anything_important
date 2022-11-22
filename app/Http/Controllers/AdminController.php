@@ -25,7 +25,9 @@ class AdminController extends Controller
         return response()->json([
             'message' => 'logged in successfully',
             'data' => (new AdminAction())
-                ->loginByRequest($request)->plainTextToken
+                ->setRequest($request)
+                ->setValidationRule('login')
+                ->loginByRequest()->plainTextToken
         ]);
     }
 
