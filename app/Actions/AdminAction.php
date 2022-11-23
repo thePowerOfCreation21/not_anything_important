@@ -30,7 +30,7 @@ class AdminAction extends ActionService
                 'update' => [
                     'user_name' => ['string', 'max:25', 'unique:admins'],
                     'password' => ['string', 'max:150'],
-                    'privileges' => ['array|max:'.count(AdminModel::$privileges_list) ]
+                    'privileges' => ['array','max:'.count(AdminModel::$privileges_list)]
                 ],
                 'login' => [
                     'user_name' => ['required', 'string', 'max:25'],
