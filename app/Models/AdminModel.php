@@ -29,39 +29,35 @@ class AdminModel extends Model
         'is_primary' => 'boolean',
         'privileges' => 'object',
     ];
-//
-//    public static $privileges_list = [
+
+    public static $privileges_list = [
 //        'get_stats',
 //        'manage_settings',
-//        'get_orders',
-//        'get_todays_orders',
-//        'manage_order_time_limit',
-//        'manage_products',
-//        'manage_discounts',
 //        'send_notifications',
 //        'get_users',
-//        'manage_users'
-//    ];
-//
-//    public static function fix_privileges (object $temp_privileges, $privileges = null)
-//    {
-//        if (! is_object($privileges))
-//        {
-//            $privileges = (object) [];
-//            foreach (self::$privileges_list AS $privilege)
-//            {
-//                $privileges->$privilege = false;
-//            }
-//        }
-//
-//        foreach ($temp_privileges AS $privilege => $value)
-//        {
-//            if (isset($privileges->$privilege))
-//            {
-//                $privileges->$privilege = (bool) $temp_privileges->$privilege;
-//            }
-//        }
-//
-//        return $privileges;
-//    }
+        'manage_users',
+        'manage_teachers'
+    ];
+
+    public static function fix_privileges (object $temp_privileges, $privileges = null)
+    {
+        if (! is_object($privileges))
+        {
+            $privileges = (object) [];
+            foreach (self::$privileges_list AS $privilege)
+            {
+                $privileges->$privilege = false;
+            }
+        }
+
+        foreach ($temp_privileges AS $privilege => $value)
+        {
+            if (isset($privileges->$privilege))
+            {
+                $privileges->$privilege = (bool) $temp_privileges->$privilege;
+            }
+        }
+
+        return $privileges;
+    }
 }
