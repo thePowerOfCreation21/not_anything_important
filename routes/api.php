@@ -22,6 +22,8 @@ use App\Http\Controllers\GeneralStatisticController;
 
 
 Route::post('/admin/login', [AdminController::class, 'login']);
+Route::put('/admin/{id}', [AdminController::class, 'updateById']);
+
 
 Route::post('/student/register_request', [StudentController::class, 'registerRequest']);
 

@@ -20,6 +20,17 @@ class AdminController extends Controller
         ]);
     }
 
+    public function updateById (string $id, Request $request): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new AdminAction())
+                ->setRequest($request)
+                ->setValidationRule('update')
+                ->updateByIdAndRequest($id)
+        ]);
+    }
+
     public function login (Request $request): JsonResponse
     {
         return response()->json([
