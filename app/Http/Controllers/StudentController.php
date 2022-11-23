@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Actions\StudentAction;
+use App\Helpers\PardisanHelper;
+use App\Http\Resources\StudentCollectionResource;
 use Genocide\Radiocrud\Exceptions\CustomException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -41,6 +43,24 @@ class StudentController extends Controller
                 ->setValidationRule('updateByAdmin')
                 ->updateByIdAndRequest($studentId)
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function get (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new StudentAction())
+                ->setRequest($request)
+                ->setValidationRule('getQuery')
+                ->setResource(StudentCollectionResource::class)
+                ->mergeQueryWith(['educational_year' => PardisanHelper::getCurrentEducationalYear()])
+                ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
     }
 
     /**
