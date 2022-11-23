@@ -118,4 +118,33 @@ class StudentFinancialAction extends ActionService
 
         return parent::update($updateData, $updating);
     }
+
+    public function delete(callable $deleting = null): mixed
+    {
+        $deleting = function (&$eloquent) use ($deleting)
+        {
+            foreach ($eloquent->get() AS $studentFinancial)
+            {
+                $studentFinancialGeneralStatistic = (new GeneralStatisticAction())->getFirstByLabelAndEducationalYearOrCreate('student_financial', $studentFinancial->educational_year);
+
+                if ($studentFinancial->paid)
+                {
+                    $studentFinancialGeneralStatistic->paid -= $studentFinancial->amount;
+                }
+                else
+                {
+                    $studentFinancialGeneralStatistic->not_paid -= $studentFinancial->amount;
+                }
+
+                $studentFinancialGeneralStatistic->save();
+            }
+
+            if (is_callable($deleting))
+            {
+                $deleting($eloquent);
+            }
+        };
+
+        return parent::delete($deleting);
+    }
 }
