@@ -118,6 +118,18 @@ class StudentController extends Controller
     }
 
     /**
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function rejectById (string $id): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'date' => (new StudentAction())->rejectById($id)
+        ]);
+    }
+
+    /**
      * @param Request $request
      * @return JsonResponse
      * @throws CustomException

@@ -452,4 +452,16 @@ class StudentAction extends ActionService
                 'register_status' => 'accepted',
             ]);
     }
+
+    /**
+     * @param string $studentId
+     * @return mixed
+     */
+    public function rejectById (string $studentId): mixed
+    {
+        return StudentModel::where('id', $studentId)
+            ->update([
+                'register_status' => 'rejected',
+            ]);
+    }
 }
