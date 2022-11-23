@@ -138,6 +138,22 @@ class AdminAction extends ActionService
 
     public function deleteById(string $id, callable $deleting = null): mixed
     {
+        $deleting = function (&$eloquent) use ($deleting)
+        {
+            foreach ($eloquent->get() AS $admin)
+            {
+                if ($admin->is_primary)
+                {
+                    throw new CustomException('primary accounts can not be edited', 6, 400);
+                }
+            }
+
+            if (is_callable($deleting))
+            {
+                $deleting($eloquent);
+            }
+        };
+
         return parent::deleteById($id, $deleting);
     }
 }
