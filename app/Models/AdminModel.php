@@ -15,8 +15,8 @@ class AdminModel extends Model
     protected $fillable = [
         'user_name',
         'password',
-//        'is_primary',
-//        'privileges'
+        'is_primary',
+        'privileges'
     ];
 
     protected $hidden = [
@@ -25,10 +25,10 @@ class AdminModel extends Model
         'updated_at'
     ];
 
-//    protected $casts = [
-//        'is_primary' => 'boolean',
-//        'privileges' => 'object',
-//    ];
+    protected $casts = [
+        'is_primary' => 'boolean',
+        'privileges' => 'object',
+    ];
 //
 //    public static $privileges_list = [
 //        'get_stats',
