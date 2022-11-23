@@ -8,6 +8,7 @@ use App\Models\StudentModel;
 use Genocide\Radiocrud\Exceptions\CustomException;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Morilog\Jalali\CalendarUtils;
 
@@ -241,10 +242,51 @@ class StudentAction extends ActionService
                 'block' => [
                     'reason' => ['nullable', 'string', 'max:2500']
                 ],
+                'getQuery' => [
+                    'level' => ['string', 'max:100'],
+                    'educational_year' => ['string', 'max:50'],
+                    'search' => ['string', 'max:150'],
+                    'register_status' => ['string', 'max:150'],
+                    'from_created_at' => ['date_format:Y-m-d'],
+                    'to_created_at' => ['date_format:Y-m-d'],
+                ]
             ])
             ->setCasts([
                 'file' => ['nullable', 'file'],
-                'report_card_pdf' => ['nullable', 'file']
+                'report_card_pdf' => ['nullable', 'file'],
+                'from_created_at' => ['jalali_to_gregorian:Y-m-d'],
+                'to_created_at' => ['jalali_to_gregorian:Y-m-d'],
+            ])
+            ->setQueryToEloquentClosures([
+                'level' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('level', $query['level']);
+                },
+                'educational_year' => function (&$eloquent, $query)
+                {
+                    if ($query['educational_year']  != '*')
+                    {
+                        $eloquent = $eloquent->where('educational_year', $query['educational_year']);
+                    }
+                },
+                'search' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('full_name', 'LIKE', "%{$query['search']}%");
+                },
+                'register_status' => function (&$eloquent, $query)
+                {
+                    $query['register_status'] = is_string($query['register_status']) ? explode(',', $query['register_status']) : $query['register_status'];
+
+                    $eloquent = $eloquent->whereIn('register_status', $query['register_status']);
+                },
+                'from_created_at' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereDate('created_at', '>=', $query['from_created_at']);
+                },
+                'to_created_at' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereDate('created_at', '<=', $query['to_created_at']);
+                }
             ]);
 
         parent::__construct();
@@ -322,6 +364,8 @@ class StudentAction extends ActionService
             $data['educational_year'] = PardisanHelper::getCurrentEducationalYear();
         }
 
+        $data['password'] = Hash::make($data['password']);
+
         return parent::store($data, $storing);
     }
 
@@ -352,6 +396,11 @@ class StudentAction extends ActionService
             if (array_key_exists('report_card_pdf', $updateData) && is_file($entity->report_card_pdf))
             {
                 unlink($entity->report_card_pdf);
+            }
+
+            if (isset($updateData['password']))
+            {
+                $updateData['password'] = Hash::make($updateData['password']);
             }
 
             if (is_callable($updating))

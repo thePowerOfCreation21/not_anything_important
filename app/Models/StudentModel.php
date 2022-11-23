@@ -89,6 +89,10 @@ class StudentModel extends Model
         'register_status'
     ];
 
+    protected $hidden = [
+        'password'
+    ];
+
     public function financials (): HasMany
     {
         return $this->hasMany(StudentFinancialModel::class, 'student_id', 'id');
