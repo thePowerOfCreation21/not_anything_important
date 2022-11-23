@@ -32,6 +32,7 @@ Route::group([
 
     Route::post('/admin/student', [StudentController::class, 'storeByAdmin']);
     Route::get('/admin/student', [StudentController::class, 'get']);
+    Route::get('/admin/student/{id}', [StudentController::class, 'getById']);
     Route::put('/admin/student/{id}', [StudentController::class, 'updateById']);
     Route::post('/admin/student/{id}/block', [StudentController::class, 'block']);
     Route::get('/admin/student/{id}/unblock', [StudentController::class, 'unblock']);
