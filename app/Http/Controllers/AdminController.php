@@ -12,7 +12,7 @@ class AdminController extends Controller
     public function register (Request $request): JsonResponse
     {
         return response()->json([
-            'message' => 'ok',
+            'message' => 'Registered Successfully',
             'data' => (new AdminAction())
                 ->setRequest($request)
                 ->setValidationRule('store')
@@ -23,7 +23,7 @@ class AdminController extends Controller
     public function updateById (string $id, Request $request): JsonResponse
     {
         return response()->json([
-            'message' => 'ok',
+            'message' => 'Updated Successfully',
             'data' => (new AdminAction())
                 ->setRequest($request)
                 ->setValidationRule('update')
@@ -42,5 +42,31 @@ class AdminController extends Controller
         ]);
     }
 
+    public function get(Request $request) : JsonResponse
+    {
+        return response()->json([
+            'message' => 'Admins : ',
+            'data' => (new AdminAction())
+                ->setRequest($request)
+                ->setValidationRule('get_query')
+                ->getByRequestAndEloquent()
+        ]);
+    }
+
+    public function getById(string $id) : JsonResponse
+    {
+        return response()->json([
+            (new AdminAction())->getById($id)
+        ]);
+    }
+
+    public function deleteById (string $id): JsonResponse
+    {
+        (new AdminAction())->deleteById($id);
+
+        return response()->json([
+            'message' => 'deleted'
+        ]);
+    }
 
 }

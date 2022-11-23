@@ -35,6 +35,9 @@ class AdminAction extends ActionService
                 'login' => [
                     'user_name' => ['required', 'string', 'max:25'],
                     'password' => ['required', 'string', 'max:150'],
+                ],
+                'get_query' => [
+                    'search' => 'string|max:100'
                 ]
             ]);
         foreach (AdminModel::$privileges_list as $privilege)
@@ -121,5 +124,36 @@ class AdminAction extends ActionService
         return $this->login(
             $this->getDataFromRequest()
         );
+    }
+
+    public function getByRequestAndEloquent(): array
+    {
+        return parent::getByRequestAndEloquent();
+    }
+
+    public function getById(string $id): object
+    {
+        return parent::getById($id);
+    }
+
+    public function deleteById(string $id, callable $deleting = null): mixed
+    {
+        $deleting = function (&$eloquent) use ($deleting)
+        {
+            foreach ($eloquent->get() AS $admin)
+            {
+                if ($admin->is_primary)
+                {
+                    throw new CustomException('primary accounts can not be edited', 6, 400);
+                }
+            }
+
+            if (is_callable($deleting))
+            {
+                $deleting($eloquent);
+            }
+        };
+
+        return parent::deleteById($id, $deleting);
     }
 }
