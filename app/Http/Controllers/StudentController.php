@@ -60,7 +60,7 @@ class StudentController extends Controller
                 ->mergeQueryWith(['educational_year' => PardisanHelper::getCurrentEducationalYear()])
                 ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()
-        );
+        );//0993286931 taibi
     }
 
     /**

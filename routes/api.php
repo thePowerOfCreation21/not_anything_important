@@ -22,8 +22,6 @@ use App\Http\Controllers\GeneralStatisticController;
 
 
 Route::post('/admin/login', [AdminController::class, 'login']);
-Route::put('/admin/{id}', [AdminController::class, 'updateById']);
-
 
 Route::post('/student/register_request', [StudentController::class, 'registerRequest']);
 
@@ -31,6 +29,9 @@ Route::group([
     'middleware' => ['auth:admin']
 ], function(){
     Route::post('/admin/register', [AdminController::class, 'register']);
+    Route::put('/admin/{id}', [AdminController::class, 'updateById']);
+    Route::get('/admin', [AdminController::class, 'get']);
+    Route::get('/admin/{id}', [AdminController::class, 'getById']);
 
     Route::post('/admin/student', [StudentController::class, 'storeByAdmin']);
     Route::get('/admin/student', [StudentController::class, 'get']);
