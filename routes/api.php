@@ -32,6 +32,7 @@ Route::group([
     Route::put('/admin/{id}', [AdminController::class, 'updateById']);
     Route::get('/admin', [AdminController::class, 'get']);
     Route::get('/admin/{id}', [AdminController::class, 'getById']);
+    Route::delete('/admin/{id}', [AdminController::class, 'deleteById']);
 
     Route::post('/admin/student/wallet', [WalletHistoryController::class, 'store']);
     Route::get('/admin/student/wallet', [WalletHistoryController::class, 'get']);

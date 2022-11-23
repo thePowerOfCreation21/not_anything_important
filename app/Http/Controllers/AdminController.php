@@ -60,5 +60,13 @@ class AdminController extends Controller
         ]);
     }
 
+    public function deleteById (string $id): JsonResponse
+    {
+        (new AdminAction())->deleteById($id);
+
+        return response()->json([
+            'message' => 'deleted'
+        ]);
+    }
 
 }
