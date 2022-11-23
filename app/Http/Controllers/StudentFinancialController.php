@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\StudentFinancialAction;
+use App\Helpers\PardisanHelper;
 use Genocide\Radiocrud\Exceptions\CustomException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -36,6 +37,7 @@ class StudentFinancialController extends Controller
             (new StudentFinancialAction())
                 ->setRequest($request)
                 ->setValidationRule('getQuery')
+                ->mergeQueryWith(['educational_year' => PardisanHelper::getCurrentEducationalYear()])
                 ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()
         );
