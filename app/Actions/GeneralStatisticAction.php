@@ -12,7 +12,27 @@ class GeneralStatisticAction extends ActionService
     {
         $this
             ->setModel(GeneralStatisticModel::class)
-            ->setResource(GeneralStatisticResource::class);
+            ->setResource(GeneralStatisticResource::class)
+            ->setValidationRules([
+                'getQuery' => [
+                    'label' => ['string', 'max:150'],
+                    'educational_year' => ['string', 'max:50']
+                ]
+            ])
+            ->setQueryToEloquentClosures([
+                'label' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('label', $query['label']);
+                },
+                'educational_year' => function (&$eloquent, $query)
+                {
+                    if ($query['educational_year']  != '*')
+                    {
+                        $eloquent = $eloquent->where('educational_year', $query['educational_year']);
+                    }
+                }
+            ])
+            ->setOrderBy(['educational_year' => 'DESC']);
 
         parent::__construct();
     }

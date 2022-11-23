@@ -2,11 +2,13 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherSkillController;
 use App\Http\Controllers\WalletHistoryController;
 use App\Http\Controllers\StudentFinancialController;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\GeneralStatisticController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -46,4 +48,6 @@ Route::group([
     Route::delete('/admin/student/financial/{id}', [StudentFinancialController::class, 'deleteById']);
     Route::get('/admin/student/financial', [StudentFinancialController::class, 'get']);
     Route::get('/admin/student/financial/{id}', [StudentFinancialController::class, 'getById']);
+
+    Route::get('/admin/general_statistic', [GeneralStatisticController::class, 'get']);
 });
