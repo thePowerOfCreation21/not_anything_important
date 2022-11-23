@@ -106,6 +106,18 @@ class StudentController extends Controller
     }
 
     /**
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function acceptById (string $id): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'date' => (new StudentAction())->acceptById($id)
+        ]);
+    }
+
+    /**
      * @param Request $request
      * @return JsonResponse
      * @throws CustomException

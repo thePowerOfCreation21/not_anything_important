@@ -38,6 +38,7 @@ Route::group([
     Route::put('/admin/student/{id}', [StudentController::class, 'updateById']);
     Route::post('/admin/student/{id}/block', [StudentController::class, 'block']);
     Route::get('/admin/student/{id}/unblock', [StudentController::class, 'unblock']);
+    Route::get('/admin/student/{id}/accept', [StudentController::class, 'acceptById']);
 
     Route::post('/admin/student/wallet', [WalletHistoryController::class, 'store']);
     Route::get('/admin/student/wallet', [WalletHistoryController::class, 'get']);
