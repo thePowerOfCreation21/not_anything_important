@@ -93,6 +93,10 @@ class StudentModel extends Model
         'password'
     ];
 
+    protected $casts = [
+        'wallet_amount' => 'integer'
+    ];
+
     public function financials (): HasMany
     {
         return $this->hasMany(StudentFinancialModel::class, 'student_id', 'id');

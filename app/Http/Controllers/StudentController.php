@@ -64,6 +64,18 @@ class StudentController extends Controller
     }
 
     /**
+     * @param string $id
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getById (string $id): JsonResponse
+    {
+        return response()->json(
+            (new StudentAction())->getById($id)
+        );
+    }
+
+    /**
      * @param string $studentId
      * @param Request $request
      * @return JsonResponse
@@ -90,6 +102,30 @@ class StudentController extends Controller
             'message' => 'ok',
             'data' => (new StudentAction())
                 ->unblock($studentId)
+        ]);
+    }
+
+    /**
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function acceptById (string $id): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'date' => (new StudentAction())->acceptById($id)
+        ]);
+    }
+
+    /**
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function rejectById (string $id): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'date' => (new StudentAction())->rejectById($id)
         ]);
     }
 

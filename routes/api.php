@@ -33,26 +33,29 @@ Route::group([
     Route::get('/admin', [AdminController::class, 'get']);
     Route::get('/admin/{id}', [AdminController::class, 'getById']);
 
-    Route::post('/admin/student', [StudentController::class, 'storeByAdmin']);
-    Route::get('/admin/student', [StudentController::class, 'get']);
-    Route::put('/admin/student/{id}', [StudentController::class, 'updateById']);
-    Route::post('/admin/student/{id}/block', [StudentController::class, 'block']);
-    Route::get('/admin/student/{id}/unblock', [StudentController::class, 'unblock']);
-
     Route::post('/admin/student/wallet', [WalletHistoryController::class, 'store']);
     Route::get('/admin/student/wallet', [WalletHistoryController::class, 'get']);
-
-    Route::post('/admin/teacher/skill', [TeacherSkillController::class, 'storeByAdmin']);
-    Route::post('/admin/teacher/skill/{id}', [TeacherSkillController::class, 'updateById']);
-    Route::delete('/admin/teacher/skill/{id}', [TeacherSkillController::class, 'deleteById']);
-    Route::get('/admin/teacher/skill', [TeacherSkillController::class, 'get']);
-    Route::get('/admin/teacher/skill/{id}', [TeacherSkillController::class, 'getById']);
 
     Route::post('/admin/student/financial', [StudentFinancialController::class, 'store']);
     Route::put('/admin/student/financial/{id}', [StudentFinancialController::class, 'updateById']);
     Route::delete('/admin/student/financial/{id}', [StudentFinancialController::class, 'deleteById']);
     Route::get('/admin/student/financial', [StudentFinancialController::class, 'get']);
     Route::get('/admin/student/financial/{id}', [StudentFinancialController::class, 'getById']);
+
+    Route::post('/admin/student', [StudentController::class, 'storeByAdmin']);
+    Route::get('/admin/student', [StudentController::class, 'get']);
+    Route::get('/admin/student/{id}', [StudentController::class, 'getById']);
+    Route::put('/admin/student/{id}', [StudentController::class, 'updateById']);
+    Route::post('/admin/student/{id}/block', [StudentController::class, 'block']);
+    Route::get('/admin/student/{id}/unblock', [StudentController::class, 'unblock']);
+    Route::get('/admin/student/{id}/accept', [StudentController::class, 'acceptById']);
+    Route::get('/admin/student/{id}/reject', [StudentController::class, 'rejectById']);
+
+    Route::post('/admin/teacher/skill', [TeacherSkillController::class, 'storeByAdmin']);
+    Route::post('/admin/teacher/skill/{id}', [TeacherSkillController::class, 'updateById']);
+    Route::delete('/admin/teacher/skill/{id}', [TeacherSkillController::class, 'deleteById']);
+    Route::get('/admin/teacher/skill', [TeacherSkillController::class, 'get']);
+    Route::get('/admin/teacher/skill/{id}', [TeacherSkillController::class, 'getById']);
 
     Route::get('/admin/general_statistic', [GeneralStatisticController::class, 'get']);
 });

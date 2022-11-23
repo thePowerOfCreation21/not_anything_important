@@ -27,7 +27,8 @@ class StudentFinancialAction extends ActionService
                     'paid' => ['bool']
                 ],
                 'getQuery' => [
-                    'student_id' => ['string', 'max:20']
+                    'student_id' => ['string', 'max:20'],
+                    'educational_year' => ['string', 'max:50']
                 ]
             ])
             ->setCasts([
@@ -37,7 +38,14 @@ class StudentFinancialAction extends ActionService
                 'student_id' => function (&$eloquent, $query)
                 {
                     $eloquent = $eloquent->where('student_id', $query['student_id']);
-                }
+                },
+                'educational_year' => function (&$eloquent, $query)
+                {
+                    if ($query['educational_year']  != '*')
+                    {
+                        $eloquent = $eloquent->where('educational_year', $query['educational_year']);
+                    }
+                },
             ]);
 
         parent::__construct();

@@ -440,4 +440,28 @@ class StudentAction extends ActionService
                 'reason_for_blocking' => null
             ]);
     }
+
+    /**
+     * @param string $studentId
+     * @return mixed
+     */
+    public function acceptById (string $studentId): mixed
+    {
+        return StudentModel::where('id', $studentId)
+            ->update([
+                'register_status' => 'accepted',
+            ]);
+    }
+
+    /**
+     * @param string $studentId
+     * @return mixed
+     */
+    public function rejectById (string $studentId): mixed
+    {
+        return StudentModel::where('id', $studentId)
+            ->update([
+                'register_status' => 'rejected',
+            ]);
+    }
 }
