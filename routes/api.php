@@ -31,12 +31,6 @@ Route::get('/educational_year', [EducationalYearController::class, 'get']);
 Route::group([
     'middleware' => ['auth:admin']
 ], function(){
-    Route::post('/admin/register', [AdminController::class, 'register']);
-    Route::put('/admin/{id}', [AdminController::class, 'updateById']);
-    Route::get('/admin', [AdminController::class, 'get']);
-    Route::get('/admin/{id}', [AdminController::class, 'getById']);
-    Route::delete('/admin/{id}', [AdminController::class, 'deleteById']);
-
     Route::post('/admin/student/wallet', [WalletHistoryController::class, 'store']);
     Route::get('/admin/student/wallet', [WalletHistoryController::class, 'get']);
 
@@ -62,4 +56,10 @@ Route::group([
     Route::get('/admin/teacher/skill/{id}', [TeacherSkillController::class, 'getById']);
 
     Route::get('/admin/general_statistic', [GeneralStatisticController::class, 'get']);
+
+    Route::post('/admin/register', [AdminController::class, 'register']);
+    Route::put('/admin/{id}', [AdminController::class, 'updateById']);
+    Route::get('/admin', [AdminController::class, 'get']);
+    Route::get('/admin/{id}', [AdminController::class, 'getById']);
+    Route::delete('/admin/{id}', [AdminController::class, 'deleteById']);
 });
