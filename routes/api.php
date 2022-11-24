@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherSkillController;
 use App\Http\Controllers\WalletHistoryController;
+use App\Http\Controllers\EducationalYearController;
 use App\Http\Controllers\StudentFinancialController;
 use App\Http\Controllers\GeneralStatisticController;
 
@@ -24,6 +25,8 @@ use App\Http\Controllers\GeneralStatisticController;
 Route::post('/admin/login', [AdminController::class, 'login']);
 
 Route::post('/student/register_request', [StudentController::class, 'registerRequest']);
+
+Route::get('/educational_year', [EducationalYearController::class, 'get']);
 
 Route::group([
     'middleware' => ['auth:admin']
