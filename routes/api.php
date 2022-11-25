@@ -9,6 +9,7 @@ use App\Http\Controllers\WalletHistoryController;
 use App\Http\Controllers\EducationalYearController;
 use App\Http\Controllers\StudentFinancialController;
 use App\Http\Controllers\GeneralStatisticController;
+use App\Http\Controllers\CourseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,9 +58,17 @@ Route::group([
 
     Route::get('/admin/general_statistic', [GeneralStatisticController::class, 'get']);
 
-    Route::post('/admin/register', [AdminController::class, 'register']);
+    Route::post('/admin/course', [CourseController::class, 'storeByAdmin']);
+    Route::put('/admin/course/{id}', [CourseController::class, 'updateById']);
+    Route::delete('/admin/course/{id}', [CourseController::class, 'deleteById']);
+    Route::get('/admin/course', [CourseController::class, 'get']);
+    Route::get('/admin/course/{id}', [CourseController::class, 'getById']);
+
+    Route::post('/admin', [AdminController::class, 'register']);
     Route::put('/admin/{id}', [AdminController::class, 'updateById']);
     Route::get('/admin', [AdminController::class, 'get']);
     Route::get('/admin/{id}', [AdminController::class, 'getById']);
     Route::delete('/admin/{id}', [AdminController::class, 'deleteById']);
+
+
 });

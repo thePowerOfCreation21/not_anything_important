@@ -15,7 +15,7 @@ class CourseController extends Controller
             'message' => 'ok',
             'data' => (new CourseAction())
                 ->setRequest($request)
-                ->setValidationRule('storeByAdmin')
+                ->setValidationRule('store')
                 ->storeByRequest()
         ]);
     }
@@ -40,20 +40,15 @@ class CourseController extends Controller
         ]);
     }
 
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     * @throws CustomException
-     */
-    public function get (Request $request): JsonResponse
+    public function get(Request $request) : JsonResponse
     {
-        return response()->json(
-            (new CourseAction())
+        return response()->json([
+            'message' => 'Courses : ',
+            'data' => (new CourseAction())
                 ->setRequest($request)
                 ->setValidationRule('get_query')
-                ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()
-        );
+        ]);
     }
 
     /**
