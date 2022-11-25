@@ -50,7 +50,7 @@ Route::group([
     Route::get('/admin/student/{id}/reject', [StudentController::class, 'rejectById']);
 
     Route::post('/admin/teacher/skill', [TeacherSkillController::class, 'storeByAdmin']);
-    Route::post('/admin/teacher/skill/{id}', [TeacherSkillController::class, 'updateById']);
+    Route::put('/admin/teacher/skill/{id}', [TeacherSkillController::class, 'updateById']);
     Route::delete('/admin/teacher/skill/{id}', [TeacherSkillController::class, 'deleteById']);
     Route::get('/admin/teacher/skill', [TeacherSkillController::class, 'get']);
     Route::get('/admin/teacher/skill/{id}', [TeacherSkillController::class, 'getById']);
