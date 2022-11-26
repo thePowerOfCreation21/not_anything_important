@@ -19,10 +19,27 @@ class TeacherFinancialAction extends ActionService
                     'teacher_id' => ['required', 'string', 'max:20'],
                     'amount' => ['required', 'int', 'min:0', 'max:100000000'],
                     'date' => ['required', 'date_format:Y-m-d']
+                ],
+                'getQuery' => [
+                    'teacher_id' => ['string', 'max:20'],
+                    'educational_year' => ['string', 'max:50']
                 ]
             ])
             ->setCasts([
                 'date' => ['jalali_to_gregorian:Y-m-d']
+            ])
+            ->setQueryToEloquentClosures([
+                'teacher_id' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('teacher_id', $query['teacher_id']);
+                },
+                'educational_year' => function (&$eloquent, $query)
+                {
+                    if ($query['educational_year']  != '*')
+                    {
+                        $eloquent = $eloquent->where('educational_year', $query['educational_year']);
+                    }
+                }
             ]);
     }
 

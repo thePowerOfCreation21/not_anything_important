@@ -27,4 +27,21 @@ class TeacherFinancialController extends Controller
                 ->storeByRequest()
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function get(Request $request): JsonResponse
+    {
+        return response()->json(
+            (new TeacherFinancialAction())
+                ->setRequest($request)
+                ->setValidationRule('getQuery')
+                ->mergeQueryWith(['educational_year' => PardisanHelper::getCurrentEducationalYear()])
+                ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
+    }
 }
