@@ -41,6 +41,8 @@ class TeacherFinancialAction extends ActionService
                     }
                 }
             ]);
+
+        parent::__construct();
     }
 
     /**
