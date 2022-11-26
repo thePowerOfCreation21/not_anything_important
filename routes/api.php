@@ -9,6 +9,7 @@ use App\Http\Controllers\WalletHistoryController;
 use App\Http\Controllers\EducationalYearController;
 use App\Http\Controllers\StudentFinancialController;
 use App\Http\Controllers\GeneralStatisticController;
+use App\Http\Controllers\TeacherFinancialController;
 use App\Http\Controllers\CourseController;
 
 /*
@@ -70,5 +71,5 @@ Route::group([
     Route::get('/admin/{id}', [AdminController::class, 'getById']);
     Route::delete('/admin/{id}', [AdminController::class, 'deleteById']);
 
-
+    Route::post('/admin/teacher/financial', [TeacherFinancialController::class, 'store']);
 });
