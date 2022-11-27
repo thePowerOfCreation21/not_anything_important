@@ -79,4 +79,5 @@ Route::group([
     Route::delete('/admin/teacher/financial/{id}', [TeacherFinancialController::class, 'deleteById']);
 
     Route::post('/admin/student/discipline', [StudentDisciplineController::class, 'store']);
+    Route::get('/admin/students/discipline', [StudentDisciplineController::class, 'get']);
 });
