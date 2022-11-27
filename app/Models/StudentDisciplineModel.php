@@ -9,13 +9,14 @@ class StudentDisciplineModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'students_disciplines';
+    protected $table = 'student_disciplines';
 
     protected $fillable = [
         'student_id',
         'title',
         'description',
-        'date'
+        'date',
+        'educational_year'
     ];
 
     public $timestamps = false;

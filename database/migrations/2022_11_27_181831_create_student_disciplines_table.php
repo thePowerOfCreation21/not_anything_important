@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('student_id', '20');
             $table->string('title', '250');
             $table->string('description', '500');
-            $table->timestamps('date');
+            $table->timestamp('date');
             $table->string('educational_year', 50);
         });
     }
