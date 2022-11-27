@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Actions\StudentDisciplineAction;
+use App\Helpers\PardisanHelper;
 use Genocide\Radiocrud\Exceptions\CustomException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\StudentDisciplineModel;
-use App\Actions\StudentFinancialAction;
 
 class StudentDisciplineController extends Controller
 {
@@ -25,5 +25,22 @@ class StudentDisciplineController extends Controller
                 ->setValidationRule('store')
                 ->storeByRequest()
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function get(Request $request): JsonResponse
+    {
+        return response()->json(
+            (new StudentDisciplineAction())
+                ->setRequest($request)
+                ->setValidationRule('getQuery')
+                ->mergeQueryWith(['educational_year' => PardisanHelper::getCurrentEducationalYear()])
+                ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
     }
 }
