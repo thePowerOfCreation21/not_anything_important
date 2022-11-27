@@ -10,6 +10,7 @@ use App\Http\Controllers\EducationalYearController;
 use App\Http\Controllers\StudentFinancialController;
 use App\Http\Controllers\GeneralStatisticController;
 use App\Http\Controllers\TeacherFinancialController;
+use App\Http\Controllers\StudentDisciplineController;
 use App\Http\Controllers\CourseController;
 
 /*
@@ -76,4 +77,6 @@ Route::group([
     Route::get('/admin/teacher/financial/{id}', [TeacherFinancialController::class, 'getById']);
     Route::put('/admin/teacher/financial/{id}', [TeacherFinancialController::class, 'updateById']);
     Route::delete('/admin/teacher/financial/{id}', [TeacherFinancialController::class, 'deleteById']);
+
+    Route::post('/admin/student/discipline', [StudentDisciplineController::class, 'store']);
 });
