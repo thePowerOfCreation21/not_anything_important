@@ -74,4 +74,5 @@ Route::group([
     Route::post('/admin/teacher/financial', [TeacherFinancialController::class, 'store']);
     Route::get('/admin/teacher/financial', [TeacherFinancialController::class, 'get']);
     Route::get('/admin/teacher/financial/{id}', [TeacherFinancialController::class, 'getById']);
+    Route::put('/admin/teacher/financial/{id}', [TeacherFinancialController::class, 'updateById']);
 });
