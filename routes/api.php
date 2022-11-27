@@ -75,4 +75,5 @@ Route::group([
     Route::get('/admin/teacher/financial', [TeacherFinancialController::class, 'get']);
     Route::get('/admin/teacher/financial/{id}', [TeacherFinancialController::class, 'getById']);
     Route::put('/admin/teacher/financial/{id}', [TeacherFinancialController::class, 'updateById']);
+    Route::delete('/admin/teacher/financial/{id}', [TeacherFinancialController::class, 'deleteById']);
 });
