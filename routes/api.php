@@ -80,4 +80,5 @@ Route::group([
 
     Route::post('/admin/student/discipline', [StudentDisciplineController::class, 'store']);
     Route::get('/admin/students/discipline', [StudentDisciplineController::class, 'get']);
+    Route::get('/admin/students/discipline/{id}', [StudentDisciplineController::class, 'getById']);
 });
