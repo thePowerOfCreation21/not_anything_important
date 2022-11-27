@@ -69,10 +69,13 @@ class TeacherFinancialAction extends ActionService
 
     public function update(array $updateData, callable $updating = null): bool|int
     {
-        $updateData['educational_year'] = PardisanHelper::getEducationalYearByGregorianDate($updateData['date']);
-
         $updating = function (&$eloquent, $updateData) use ($updating)
         {
+            if(isset($updateData['date']))
+            {
+                $updateData['educational_year'] = PardisanHelper::getEducationalYearByGregorianDate($updateData['date']);
+            }
+
             foreach ($eloquent->get() AS $teacherFinancial)
             {
                 $teacherFinancialGeneralStatistic = (new GeneralStatisticAction())->getFirstByLabelAndEducationalYearOrCreate('teacher_financial', $teacherFinancial->educational_year);
