@@ -56,4 +56,21 @@ class TeacherFinancialController extends Controller
             (new TeacherFinancialAction())->getById($id)
         );
     }
+
+    /**
+     * @param Request $request
+     * @param string $id
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function updateById(Request $request, string $id): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new TeacherFinancialAction())
+                ->setRequest($request)
+                ->setValidationRule('update')
+                ->updateByIdAndRequest($id)
+        ]);
+    }
 }

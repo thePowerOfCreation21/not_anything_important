@@ -20,6 +20,10 @@ class TeacherFinancialAction extends ActionService
                     'amount' => ['required', 'int', 'min:0', 'max:100000000'],
                     'date' => ['required', 'date_format:Y-m-d']
                 ],
+                'update' => [
+                    'amount' => ['int', 'min:0', 'max:100000000'],
+                    'date' => ['date_format:Y-m-d']
+                ],
                 'getQuery' => [
                     'teacher_id' => ['string', 'max:20'],
                     'educational_year' => ['string', 'max:50']
@@ -61,5 +65,34 @@ class TeacherFinancialAction extends ActionService
         $generalStatistic->save();
 
         return parent::store($data, $storing);
+    }
+
+    public function update(array $updateData, callable $updating = null): bool|int
+    {
+        $updateData['educational_year'] = PardisanHelper::getEducationalYearByGregorianDate($updateData['date']);
+
+        $updating = function (&$eloquent, $updateData) use ($updating)
+        {
+            foreach ($eloquent->get() AS $teacherFinancial)
+            {
+                $teacherFinancialGeneralStatistic = (new GeneralStatisticAction())->getFirstByLabelAndEducationalYearOrCreate('teacher_financial', $teacherFinancial->educational_year);
+
+                $teacherFinancialGeneralStatistic->paid -= $teacherFinancial->amount;
+
+                $teacherFinancialGeneralStatistic->save();
+
+                $newGeneralStatistic = (new GeneralStatisticAction())->getFirstByLabelAndEducationalYearOrCreate('teacher_financial', $updateData['educational_year'] ?? $teacherFinancial->educational_year);
+
+                $newGeneralStatistic->paid += $updateData['amount'] ?? $teacherFinancial->amount;
+
+                $newGeneralStatistic->save();
+            }
+            if(is_callable($updating))
+            {
+                $updating($eloquent, $updateData);
+            }
+        };
+
+        return parent::update($updateData, $updating);
     }
 }
