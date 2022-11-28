@@ -12,7 +12,8 @@ class CourseModel extends Model
     protected $table = 'courses';
 
     protected $fillable = [
-        'title'
+        'title',
+        'ratio'
     ];
 
     protected $hidden = [

@@ -26,9 +26,11 @@ class CourseAction extends ActionService
             ->setValidationRules([
                 'store' => [
                     'title' => ['required', 'string', 'max:250'],
+                    'ratio' => ['required', 'integer', 'min:1', 'max:3']
                 ],
                 'update' => [
                     'title' => ['string', 'max:250'],
+                    'ratio' => ['integer', 'min:1', 'max:3']
                 ],
                 'get_query' => [
                     'search' => 'string|max:250'
