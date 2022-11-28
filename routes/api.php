@@ -82,4 +82,5 @@ Route::group([
     Route::get('/admin/students/discipline', [StudentDisciplineController::class, 'get']);
     Route::get('/admin/students/discipline/{id}', [StudentDisciplineController::class, 'getById']);
     Route::put('/admin/students/discipline/{id}', [StudentDisciplineController::class, 'updateById']);
+    Route::delete('/admin/students/discipline/{id}', [StudentDisciplineController::class, 'deleteById']);
 });
