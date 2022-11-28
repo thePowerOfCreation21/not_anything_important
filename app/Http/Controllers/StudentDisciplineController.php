@@ -55,4 +55,21 @@ class StudentDisciplineController extends Controller
             (new StudentDisciplineAction())->getById($id)
         );
     }
+
+    /**
+     * @param Request $request
+     * @param string $id
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function updateById(Request $request, string $id): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new StudentDisciplineAction())
+                ->setRequest($request)
+                ->setValidationRule('update')
+                ->updateByIdAndRequest($id)
+        ]);
+    }
 }

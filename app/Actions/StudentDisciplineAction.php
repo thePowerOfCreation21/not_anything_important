@@ -20,6 +20,11 @@ class StudentDisciplineAction extends ActionService
                     'description' => ['required', 'string', 'max:500'],
                     'date' => ['required', 'date_format:Y-m-d']
                 ],
+                'update' => [
+                    'title' => ['string', 'max:250'],
+                    'description' => ['string', 'max:500'],
+                    'date' => ['date_format:Y-m-d']
+                ],
                 'getQuery' => [
                     'student_id' => ['string', 'max:20'],
                     'from_date' => ['date_format:Y-m-d'],
@@ -59,5 +64,15 @@ class StudentDisciplineAction extends ActionService
         $data['educational_year'] = PardisanHelper::getEducationalYearByGregorianDate($data['date']);
 
         return parent::store($data, $storing);
+    }
+
+    public function update(array $updateData, callable $updating = null): bool|int
+    {
+        if(isset($updateData['date']))
+        {
+            $updateData['educational_year'] = PardisanHelper::getEducationalYearByGregorianDate($updateData['date']);
+        }
+
+        return parent::update($updateData, $updating);
     }
 }
