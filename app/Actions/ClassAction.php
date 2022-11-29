@@ -14,7 +14,7 @@ class ClassAction extends ActionService
             ->setModel(ClassModel::class)
             ->setResource(ClassResource::class)
             ->setValidationRules([
-                'store' => [
+                'storeByAdmin' => [
                     'title' => ['required', 'string', 'min:2', 'max:250'],
                     'level' => ['string', 'min:2', 'max:20'],
                     'educational_year' => ['string', 'max:50']
