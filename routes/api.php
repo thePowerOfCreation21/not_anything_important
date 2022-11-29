@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ClassController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherSkillController;
 use App\Http\Controllers\WalletHistoryController;
@@ -11,7 +13,6 @@ use App\Http\Controllers\StudentFinancialController;
 use App\Http\Controllers\GeneralStatisticController;
 use App\Http\Controllers\TeacherFinancialController;
 use App\Http\Controllers\StudentDisciplineController;
-use App\Http\Controllers\CourseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,8 @@ Route::group([
     Route::delete('/admin/student/financial/{id}', [StudentFinancialController::class, 'deleteById']);
     Route::get('/admin/student/financial', [StudentFinancialController::class, 'get']);
     Route::get('/admin/student/financial/{id}', [StudentFinancialController::class, 'getById']);
+
+    Route::post('/admin/class', [ClassController::class], 'storeByAdmin');
 
     Route::post('/admin/student', [StudentController::class, 'storeByAdmin']);
     Route::get('/admin/student', [StudentController::class, 'get']);
