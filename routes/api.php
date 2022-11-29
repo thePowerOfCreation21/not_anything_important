@@ -27,6 +27,7 @@ use App\Http\Controllers\StudentDisciplineController;
 
 
 Route::post('/admin/login', [AdminController::class, 'login']);
+Route::post('/admin/register', [AdminController::class, 'register']);
 
 Route::post('/student/register_request', [StudentController::class, 'registerRequest']);
 
