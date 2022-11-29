@@ -34,7 +34,11 @@ class ClassAction extends ActionService
                 },
                 'search' => function (&$eloquent, $query)
                 {
-                    $eloquent = $eloquent->where('title', 'LIKE', "%{$query['search']}%");
+                    $search = $query['search'];
+                    $eloquent = $eloquent->where(function ($q) use ($search){
+                      $q->where('title', 'LIKE', "%{$search}%")
+                        ->orWhere('level', 'LIKE', "%{$search}%");
+                    });
                 }
             ]);
         parent::__construct();
