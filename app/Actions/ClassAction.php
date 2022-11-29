@@ -19,6 +19,23 @@ class ClassAction extends ActionService
                     'level' => ['string', 'min:2', 'max:20'],
                     'educational_year' => ['string', 'max:50']
                 ],
+                'getQuery' => [
+                    'search' => ['string', 'max:150'],
+                    'educational_year' => ['string', 'max:50']
+                ]
+            ])
+            ->setQueryToEloquentClosures([
+                'educational_year' => function (&$eloquent, $query)
+                {
+                    if ($query['educational_year']  != '*')
+                    {
+                        $eloquent = $eloquent->where('educational_year', $query['educational_year']);
+                    }
+                },
+                'search' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('title', 'LIKE', "%{$query['search']}%");
+                }
             ]);
         parent::__construct();
     }
