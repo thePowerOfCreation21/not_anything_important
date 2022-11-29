@@ -18,4 +18,13 @@ class ClassController extends Controller
                 ->storeByRequest()
         ]);
     }
+
+    public function deleteById(string $id): JsonResponse
+    {
+        (new ClassAction())->deleteById($id);
+
+        return response()->json([
+            'message' => 'Class is Deleted'
+        ]);
+    }
 }
