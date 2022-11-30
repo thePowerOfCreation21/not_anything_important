@@ -49,6 +49,12 @@ Route::group([
     Route::get('admin/class', [ClassController::class, 'get']);
     Route::delete('/admin/class/{id}', [ClassController::class, 'deleteById']);
 
+    Route::post('/admin/student/discipline', [StudentDisciplineController::class, 'store']);
+    Route::get('/admin/student/discipline', [StudentDisciplineController::class, 'get']);
+    Route::get('/admin/student/discipline/{id}', [StudentDisciplineController::class, 'getById']);
+    Route::put('/admin/student/discipline/{id}', [StudentDisciplineController::class, 'updateById']);
+    Route::delete('/admin/student/discipline/{id}', [StudentDisciplineController::class, 'deleteById']);
+
     Route::post('/admin/student', [StudentController::class, 'storeByAdmin']);
     Route::get('/admin/student', [StudentController::class, 'get']);
     Route::get('/admin/student/{id}', [StudentController::class, 'getById']);
@@ -83,10 +89,4 @@ Route::group([
     Route::get('/admin/teacher/financial/{id}', [TeacherFinancialController::class, 'getById']);
     Route::put('/admin/teacher/financial/{id}', [TeacherFinancialController::class, 'updateById']);
     Route::delete('/admin/teacher/financial/{id}', [TeacherFinancialController::class, 'deleteById']);
-
-    Route::post('/admin/student/discipline', [StudentDisciplineController::class, 'store']);
-    Route::get('/admin/students/discipline', [StudentDisciplineController::class, 'get']);
-    Route::get('/admin/students/discipline/{id}', [StudentDisciplineController::class, 'getById']);
-    Route::put('/admin/students/discipline/{id}', [StudentDisciplineController::class, 'updateById']);
-    Route::delete('/admin/students/discipline/{id}', [StudentDisciplineController::class, 'deleteById']);
 });
