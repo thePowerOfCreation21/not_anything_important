@@ -90,7 +90,7 @@ return new class extends Migration
             $table->boolean('should_change_password')->default(false);
             $table->string('password', 150);
             $table->string('register_status', 50);
-            $table->bigInteger('last_time_sms_sent')->default(0);
+            $table->timestamp('last_time_sms_sent')->default(0);
             $table->timestamps();
         });
     }
