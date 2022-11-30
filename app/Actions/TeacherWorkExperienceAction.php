@@ -17,7 +17,6 @@ class TeacherWorkExperienceAction extends ActionService
             ->setModel(TeacherWorkExperienceModel::class)
             ->setResource(TeacherSkillResource::class)
             ->setValidationRules([
-                // teacher_id, title, workplace_name, work_title, current_status, reason_for_the_termination_of_cooperation, workplace_location
                 'storeByAdmin' => [
                     'teacher_id' => ['required', 'string', 'max:20'],
                     'title' => ['required', 'string', 'max:350'],

@@ -7,6 +7,7 @@ use App\Http\Controllers\ClassController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherSkillController;
+use App\Http\Controllers\TeacherWorkExperienceController;
 use App\Http\Controllers\WalletHistoryController;
 use App\Http\Controllers\EducationalYearController;
 use App\Http\Controllers\StudentFinancialController;
@@ -63,6 +64,12 @@ Route::group([
     Route::delete('/admin/teacher/skill/{id}', [TeacherSkillController::class, 'deleteById']);
     Route::get('/admin/teacher/skill', [TeacherSkillController::class, 'get']);
     Route::get('/admin/teacher/skill/{id}', [TeacherSkillController::class, 'getById']);
+
+    Route::post('/admin/teacher/experience', [TeacherWorkExperienceController::class, 'storeByAdmin']);
+    Route::put('/admin/teacher/experience/{id}', [TeacherWorkExperienceController::class, 'updateById']);
+    Route::delete('/admin/teacher/experience/{id}', [TeacherWorkExperienceController::class, 'deleteById']);
+    Route::get('/admin/teacher/experience', [TeacherWorkExperienceController::class, 'get']);
+    Route::get('/admin/teacher/experience/{id}', [TeacherWorkExperienceController::class, 'getById']);
 
     Route::get('/admin/general_statistic', [GeneralStatisticController::class, 'get']);
 
