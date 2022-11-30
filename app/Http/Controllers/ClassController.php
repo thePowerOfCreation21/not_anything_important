@@ -33,6 +33,17 @@ class ClassController extends Controller
         );
     }
 
+    public function updateById(string $classId, Request $request): JsonResponse
+    {
+        return response()->json([
+            'message' => 'Ok',
+            'data' => (new ClassAction())
+                ->setRequest($request)
+                ->setValidationRule('updateByAdmin')
+                ->updateByIdAndRequest($classId)
+        ]);
+    }
+
     public function deleteById(string $id): JsonResponse
     {
         (new ClassAction())->deleteById($id);
