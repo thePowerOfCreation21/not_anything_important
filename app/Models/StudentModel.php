@@ -86,7 +86,8 @@ class StudentModel extends Model
         'reason_for_blocking',
         'should_change_password',
         'password',
-        'register_status'
+        'register_status',
+        'last_time_sms_sent'
     ];
 
     protected $hidden = [
@@ -94,7 +95,8 @@ class StudentModel extends Model
     ];
 
     protected $casts = [
-        'wallet_amount' => 'integer'
+        'wallet_amount' => 'integer',
+        'last_time_sms_sent' => 'integer'
     ];
 
     public function financials (): HasMany
