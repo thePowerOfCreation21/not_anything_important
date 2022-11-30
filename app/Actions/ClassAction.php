@@ -19,6 +19,11 @@ class ClassAction extends ActionService
                     'level' => ['string', 'min:2', 'max:20'],
                     'educational_year' => ['string', 'max:50']
                 ],
+                'updateByAdmin' => [
+                    'title' => ['string', 'min:2', 'max:250'],
+                    'level' => ['string', 'min:2', 'max:20'],
+                    'educational_year' => ['string', 'max:50']
+                ],
                 'getQuery' => [
                     'search' => ['string', 'max:150'],
                     'educational_year' => ['string', 'max:50']
