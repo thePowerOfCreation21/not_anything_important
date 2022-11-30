@@ -33,6 +33,13 @@ class ClassController extends Controller
         );
     }
 
+    public function getById(string $id): JsonResponse
+    {
+        return response()->json(
+            (new ClassAction())->getById($id)
+        );
+    }
+
     public function updateById(string $classId, Request $request): JsonResponse
     {
         return response()->json([
