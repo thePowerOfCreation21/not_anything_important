@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\TeacherSkillController;
 use App\Http\Controllers\WalletHistoryController;
 use App\Http\Controllers\EducationalYearController;
@@ -78,15 +79,17 @@ Route::group([
     Route::get('/admin/course', [CourseController::class, 'get']);
     Route::get('/admin/course/{id}', [CourseController::class, 'getById']);
 
-    Route::post('/admin', [AdminController::class, 'register']);
-    Route::put('/admin/{id}', [AdminController::class, 'updateById']);
-    Route::get('/admin', [AdminController::class, 'get']);
-    Route::get('/admin/{id}', [AdminController::class, 'getById']);
-    Route::delete('/admin/{id}', [AdminController::class, 'deleteById']);
-
     Route::post('/admin/teacher/financial', [TeacherFinancialController::class, 'store']);
     Route::get('/admin/teacher/financial', [TeacherFinancialController::class, 'get']);
     Route::get('/admin/teacher/financial/{id}', [TeacherFinancialController::class, 'getById']);
     Route::put('/admin/teacher/financial/{id}', [TeacherFinancialController::class, 'updateById']);
     Route::delete('/admin/teacher/financial/{id}', [TeacherFinancialController::class, 'deleteById']);
+
+    Route::post('/admin/attendance', [AttendanceController::class, 'storeByAdmin']);
+
+    Route::post('/admin', [AdminController::class, 'register']);
+    Route::put('/admin/{id}', [AdminController::class, 'updateById']);
+    Route::get('/admin', [AdminController::class, 'get']);
+    Route::get('/admin/{id}', [AdminController::class, 'getById']);
+    Route::delete('/admin/{id}', [AdminController::class, 'deleteById']);
 });
