@@ -9,7 +9,7 @@ class TeacherWorkExperienceModel extends Model
 {
 
     use HasFactory;
-    protected $table = 'teacher_work_experience';
+    protected $table = 'teacher_work_experiences';
 
     protected $fillable = [
         'teacher_id',
