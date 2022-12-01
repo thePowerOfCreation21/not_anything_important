@@ -39,6 +39,7 @@ return new class extends Migration
             $table->string('is_married', 50)->nullable();
             $table->string('password', 150);
             $table->string('register_status', 50);
+            $table->string('educational_year', 50);
             $table->timestamps();
         });
     }
