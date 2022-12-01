@@ -47,6 +47,7 @@ class CourseController extends Controller
             'data' => (new CourseAction())
                 ->setRequest($request)
                 ->setValidationRule('get_query')
+                ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()
         ]);
     }
