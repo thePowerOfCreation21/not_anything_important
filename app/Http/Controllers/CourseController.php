@@ -42,14 +42,13 @@ class CourseController extends Controller
 
     public function get(Request $request) : JsonResponse
     {
-        return response()->json([
-            'message' => 'Courses : ',
-            'data' => (new CourseAction())
+        return response()->json(
+            (new CourseAction())
                 ->setRequest($request)
                 ->setValidationRule('get_query')
                 ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()
-        ]);
+        );
     }
 
     /**
