@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('class_id', 20);
             $table->string('course_id', 20);
+            $table->string('teacher_id', 20);
         });
     }
 
