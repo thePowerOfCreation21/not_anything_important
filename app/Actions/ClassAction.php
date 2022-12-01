@@ -30,7 +30,7 @@ class ClassAction extends ActionService
                     'search' => ['string', 'max:150'],
                     'educational_year' => ['string', 'max:50']
                 ],
-                'addCoursesToClass' => [
+                'addCourseToClass' => [
                     'class_id' => ['required', 'string', 'max:20'],
                     'courses' => ['required', 'array', 'max:100'],
                     'courses.*' => ['required', 'string', 'max:20']

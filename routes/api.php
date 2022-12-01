@@ -52,7 +52,7 @@ Route::group([
 
     Route::post('/admin/class', [ClassController::class, 'storeByAdmin']);
     Route::get('/admin/class', [ClassController::class, 'get']);
-    Route::post('/admin/class/course', [ClassController::class, 'addCoursesToClass']);
+    // Route::post('/admin/class/course', [ClassController::class, 'addCoursesToClass']);
     Route::delete('/admin/class/course', [ClassController::class, 'deleteCourseFromClass']);
     Route::post('/admin/class/student', [ClassController::class, 'addStudentsToClass']);
     Route::delete('/admin/class/student', [ClassController::class, 'deleteStudentFromClass']);
