@@ -94,10 +94,44 @@ class TeacherAction extends ActionService
                     'password' => ['string', 'max:100'],
                     'educational_year' => ['string', 'max:50'],
                 ],
+                'getQuery' => [
+                    'register_status' => ['string', 'max:150'],
+                    'educational_year' => ['string', 'max:50'],
+                    'from_created_at' => ['date_format:Y-m-d'],
+                    'to_created_at' => ['date_format:Y-m-d'],
+                    'search' => ['string', 'max:150'],
+                ]
             ])
             ->setCasts([
                 'file' => ['file', 'nullable'],
                 'partner_file' => ['file', 'nullable']
+            ])
+            ->setQueryToEloquentClosures([
+                'educational_year' => function (&$eloquent, $query)
+                {
+                    if ($query['educational_year']  != '*')
+                    {
+                        $eloquent = $eloquent->where('educational_year', $query['educational_year']);
+                    }
+                },
+                'register_status' => function (&$eloquent, $query)
+                {
+                    $query['register_status'] = is_string($query['register_status']) ? explode(',', $query['register_status']) : $query['register_status'];
+
+                    $eloquent = $eloquent->whereIn('register_status', $query['register_status']);
+                },
+                'search' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('full_name', 'LIKE', "%{$query['search']}%");
+                },
+                'from_created_at' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereDate('created_at', '>=', $query['from_created_at']);
+                },
+                'to_created_at' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereDate('created_at', '<=', $query['to_created_at']);
+                }
             ])
             ->setResource(TeacherResource::class);
 
