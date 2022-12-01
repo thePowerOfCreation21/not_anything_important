@@ -52,6 +52,7 @@ Route::group([
     Route::post('/admin/class/course', [ClassController::class, 'addCoursesToClass']);
     Route::delete('/admin/class/course', [ClassController::class, 'deleteCourseFromClass']);
     Route::post('/admin/class/student', [ClassController::class, 'addStudentsToClass']);
+    Route::delete('/admin/class/student', [ClassController::class, 'deleteStudentFromClass']);
     Route::get('/admin/class/{id}', [ClassController::class, 'getById']);
     Route::post('/admin/class/{id}', [ClassController::class, 'updateById']);
     Route::delete('/admin/class/{id}', [ClassController::class, 'deleteById']);

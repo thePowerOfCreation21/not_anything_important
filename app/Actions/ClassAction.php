@@ -43,7 +43,11 @@ class ClassAction extends ActionService
                     'class_id' => ['required', 'string', 'max:20'],
                     'students' => ['required', 'array', 'max:100'],
                     'students.*' => ['required', 'string', 'max:20']
-                ]
+                ],
+                'deleteStudentFromClass' => [
+                    'class_id' => ['required', 'string', 'max:20'],
+                    'student_id' => ['required', 'string', 'max:20'],
+                ],
             ])
             ->setQueryToEloquentClosures([
                 'educational_year' => function (&$eloquent, $query)
@@ -153,6 +157,26 @@ class ClassAction extends ActionService
     public function addCoursesToClassByRequest (): bool
     {
         return $this->addCoursesToClass(
+            $this->getDataFromRequest()
+        );
+    }
+
+    /**
+     * @param array $data
+     * @return int
+     */
+    public function deleteStudentFromClass (array $data): int
+    {
+        return $this->deleteStuffFromClass($data['class_id'], $data['student_id'], 'class_student', 'student_id');
+    }
+
+    /**
+     * @return int
+     * @throws CustomException
+     */
+    public function deleteStudentFromClassByRequest (): int
+    {
+        return $this->deleteStudentFromClass(
             $this->getDataFromRequest()
         );
     }
