@@ -27,6 +27,11 @@ class ClassAction extends ActionService
                 'getQuery' => [
                     'search' => ['string', 'max:150'],
                     'educational_year' => ['string', 'max:50']
+                ],
+                'addCoursesToClass' => [
+                    'class_id' => ['required', 'string', 'max:20'],
+                    'courses' => ['required', 'max:100'],
+                    'courses.*' => ['required', 'string', 'max:20']
                 ]
             ])
             ->setQueryToEloquentClosures([
@@ -47,5 +52,10 @@ class ClassAction extends ActionService
                 }
             ]);
         parent::__construct();
+    }
+
+    public function addCoursesToClass (array $data)
+    {
+        // $classCourses
     }
 }
