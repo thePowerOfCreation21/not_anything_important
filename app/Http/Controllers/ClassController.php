@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\ClassAction;
 use App\Actions\StudentFinancialAction;
 use App\Helpers\PardisanHelper;
+use Genocide\Radiocrud\Exceptions\CustomException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -57,6 +58,22 @@ class ClassController extends Controller
 
         return response()->json([
             'message' => 'Class is Deleted'
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function addCoursesToClass (Request $request): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new ClassAction())
+                ->setRequest($request)
+                ->setValidationRule('addCoursesToClass')
+                ->addCoursesToClassByRequest()
         ]);
     }
 }

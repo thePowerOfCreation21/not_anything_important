@@ -8,13 +8,13 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\TeacherSkillController;
-use App\Http\Controllers\TeacherWorkExperienceController;
 use App\Http\Controllers\WalletHistoryController;
 use App\Http\Controllers\EducationalYearController;
 use App\Http\Controllers\StudentFinancialController;
 use App\Http\Controllers\GeneralStatisticController;
 use App\Http\Controllers\TeacherFinancialController;
 use App\Http\Controllers\StudentDisciplineController;
+use App\Http\Controllers\TeacherWorkExperienceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +49,7 @@ Route::group([
 
     Route::post('/admin/class', [ClassController::class, 'storeByAdmin']);
     Route::get('/admin/class', [ClassController::class, 'get']);
+    Route::post('/admin/class/course', [ClassController::class, 'addCoursesToClass']);
     Route::get('/admin/class/{id}', [ClassController::class, 'getById']);
     Route::post('/admin/class/{id}', [ClassController::class, 'updateById']);
     Route::delete('/admin/class/{id}', [ClassController::class, 'deleteById']);

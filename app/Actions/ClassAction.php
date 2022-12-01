@@ -4,7 +4,9 @@ namespace App\Actions;
 
 use App\Models\ClassModel;
 use App\Http\Resources\ClassResource;
+use Genocide\Radiocrud\Exceptions\CustomException;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
+use Illuminate\Support\Facades\DB;
 
 class ClassAction extends ActionService
 {
@@ -54,8 +56,60 @@ class ClassAction extends ActionService
         parent::__construct();
     }
 
-    public function addCoursesToClass (array $data)
+    /**
+     * @param string $classId
+     * @param array $relatedIds
+     * @param string $table
+     * @param string $relatedPivotForeignKey
+     * @return bool
+     */
+    public function addStuffToClass (string $classId, array $relatedIds, string $table, string $relatedPivotForeignKey): bool
     {
-        // $classCourses
+        $hashMap = [];
+
+        foreach (
+            DB::table($table)
+                ->where('class_id', $classId)
+                ->get()
+            AS $pivotRecord
+        )
+        {
+            $hashMap[$pivotRecord->$relatedPivotForeignKey] = 1;
+        }
+
+        $pivotsToAdd = [];
+
+        foreach ($relatedIds AS $relatedId)
+        {
+            if (! isset($hashMap[$relatedId]))
+            {
+                $pivotsToAdd[] = [
+                    'class_id' => $classId,
+                    $relatedPivotForeignKey => $relatedId
+                ];
+            }
+        }
+
+        return DB::table($table)->insert($pivotsToAdd);
+    }
+
+    /**
+     * @param array $data
+     * @return bool
+     */
+    public function addCoursesToClass (array $data): bool
+    {
+        return $this->addStuffToClass($data['class_id'], $data['courses'], 'class_course', 'course_id');
+    }
+
+    /**
+     * @return bool
+     * @throws CustomException
+     */
+    public function addCoursesToClassByRequest (): bool
+    {
+        return $this->addCoursesToClass(
+            $this->getDataFromRequest()
+        );
     }
 }
