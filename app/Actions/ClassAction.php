@@ -34,6 +34,11 @@ class ClassAction extends ActionService
                     'class_id' => ['required', 'string', 'max:20'],
                     'courses' => ['required', 'max:100'],
                     'courses.*' => ['required', 'string', 'max:20']
+                ],
+                'addStudentsToClass' => [
+                    'class_id' => ['required', 'string', 'max:20'],
+                    'students' => ['required', 'max:100'],
+                    'students.*' => ['required', 'string', 'max:20']
                 ]
             ])
             ->setQueryToEloquentClosures([
@@ -109,6 +114,26 @@ class ClassAction extends ActionService
     public function addCoursesToClassByRequest (): bool
     {
         return $this->addCoursesToClass(
+            $this->getDataFromRequest()
+        );
+    }
+
+    /**
+     * @param array $data
+     * @return bool
+     */
+    public function addStudentsToClass (array $data): bool
+    {
+        return $this->addStuffToClass($data['class_id'], $data['students'], 'class_student', 'student_id');
+    }
+
+    /**
+     * @return bool
+     * @throws CustomException
+     */
+    public function addStudentsToClassByRequest (): bool
+    {
+        return $this->addStudentsToClass(
             $this->getDataFromRequest()
         );
     }

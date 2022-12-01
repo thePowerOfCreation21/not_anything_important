@@ -76,4 +76,20 @@ class ClassController extends Controller
                 ->addCoursesToClassByRequest()
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function addStudentsToClass (Request $request): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new ClassAction())
+                ->setRequest($request)
+                ->setValidationRule('addStudentsToClass')
+                ->addStudentsToClassByRequest()
+        ]);
+    }
 }
