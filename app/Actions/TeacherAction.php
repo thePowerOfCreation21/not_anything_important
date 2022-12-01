@@ -7,6 +7,7 @@ use App\Http\Resources\TeacherResource;
 use App\Models\TeacherModel;
 use App\Models\TeacherSkillModel;
 use App\Models\TeacherWorkExperienceModel;
+use Genocide\Radiocrud\Exceptions\CustomException;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
@@ -47,6 +48,7 @@ class TeacherAction extends ActionService
                     'partner_file' => ['nullable', 'file', 'mimes:rar,zip,7zip,pdf', 'max:5000'],
                     'is_married' => ['nullable', 'string', 'max:50'],
                     'password' => ['required', 'string', 'max:100'],
+                    'educational_year' => ['string', 'max:50'],
 
 
                     // work experiences
@@ -63,6 +65,34 @@ class TeacherAction extends ActionService
                     'skills.*.course_title' => ['required', 'string', 'max:350'],
                     'skills.*.educational_institution' => ['nullable', 'string', 'max:350'],
                     'skills.*.skill_level' => ['nullable', 'string', 'max:350']
+                ],
+                'update' => [
+                    'full_name' => ['string', 'max:150'],
+                    'father_name' => ['nullable', 'string', 'max:150'],
+                    'birth_certificate_number' => ['nullable', 'string', 'max:50'],
+                    'national_id' => ['string', 'max:50'],
+                    'birth_certificate_location' => ['nullable', 'string', 'max:500'],
+                    'birth_location' => ['nullable', 'string', 'max:500'],
+                    'birth_date' => ['nullable', 'string', 'max:50'],
+                    'degree_of_education' => ['nullable', 'string', 'max:500'],
+                    'address' => ['nullable', 'string', 'max:500'],
+                    'phone_number' => ['nullable', 'string', 'max:50'],
+                    'file' => ['nullable', 'file', 'mimes:rar,zip,7zip,pdf', 'max:5000'],
+                    'partner_full_name' => ['nullable', 'string', 'max:150'],
+                    'partner_job' => ['nullable', 'string', 'max:150'],
+                    'partner_birth_certificate_number' => ['nullable', 'string', 'max:50'],
+                    'partner_national_id' => ['nullable', 'string', 'max:50'],
+                    'partner_birth_certificate_location' => ['nullable', 'string', 'max:500'],
+                    'partner_birth_location' => ['nullable', 'string', 'max:500'],
+                    'partner_birth_date' => ['nullable', 'string', 'max:50'],
+                    'partner_degree_of_education' => ['nullable', 'string', 'max:500'],
+                    'partner_job_address' => ['nullable', 'string', 'max:500'],
+                    'partner_phone_number' => ['nullable', 'string', 'max:50'],
+                    'partner_emergency_call_number' => ['nullable', 'string', 'max:50'],
+                    'partner_file' => ['nullable', 'file', 'mimes:rar,zip,7zip,pdf', 'max:5000'],
+                    'is_married' => ['nullable', 'string', 'max:50'],
+                    'password' => ['string', 'max:100'],
+                    'educational_year' => ['string', 'max:50'],
                 ],
             ])
             ->setCasts([
@@ -121,6 +151,11 @@ class TeacherAction extends ActionService
         return $file->storeAs($path, $file->getClientOriginalName());
     }
 
+    /**
+     * @param array $data
+     * @param callable|null $storing
+     * @return mixed
+     */
     public function store(array $data, callable $storing = null): mixed
     {
         $data['register_status'] = $data['register_status'] ?? $this->getDefaultRegisterStatus();
@@ -166,5 +201,41 @@ class TeacherAction extends ActionService
         }
 
         return empty($skills) ? false : TeacherSkillModel::insert($skills);
+    }
+
+    /**
+     * @param array $updateData
+     * @param callable|null $updating
+     * @return bool|int
+     * @throws CustomException
+     */
+    public function update(array $updateData, callable $updating = null): bool|int
+    {
+        $updating = function ($eloquent, &$updateData) use ($updating)
+        {
+            foreach ($eloquent->get() AS $entity)
+            {
+                if (array_key_exists('file', $updateData) && is_file($entity->file))
+                {
+                    unlink($entity->file);
+                }
+
+                if (array_key_exists('partner_file', $updateData) && is_file($entity->partner_file))
+                {
+                    unlink($entity->partner_file);
+                }
+
+                if (isset($updateData['national_id']) && TeacherModel::query()->where('id', '!=', $entity->id)->where('national_id', $updateData['national_id'])->exists())
+                {
+                    throw new CustomException('national id already taken', 2100, 400);
+                }
+            }
+            if (is_callable($updating))
+            {
+                $updating($eloquent, $updateData);
+            }
+        };
+
+        return parent::update($updateData, $updating);
     }
 }
