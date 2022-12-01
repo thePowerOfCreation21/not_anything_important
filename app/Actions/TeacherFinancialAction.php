@@ -58,11 +58,13 @@ class TeacherFinancialAction extends ActionService
     {
         $data['educational_year'] = PardisanHelper::getEducationalYearByGregorianDate($data['date']);
 
+        /*
         $generalStatistic = (new GeneralStatisticAction())->getFirstByLabelAndEducationalYearOrCreate('teacher_financial', $data['educational_year']);
 
         $generalStatistic->paid += $data['amount'];
 
         $generalStatistic->save();
+        */
 
         return parent::store($data, $storing);
     }
@@ -78,6 +80,7 @@ class TeacherFinancialAction extends ActionService
 
             foreach ($eloquent->get() AS $teacherFinancial)
             {
+                /*
                 $teacherFinancialGeneralStatistic = (new GeneralStatisticAction())->getFirstByLabelAndEducationalYearOrCreate('teacher_financial', $teacherFinancial->educational_year);
 
                 $teacherFinancialGeneralStatistic->paid -= $teacherFinancial->amount;
@@ -89,6 +92,7 @@ class TeacherFinancialAction extends ActionService
                 $newGeneralStatistic->paid += $updateData['amount'] ?? $teacherFinancial->amount;
 
                 $newGeneralStatistic->save();
+                */
             }
             if(is_callable($updating))
             {
@@ -105,11 +109,13 @@ class TeacherFinancialAction extends ActionService
         {
             foreach ($eloquent->get() AS $teacherFinancial)
             {
+                /*
                 $teacherFinancialGeneralStatistic = (new GeneralStatisticAction())->getFirstByLabelAndEducationalYearOrCreate('teacher_financial', $teacherFinancial->educational_year);
 
                 $teacherFinancialGeneralStatistic->paid -= $teacherFinancial->amount;
 
                 $teacherFinancialGeneralStatistic->save();
+                */
             }
 
             if(is_callable($deleting))

@@ -73,6 +73,7 @@ class StudentFinancialAction extends ActionService
 
         $data['paid'] = $data['paid'] ?? false;
 
+        /*
         $generalStatistic = (new GeneralStatisticAction())->getFirstByLabelAndEducationalYearOrCreate('student_financial', $data['educational_year']);
 
         if ($data['paid'])
@@ -85,6 +86,7 @@ class StudentFinancialAction extends ActionService
         }
 
         $generalStatistic->save();
+        */
 
         return parent::store($data, $storing);
     }
@@ -105,6 +107,7 @@ class StudentFinancialAction extends ActionService
 
             foreach ($eloquent->get() AS $studentFinancial)
             {
+                /*
                 $studentFinancialGeneralStatistic = (new GeneralStatisticAction())->getFirstByLabelAndEducationalYearOrCreate('student_financial', $studentFinancial->educational_year);
 
                 if ($studentFinancial->paid)
@@ -130,6 +133,7 @@ class StudentFinancialAction extends ActionService
                 }
 
                 $newGeneralStatistic->save();
+                */
 
                 if (array_key_exists('check_image', $updateData) && is_file($studentFinancial->check_image))
                 {
@@ -152,6 +156,7 @@ class StudentFinancialAction extends ActionService
         {
             foreach ($eloquent->get() AS $studentFinancial)
             {
+                /*
                 $studentFinancialGeneralStatistic = (new GeneralStatisticAction())->getFirstByLabelAndEducationalYearOrCreate('student_financial', $studentFinancial->educational_year);
 
                 if ($studentFinancial->paid)
@@ -164,6 +169,7 @@ class StudentFinancialAction extends ActionService
                 }
 
                 $studentFinancialGeneralStatistic->save();
+                */
 
                 if (is_file($studentFinancial->check_image))
                 {
