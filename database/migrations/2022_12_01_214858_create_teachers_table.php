@@ -38,6 +38,7 @@ return new class extends Migration
             $table->string('partner_emergency_call_number', 50)->nullable();
             $table->string('is_married', 50)->nullable();
             $table->string('password', 150);
+            $table->string('register_status', 50);
             $table->timestamps();
         });
     }
