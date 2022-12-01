@@ -21,6 +21,7 @@ class TeacherController extends Controller
             'data' => (new TeacherAction())
                 ->setRequest($request)
                 ->setValidationRule('store')
+                ->setDefaultRegisterStatus('added_by_admin')
                 ->storeByRequest()
         ]);
     }
