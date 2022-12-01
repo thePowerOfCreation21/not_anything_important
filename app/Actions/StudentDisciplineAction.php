@@ -27,15 +27,15 @@ class StudentDisciplineAction extends ActionService
                 ],
                 'getQuery' => [
                     'student_id' => ['string', 'max:20'],
-                    'from_created_at' => ['date_format:Y-m-d'],
-                    'to_created_at' => ['date_format:Y-m-d'],
+                    'from_date' => ['date_format:Y-m-d'],
+                    'to_date' => ['date_format:Y-m-d'],
                     'educational_year' => ['string', 'max:50']
                 ]
             ])
             ->setCasts([
                 'date' => ['jalali_to_gregorian:Y-m-d'],
-                'from_created_at' => ['jalali_to_gregorian:Y-m-d'],
-                'to_created_at' => ['jalali_to_gregorian:Y-m-d'],
+                'from_date' => ['jalali_to_gregorian:Y-m-d'],
+                'to_date' => ['jalali_to_gregorian:Y-m-d'],
             ])
             ->setQueryToEloquentClosures([
                 'student_id' => function (&$eloquent, $query) {
