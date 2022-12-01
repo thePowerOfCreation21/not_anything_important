@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -102,5 +103,10 @@ class StudentModel extends Model
     public function financials (): HasMany
     {
         return $this->hasMany(StudentFinancialModel::class, 'student_id', 'id');
+    }
+
+    public function classes (): BelongsToMany
+    {
+        return $this->belongsToMany(ClassModel::class, 'class_student', 'student_id', 'class_id');
     }
 }
