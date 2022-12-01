@@ -63,7 +63,7 @@ class TeacherAction extends ActionService
                     'skills.*.course_title' => ['required', 'string', 'max:350'],
                     'skills.*.educational_institution' => ['nullable', 'string', 'max:350'],
                     'skills.*.skill_level' => ['nullable', 'string', 'max:350']
-                ]
+                ],
             ])
             ->setCasts([
                 'file' => ['file', 'nullable'],

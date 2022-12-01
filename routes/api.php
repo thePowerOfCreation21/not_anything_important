@@ -34,6 +34,8 @@ Route::post('/admin/register', [AdminController::class, 'register']);
 
 Route::post('/student/register_request', [StudentController::class, 'registerRequest']);
 
+Route::post('/teacher/register_request', [TeacherController::class, 'registerRequest']);
+
 Route::get('/educational_year', [EducationalYearController::class, 'get']);
 
 Route::group([

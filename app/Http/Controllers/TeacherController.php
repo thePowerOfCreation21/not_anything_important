@@ -25,4 +25,20 @@ class TeacherController extends Controller
                 ->storeByRequest()
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function registerRequest (Request $request): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new TeacherAction())
+                ->setRequest($request)
+                ->setValidationRule('store')
+                ->storeByRequest()
+        ]);
+    }
 }
