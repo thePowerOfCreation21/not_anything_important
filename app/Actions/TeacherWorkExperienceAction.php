@@ -27,7 +27,7 @@ class TeacherWorkExperienceAction extends ActionService
                     'workplace_location' => ['string', 'max:350'],
                 ],
                 'update' => [
-                    'teacher_id' => ['string', 'max:20'],
+                    // 'teacher_id' => ['string', 'max:20'],
                     'title' => ['string', 'max:350'],
                     'workplace_name' => ['string', 'max:350'],
                     'work_title' => ['string', 'max:350'],
