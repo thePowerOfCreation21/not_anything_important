@@ -33,10 +33,17 @@ class CourseAction extends ActionService
                     'ratio' => ['integer', 'min:1', 'max:100']
                 ],
                 'get_query' => [
+                    'class_id' => ['string', 'max:20'],
                     'search' => 'string|max:250'
                 ]
             ])
             ->setQueryToEloquentClosures([
+                'class_id' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereHas('classes', function($q) use ($query){
+                        $q->where('classes.id', $query['class_id']);
+                    });
+                },
                 'search' => function (&$eloquent, $query)
                 {
                     $eloquent = $eloquent->where('title', 'LIKE', "%{$query['search']}%");
