@@ -243,6 +243,7 @@ class StudentAction extends ActionService
                     'reason' => ['nullable', 'string', 'max:2500']
                 ],
                 'getQuery' => [
+                    'class_id' => ['string', 'max:20'],
                     'level' => ['string', 'max:100'],
                     'educational_year' => ['string', 'max:50'],
                     'search' => ['string', 'max:150'],
@@ -258,6 +259,12 @@ class StudentAction extends ActionService
                 'to_created_at' => ['jalali_to_gregorian:Y-m-d'],
             ])
             ->setQueryToEloquentClosures([
+                'class_id' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereHas('classes', function($q) use ($query){
+                        $q->where('classes.id', $query['class_id']);
+                    });
+                },
                 'level' => function (&$eloquent, $query)
                 {
                     $eloquent = $eloquent->where('level', $query['level']);
