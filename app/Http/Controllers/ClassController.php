@@ -82,6 +82,22 @@ class ClassController extends Controller
      * @return JsonResponse
      * @throws CustomException
      */
+    public function deleteCourseFromClass (Request $request): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new ClassAction())
+                ->setRequest($request)
+                ->setValidationRule('deleteCourseFromClass')
+                ->deleteCourseFromClassByRequest()
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
     public function addStudentsToClass (Request $request): JsonResponse
     {
         return response()->json([

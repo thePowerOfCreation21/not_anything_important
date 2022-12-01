@@ -32,12 +32,16 @@ class ClassAction extends ActionService
                 ],
                 'addCoursesToClass' => [
                     'class_id' => ['required', 'string', 'max:20'],
-                    'courses' => ['required', 'max:100'],
+                    'courses' => ['required', 'array', 'max:100'],
                     'courses.*' => ['required', 'string', 'max:20']
+                ],
+                'deleteCourseFromClass' => [
+                    'class_id' => ['required', 'string', 'max:20'],
+                    'course_id' => ['required', 'string', 'max:20'],
                 ],
                 'addStudentsToClass' => [
                     'class_id' => ['required', 'string', 'max:20'],
-                    'students' => ['required', 'max:100'],
+                    'students' => ['required', 'array', 'max:100'],
                     'students.*' => ['required', 'string', 'max:20']
                 ]
             ])
@@ -96,6 +100,41 @@ class ClassAction extends ActionService
         }
 
         return DB::table($table)->insert($pivotsToAdd);
+    }
+
+    /**
+     * @param string $classId
+     * @param string $relatedId
+     * @param string $table
+     * @param string $relatedPivotForeignKey
+     * @return int
+     */
+    public function deleteStuffFromClass (string $classId, string $relatedId, string $table, string $relatedPivotForeignKey): int
+    {
+        return DB::table($table)
+            ->where('class_id', $classId)
+            ->where($relatedPivotForeignKey, $relatedId)
+            ->delete();
+    }
+
+    /**
+     * @param array $data
+     * @return int
+     */
+    public function deleteCourseFromClass (array $data): int
+    {
+        return $this->deleteStuffFromClass($data['class_id'], $data['course_id'], 'class_course', 'course_id');
+    }
+
+    /**
+     * @return int
+     * @throws CustomException
+     */
+    public function deleteCourseFromClassByRequest (): int
+    {
+        return $this->deleteCourseFromClass(
+            $this->getDataFromRequest()
+        );
     }
 
     /**
