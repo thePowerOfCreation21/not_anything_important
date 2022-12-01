@@ -16,15 +16,25 @@ class StudentFinancialAction extends ActionService
             ->setResource(StudentFinancialResource::class)
             ->setValidationRules([
                 'store' => [
+                    'payment_type' => ['required', 'string', 'max:50'],
+                    'check_number' => ['nullable', 'string', 'max:50'],
+                    'receipt_number' => ['nullable', 'string', 'max:50'],
                     'student_id' => ['required', 'string', 'max:20'],
                     'amount' => ['required', 'int', 'min:0', 'max:100000000'],
                     'date' => ['required', 'date_format:Y-m-d'],
+                    'payment_date' => ['nullable', 'date_format:Y-m-d'],
                     'paid' => ['bool'],
+                    'check_image' => ['nullable', 'file', 'mimes:png,jpg,jpeg,svg', 'max:3000']
                 ],
                 'update' => [
+                    'payment_type' => ['string', 'max:50'],
+                    'check_number' => ['nullable', 'string', 'max:50'],
+                    'receipt_number' => ['nullable', 'string', 'max:50'],
                     'amount' => ['int', 'min:0', 'max:100000000'],
                     'date' => ['date_format:Y-m-d'],
-                    'paid' => ['bool']
+                    'payment_date' => ['nullable', 'date_format:Y-m-d'],
+                    'paid' => ['bool'],
+                    'check_image' => ['nullable', 'file', 'mimes:png,jpg,jpeg,svg', 'max:3000']
                 ],
                 'getQuery' => [
                     'student_id' => ['string', 'max:20'],
@@ -32,7 +42,8 @@ class StudentFinancialAction extends ActionService
                 ]
             ])
             ->setCasts([
-                'date' => ['jalali_to_gregorian:Y-m-d']
+                'date' => ['jalali_to_gregorian:Y-m-d'],
+                'check_image' => ['file', 'nullable']
             ])
             ->setQueryToEloquentClosures([
                 'student_id' => function (&$eloquent, $query)
@@ -119,6 +130,11 @@ class StudentFinancialAction extends ActionService
                 }
 
                 $newGeneralStatistic->save();
+
+                if (array_key_exists('check_image', $updateData) && is_file($studentFinancial->check_image))
+                {
+                    unlink($studentFinancial->check_image);
+                }
             }
 
             if (is_callable($updating))
@@ -148,6 +164,11 @@ class StudentFinancialAction extends ActionService
                 }
 
                 $studentFinancialGeneralStatistic->save();
+
+                if (is_file($studentFinancial->check_image))
+                {
+                    unlink($studentFinancial->check_image);
+                }
             }
 
             if (is_callable($deleting))
