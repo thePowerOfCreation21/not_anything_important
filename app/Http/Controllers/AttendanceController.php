@@ -73,4 +73,16 @@ class AttendanceController extends Controller
                 ->getById($id)
         );
     }
+
+    /**
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function deleteById (string $id): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new AttendanceAction())->deleteById($id)
+        ]);
+    }
 }

@@ -104,6 +104,7 @@ Route::group([
     Route::post('/admin/attendance', [AttendanceController::class, 'storeByAdmin']);
     Route::get('/admin/attendance', [AttendanceController::class, 'get']);
     Route::get('/admin/attendance/{id}', [AttendanceController::class, 'getById']);
+    Route::delete('/admin/attendance/{id}', [AttendanceController::class, 'deleteByIdgit']);
     Route::put('/admin/attendance/{id}', [AttendanceController::class, 'updateById']);
 
     Route::post('/admin/teacher', [TeacherController::class, 'store']);
