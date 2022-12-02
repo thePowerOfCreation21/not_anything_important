@@ -24,4 +24,16 @@ class ClassCourseController extends Controller
                 ->storeByRequest()
         ]);
     }
+
+    /**
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function deleteById (string $id): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new ClassCourseAction())->deleteById($id)
+        ]);
+    }
 }
