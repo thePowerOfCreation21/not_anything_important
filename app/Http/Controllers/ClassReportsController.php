@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\ClassAction;
 use App\Actions\ClassReportsAction;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -17,5 +18,12 @@ class ClassReportsController extends Controller
                 ->setValidationRule('store')
                 ->storeByRequest()
         ]);
+    }
+
+    public function getById(string $id): JsonResponse
+    {
+        return response()->json(
+            (new ClassReportsAction())->getById($id)
+        );
     }
 }
