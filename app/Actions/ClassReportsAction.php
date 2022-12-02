@@ -3,8 +3,8 @@
 namespace App\Actions;
 
 
+use App\Http\Resources\ClassReportsResource;
 use App\Models\ClassReportsModel;
-use App\Http\Resources\ClassResource;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
 
 class ClassReportsAction extends ActionService
@@ -13,7 +13,7 @@ class ClassReportsAction extends ActionService
     {
         $this
             ->setModel(ClassReportsModel::class)
-            ->setResource(ClassResource::class)
+            ->setResource(ClassReportsResource::class)
             ->setValidationRules([
                 'store' => [
                     'telegram' => ['required', 'string', 'min:2', 'max:5000']
