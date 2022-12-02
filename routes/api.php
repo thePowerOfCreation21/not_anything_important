@@ -32,7 +32,6 @@ use App\Http\Controllers\AttendanceStudentController;
 
 
 Route::post('/admin/login', [AdminController::class, 'login']);
-Route::post('/admin/register', [AdminController::class, 'register']);
 
 Route::post('/student/register_request', [StudentController::class, 'registerRequest']);
 
