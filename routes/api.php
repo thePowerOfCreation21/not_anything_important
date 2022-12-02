@@ -62,7 +62,8 @@ Route::group([
     Route::delete('/admin/class/{id}', [ClassController::class, 'deleteById']);
 
     Route::post('/admin/class/reports', [ClassReportsController::class, 'store']);
-    Route::get('/admin/class/reports', [ClassReportsController::class, 'getById']);
+    Route::get('/admin/class/reports', [ClassReportsController::class, 'get']);
+    Route::get('/admin/class/reports/{id}', [ClassReportsController::class, 'getById']);
 
     Route::post('/admin/student/discipline', [StudentDisciplineController::class, 'store']);
     Route::get('/admin/student/discipline', [StudentDisciplineController::class, 'get']);
