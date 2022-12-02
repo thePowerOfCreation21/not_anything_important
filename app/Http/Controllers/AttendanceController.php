@@ -58,4 +58,19 @@ class AttendanceController extends Controller
                 ->getByRequestAndEloquent()
         );
     }
+
+    /**
+     * @param string $id
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getById (string $id): JsonResponse
+    {
+        return response()->json(
+            (new AttendanceAction())
+                ->setRelations(['classCourse.classModel', 'attendanceStudents.student'])
+                ->makeEloquent()
+                ->getById($id)
+        );
+    }
 }
