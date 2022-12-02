@@ -74,4 +74,12 @@ class TeacherController extends Controller
                 ->getByRequestAndEloquent()
         );
     }
+
+    public function getById (string $id)
+    {
+        return response()->json(
+            (new TeacherAction())
+                ->setRelations([''])
+        );
+    }
 }

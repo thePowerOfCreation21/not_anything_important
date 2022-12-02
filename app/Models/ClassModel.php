@@ -30,7 +30,7 @@ class ClassModel extends Model
     /**
      * @return HasMany
      */
-    public function classCourses ()
+    public function courses ()
     {
         return $this->hasMany(ClassCourseModel::class, 'class_id', 'id');
     }

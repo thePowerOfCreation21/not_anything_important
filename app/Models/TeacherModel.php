@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Sanctum\HasApiTokens;
 
 class TeacherModel extends Model
@@ -42,8 +43,9 @@ class TeacherModel extends Model
         'educational_year',
     ];
 
-    public function teacherWorkExperiences (): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function workExperiences (): HasMany
     {
         return $this->hasMany(TeacherWorkExperienceModel::class, 'teacher_id', 'id');
     }
+
 }
