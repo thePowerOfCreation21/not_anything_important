@@ -51,6 +51,11 @@ Route::group([
     Route::get('/admin/student/financial', [StudentFinancialController::class, 'get']);
     Route::get('/admin/student/financial/{id}', [StudentFinancialController::class, 'getById']);
 
+    Route::post('/admin/class/reports', [ClassReportsController::class, 'store']);
+    Route::get('/admin/class/reports', [ClassReportsController::class, 'get']);
+    Route::get('/admin/class/reports/{id}', [ClassReportsController::class, 'getById']);
+    Route::post('/admin/class/reports/{id}', [ClassReportsController::class, 'updateById']);
+
     Route::post('/admin/class', [ClassController::class, 'storeByAdmin']);
     Route::get('/admin/class', [ClassController::class, 'get']);
     // Route::post('/admin/class/course', [ClassController::class, 'addCoursesToClass']);
@@ -60,11 +65,6 @@ Route::group([
     Route::get('/admin/class/{id}', [ClassController::class, 'getById']);
     Route::post('/admin/class/{id}', [ClassController::class, 'updateById']);
     Route::delete('/admin/class/{id}', [ClassController::class, 'deleteById']);
-
-    Route::post('/admin/class/reports', [ClassReportsController::class, 'store']);
-    Route::get('/admin/class/reports', [ClassReportsController::class, 'get']);
-    Route::get('/admin/class/reports/{id}', [ClassReportsController::class, 'getById']);
-    Route::post('/admin/class/reports/{id}', [ClassReportsController::class, 'updateById']);
 
     Route::post('/admin/student/discipline', [StudentDisciplineController::class, 'store']);
     Route::get('/admin/student/discipline', [StudentDisciplineController::class, 'get']);
