@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Genocide\Radiocrud\Helpers;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ClassMessagesResource extends JsonResource
@@ -14,6 +15,13 @@ class ClassMessagesResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'student_id' => $this->student_id,
+            'class_id' => $this->class_id,
+            'text' => $this->text,
+            'created_at' => Helpers::getCustomDateCast($this->created_at),
+            'updated_at' => $this->updated_at,
+        ];
     }
 }
