@@ -106,6 +106,7 @@ Route::group([
     Route::post('/admin/teacher', [TeacherController::class, 'store']);
     Route::get('/admin/teacher', [TeacherController::class, 'get']);
     Route::put('/admin/teacher/{id}', [TeacherController::class, 'updateById']);
+    Route::get('/admin/teacher/{id}', [TeacherController::class, 'getById']);
 
     Route::post('/admin', [AdminController::class, 'register']);
     Route::put('/admin/{id}', [AdminController::class, 'updateById']);

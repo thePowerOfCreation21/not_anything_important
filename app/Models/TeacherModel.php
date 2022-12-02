@@ -48,4 +48,8 @@ class TeacherModel extends Model
         return $this->hasMany(TeacherWorkExperienceModel::class, 'teacher_id', 'id');
     }
 
+    public function skills (): HasMany
+    {
+        return $this->hasMany(TeacherSkillModel::class, 'teacher_id', 'id');
+    }
 }

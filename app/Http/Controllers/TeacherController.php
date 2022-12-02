@@ -75,11 +75,18 @@ class TeacherController extends Controller
         );
     }
 
-    public function getById (string $id)
+    /**
+     * @param string $id
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getById (string $id): JsonResponse
     {
         return response()->json(
             (new TeacherAction())
-                ->setRelations([''])
+                ->setRelations(['workExperiences', 'skills'])
+                ->makeEloquent()
+                ->getById($id)
         );
     }
 }
