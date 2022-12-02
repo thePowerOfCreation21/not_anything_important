@@ -11,6 +11,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ClassCourseController;
 use App\Http\Controllers\ClassReportsController;
 use App\Http\Controllers\TeacherSkillController;
+use App\Http\Controllers\ClassMessagesController;
 use App\Http\Controllers\WalletHistoryController;
 use App\Http\Controllers\EducationalYearController;
 use App\Http\Controllers\StudentFinancialController;
@@ -52,10 +53,12 @@ Route::group([
     Route::get('/admin/student/financial', [StudentFinancialController::class, 'get']);
     Route::get('/admin/student/financial/{id}', [StudentFinancialController::class, 'getById']);
 
+    Route::post('/admin/class/message', [ClassMessagesController::class, 'store']);
+
     Route::post('/admin/class/reports', [ClassReportsController::class, 'store']);
     Route::get('/admin/class/reports', [ClassReportsController::class, 'get']);
     Route::get('/admin/class/reports/{id}', [ClassReportsController::class, 'getById']);
-    Route::post('/admin/class/reports/{id}', [ClassReportsController::class, 'updateById']);
+    Route::put('/admin/class/reports/{id}', [ClassReportsController::class, 'updateById']);
 
     Route::post('/admin/class_course', [ClassCourseController::class, 'store']);
     Route::get('/admin/class_course', [ClassCourseController::class, 'get']);
