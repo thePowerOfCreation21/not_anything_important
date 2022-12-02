@@ -41,4 +41,9 @@ class TeacherModel extends Model
         'register_status',
         'educational_year',
     ];
+
+    public function teacherWorkExperiences (): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(TeacherWorkExperienceModel::class, 'teacher_id', 'id');
+    }
 }
