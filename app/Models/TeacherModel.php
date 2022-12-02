@@ -52,4 +52,9 @@ class TeacherModel extends Model
     {
         return $this->hasMany(TeacherSkillModel::class, 'teacher_id', 'id');
     }
+
+    public function classCourses ()
+    {
+        return $this->hasMany(ClassCourseModel::class, 'teacher_id', 'id');
+    }
 }

@@ -95,6 +95,7 @@ class TeacherAction extends ActionService
                     'educational_year' => ['string', 'max:50'],
                 ],
                 'getQuery' => [
+                    'class_id' => ['string', 'max:20'],
                     'register_status' => ['string', 'max:150'],
                     'educational_year' => ['string', 'max:50'],
                     'from_created_at' => ['date_format:Y-m-d'],
@@ -107,6 +108,10 @@ class TeacherAction extends ActionService
                 'partner_file' => ['file', 'nullable']
             ])
             ->setQueryToEloquentClosures([
+                'class_id' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where
+                },
                 'educational_year' => function (&$eloquent, $query)
                 {
                     if ($query['educational_year']  != '*')
