@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('classes', function (Blueprint $table) {
             $table->id();
             $table->string('title', '250');
-            $table->string('level', '20');
-            $table->string('educational_year', 50);
+            $table->string('level', '20')->nullable();
+            $table->string('educational_year', 50)->nullable();
             $table->timestamps();
         });
     }
