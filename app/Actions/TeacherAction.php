@@ -110,7 +110,9 @@ class TeacherAction extends ActionService
             ->setQueryToEloquentClosures([
                 'class_id' => function (&$eloquent, $query)
                 {
-                    $eloquent = $eloquent->where
+                    $eloquent = $eloquent->whereHas('classCourses', function ($q) use ($query){
+                        $q->where('class_id', $query['class_id']);
+                    });
                 },
                 'educational_year' => function (&$eloquent, $query)
                 {
