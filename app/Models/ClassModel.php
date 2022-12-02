@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ClassModel extends Model
 {
@@ -26,8 +27,11 @@ class ClassModel extends Model
         return $this->belongsToMany(StudentModel::class, 'class_student', 'class_id', 'student_id');
     }
 
-    public function courses (): BelongsToMany
+    /**
+     * @return HasMany
+     */
+    public function classCourses ()
     {
-        return $this->belongsToMany(CourseModel::class, 'class_course', 'class_id', 'course_id');
+        return $this->hasMany(ClassCourseModel::class, 'class_id', 'id');
     }
 }
