@@ -27,11 +27,11 @@ class ClassCourseModel extends Model
 
     public function course (): BelongsTo
     {
-        return $this->belongsTo(CourseModel::class, 'class_id', 'id');
+        return $this->belongsTo(CourseModel::class, 'course_id', 'id');
     }
 
     public function teacher (): BelongsTo
     {
-        return $this->belongsTo(TeacherModel::class, 'class_id', 'id');
+        return $this->belongsTo(TeacherModel::class, 'teacher_id', 'id');
     }
 }
