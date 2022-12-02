@@ -7,7 +7,7 @@ use App\Models\ClassReportsModel;
 use App\Http\Resources\ClassResource;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
 
-class ClassAction extends ActionService
+class ClassReportsAction extends ActionService
 {
     public function __construct()
     {
