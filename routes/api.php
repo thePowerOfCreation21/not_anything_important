@@ -64,6 +64,7 @@ Route::group([
     Route::post('/admin/class/reports', [ClassReportsController::class, 'store']);
     Route::get('/admin/class/reports', [ClassReportsController::class, 'get']);
     Route::get('/admin/class/reports/{id}', [ClassReportsController::class, 'getById']);
+    Route::post('/admin/class/reports/{id}', [ClassReportsController::class, 'updateById']);
 
     Route::post('/admin/student/discipline', [StudentDisciplineController::class, 'store']);
     Route::get('/admin/student/discipline', [StudentDisciplineController::class, 'get']);
