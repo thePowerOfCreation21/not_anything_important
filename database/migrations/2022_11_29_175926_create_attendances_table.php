@@ -17,8 +17,7 @@ return new class extends Migration
             $table->id();
             $table->timestamp('date');
             $table->string('educational_year', 50)->nullable();
-            $table->string('class_id', 20);
-            $table->string('course_id', 20);
+            $table->string('class_course_id', 20);
             $table->timestamps();
         });
     }

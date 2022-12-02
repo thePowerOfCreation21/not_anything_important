@@ -102,6 +102,7 @@ Route::group([
     Route::delete('/admin/teacher/financial/{id}', [TeacherFinancialController::class, 'deleteById']);
 
     Route::post('/admin/attendance', [AttendanceController::class, 'storeByAdmin']);
+    Route::get('/admin/attendance', [AttendanceController::class, 'get']);
     Route::put('/admin/attendance/{id}', [AttendanceController::class, 'updateById']);
 
     Route::post('/admin/teacher', [TeacherController::class, 'store']);
