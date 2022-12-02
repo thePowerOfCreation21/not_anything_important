@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('teacher_classes', function (Blueprint $table) {
             $table->id();
+            $table->string('class_id', 20);
+            $table->string('teacher_id', 20);
+            $table->string('course_id', 20);
             $table->timestamps();
         });
     }
