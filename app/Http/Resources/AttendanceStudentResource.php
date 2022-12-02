@@ -19,7 +19,9 @@ class AttendanceStudentResource extends JsonResource
             'status' => $this->status,
             'late' => $this->late,
             'student_id' => $this->student_id,
-            'student' => new StudentCollectionResource($this->student)
+            'student' => new StudentCollectionResource($this->whenLoaded('student')),
+            'attendance_id' => $this->attendance_id,
+            'attendance' => new AttendanceResource($this->whenLoaded('attendance'))
         ];
     }
 }

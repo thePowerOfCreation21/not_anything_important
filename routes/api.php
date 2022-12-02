@@ -16,6 +16,7 @@ use App\Http\Controllers\GeneralStatisticController;
 use App\Http\Controllers\TeacherFinancialController;
 use App\Http\Controllers\StudentDisciplineController;
 use App\Http\Controllers\TeacherWorkExperienceController;
+use App\Http\Controllers\AttendanceStudentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -106,6 +107,8 @@ Route::group([
     Route::get('/admin/attendance/{id}', [AttendanceController::class, 'getById']);
     Route::delete('/admin/attendance/{id}', [AttendanceController::class, 'deleteByIdgit']);
     Route::put('/admin/attendance/{id}', [AttendanceController::class, 'updateById']);
+
+    Route::get('/admin/attendance_student', [AttendanceStudentController::class, 'get']);
 
     Route::post('/admin/teacher', [TeacherController::class, 'store']);
     Route::get('/admin/teacher', [TeacherController::class, 'get']);
