@@ -17,7 +17,8 @@ class ClassMessagesAction extends ActionService
             ->setValidationRules([
                 'store' => [
                     'class_id' => ['required', 'string', 'max:20'],
-                    'text' => ['required', 'string', 'min:2' ,'max:20']
+                    'student_id' => ['nullable', 'string', 'max:20'],
+                    'text' => ['required', 'string', 'min:2', 'max:20']
                 ]
             ]);
         parent::__construct();
