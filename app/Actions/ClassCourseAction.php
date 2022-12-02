@@ -18,7 +18,26 @@ class ClassCourseAction extends ActionService
                     'class_id' => ['required', 'string', 'max:20'],
                     'teacher_id' => ['required', 'string', 'max:20'],
                     'course_id' => ['required', 'string', 'max:20'],
+                ],
+                'getQuery' => [
+                    'class_id' => ['string', 'max:20'],
+                    'teacher_id' => ['string', 'max:20'],
+                    'course_id' => ['string', 'max:20'],
                 ]
+            ])
+            ->setQueryToEloquentClosures([
+                'class_id' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('class_id', $query['class_id']);
+                },
+                'teacher_id' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('teacher_id', $query['teacher_id']);
+                },
+                'course_id' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('course_id', $query['course_id']);
+                }
             ])
             ->setResource(ClassCourseResource::class);
 

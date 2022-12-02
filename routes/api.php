@@ -58,6 +58,7 @@ Route::group([
     Route::post('/admin/class/reports/{id}', [ClassReportsController::class, 'updateById']);
 
     Route::post('/admin/class_course', [ClassCourseController::class, 'store']);
+    Route::get('/admin/class_course', [ClassCourseController::class, 'get']);
     Route::delete('/admin/class_course/{id}', [ClassCourseController::class, 'deleteById']);
 
     Route::post('/admin/class', [ClassController::class, 'storeByAdmin']);

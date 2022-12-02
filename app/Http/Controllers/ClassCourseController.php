@@ -36,4 +36,21 @@ class ClassCourseController extends Controller
             'data' => (new ClassCourseAction())->deleteById($id)
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function get (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new ClassCourseAction())
+                ->setRequest($request)
+                ->setValidationRule('getQuery')
+                ->setRelations(['classModel', 'course', 'teacher'])
+                ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
+    }
 }
