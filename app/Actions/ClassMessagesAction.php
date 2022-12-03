@@ -58,6 +58,6 @@ class ClassMessagesAction extends ActionService
 
         ClassMessageStudentModel::insert($classMessageStudents);
 
-        return $class;
+        return $classMessage;
     }
 }
