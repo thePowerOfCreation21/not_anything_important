@@ -15,6 +15,10 @@ return new class extends Migration
     {
         Schema::create('class_score', function (Blueprint $table) {
             $table->id();
+            $table->string('class_course_id', 20);
+            $table->timestamp('date');
+            $table->string('educational_year', 50)->nullable();
+            $table->decimal('max_score', 5, 2);
             $table->timestamps();
         });
     }
