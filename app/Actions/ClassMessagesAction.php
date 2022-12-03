@@ -31,7 +31,8 @@ class ClassMessagesAction extends ActionService
     {
         $class = ClassModel::query()
             ->with('students')
-            ->where('id', $data['class_id']);
+            ->where('id', $data['class_id'])
+            ->first();
 
         if (empty($class))
         {
