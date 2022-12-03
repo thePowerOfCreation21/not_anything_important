@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ClassMessageModel extends Model
 {
@@ -16,4 +17,9 @@ class ClassMessageModel extends Model
         'class_id',
         'text'
     ];
+
+    public function classMessageStudents (): HasMany
+    {
+        return $this->hasMany(ClassMessageStudentModel::class, 'class_message_id', 'id');
+    }
 }
