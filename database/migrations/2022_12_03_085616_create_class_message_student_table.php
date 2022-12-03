@@ -16,7 +16,11 @@ return new class extends Migration
         Schema::create('class_message_student', function (Blueprint $table) {
             $table->id();
             $table->string('student_id', 20);
-            $table->string('class_message_id', 20);
+            $table->bigInteger('class_message_id')->unsigned();
+            $table->foreign('class_message_id')
+                ->references('id')
+                ->on('class_messages')
+                ->onDelete('cascade');
             $table->boolean('is_seen')->default(false);
         });
     }
