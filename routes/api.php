@@ -7,6 +7,7 @@ use App\Http\Controllers\ClassController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\ClassScoreController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ClassCourseController;
 use App\Http\Controllers\ClassReportsController;
@@ -74,6 +75,9 @@ Route::group([
     Route::get('/admin/class/{id}', [ClassController::class, 'getById']);
     Route::post('/admin/class/{id}', [ClassController::class, 'updateById']);
     Route::delete('/admin/class/{id}', [ClassController::class, 'deleteById']);
+
+    Route::post('/admin/class/score', [ClassScoreController::class, 'storeByAdmin']);
+    Route::put('/admin/class/score/{id}', [ClassScoreController::class, 'updateById']);
 
     Route::post('/admin/student/discipline', [StudentDisciplineController::class, 'store']);
     Route::get('/admin/student/discipline', [StudentDisciplineController::class, 'get']);
