@@ -28,4 +28,9 @@ class ClassScoreStudentModel extends Model
     {
         return $this->belongsTo(ClassCourseModel::class, 'class_course_id', 'id');
     }
+
+    public function classScore(): BelongsTo
+    {
+        return $this->belongsTo(ClassScoreModel::class, 'class_course_id', 'id');
+    }
 }
