@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Laravel\Sanctum\HasApiTokens;
 
 class AdminModel extends Model
@@ -59,5 +60,10 @@ class AdminModel extends Model
         }
 
         return $privileges;
+    }
+
+    public function classFiles (): MorphMany
+    {
+        return $this->morphMany(ClassFileModel::class, 'author');
     }
 }
