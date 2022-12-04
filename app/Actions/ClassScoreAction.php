@@ -17,12 +17,14 @@ class ClassScoreAction extends ActionService
                 'storeByAdmin' => [
                     'class_course_id' => ['required', 'string', 'max:20'],
                     'date' => ['required', 'date_format:Y-m-d'],
+                    'students' => ['required', 'array', 'max:100'],
                     'educational_year' => ['nullable', 'string', 'min:2', 'max:50'],
                     'max_score' => ['numeric', 'between:1,999.99']
                 ],
                 'updateByAdmin' => [
                     'class_course_id' => ['string', 'max:20'],
                     'date' => ['date_format:Y-m-d'],
+                    'students' => ['array', 'max:100'],
                     'educational_year' => ['string', 'min:2', 'max:50'],
                     'max_score' => ['numeric', 'between:1,999.99']
                 ]
