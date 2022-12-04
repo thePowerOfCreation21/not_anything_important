@@ -18,4 +18,15 @@ class ClassScoreController extends Controller
                 ->storeByRequest()
         ]);
     }
+
+    public function updateById (string $id, Request $request): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new ClassScoreAction())
+                ->setRequest($request)
+                ->setValidationRule('updateByAdmin')
+                ->updateByIdAndRequest($id)
+        ]);
+    }
 }
