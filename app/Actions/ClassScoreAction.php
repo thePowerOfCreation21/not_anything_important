@@ -21,7 +21,10 @@ class ClassScoreAction extends ActionService
                     'max_score' => ['numeric', 'between:1,999.99']
                 ],
                 'update' => [
-                    'telegram' => ['string', 'min:2', 'max:5000']
+                    'class_course_id' => ['string', 'max:20'],
+                    'date' => ['date_format:Y-m-d'],
+                    'educational_year' => ['string', 'min:2', 'max:50'],
+                    'max_score' => ['numeric', 'between:1,999.99']
                 ]
             ]);
         parent::__construct();
