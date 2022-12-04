@@ -69,7 +69,7 @@ class ClassScoreController extends Controller
     {
         return response()->json(
             (new ClassScoreAction())
-                ->setRelations(['classCourse.classScoreModel', 'classScoreStudents.classScoreModel'])
+                ->setRelations(['classCourse.classScoreModel', 'classScoreStudents.student'])
                 ->makeEloquent()
                 ->getById($id)
         );
