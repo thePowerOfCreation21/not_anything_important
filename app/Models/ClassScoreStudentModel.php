@@ -19,14 +19,9 @@ class ClassScoreStudentModel extends Model
         'score'
     ];
 
-    public function classScoreStudents (): HasMany
+    public function student (): HasMany
     {
-        return $this->hasMany(ClassScoreStudentModel::class, 'class_score_id', 'id');
-    }
-
-    public function classCourse (): BelongsTo
-    {
-        return $this->belongsTo(ClassCourseModel::class, 'class_course_id', 'id');
+        return $this->hasMany(ClassCourseModel::class, 'student_id', 'id');
     }
 
     public function classScore(): BelongsTo
