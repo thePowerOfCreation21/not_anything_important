@@ -54,9 +54,37 @@ class ClassScoreController extends Controller
             (new ClassScoreAction())
                 ->setRequest($request)
                 ->setValidationRule('getQuery')
-                ->setRelations(['classCourse.classModel'])
+                ->setRelations(['classCourse.classScoreModel'])
                 ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()
         );
     }
+
+    /**
+     * @param string $id
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getById (string $id): JsonResponse
+    {
+        return response()->json(
+            (new ClassScoreAction())
+                ->setRelations(['classCourse.classScoreModel', 'classScoreStudents.classScoreModel'])
+                ->makeEloquent()
+                ->getById($id)
+        );
+    }
+
+    /**
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function deleteById (string $id): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new ClassScoreAction())->deleteById($id)
+        ]);
+    }
+
 }
