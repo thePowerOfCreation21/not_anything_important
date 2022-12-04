@@ -42,7 +42,7 @@ class ClassAction extends ActionService
                 'addStudentsToClass' => [
                     'class_id' => ['required', 'string', 'max:20'],
                     'students' => ['required', 'array', 'max:100'],
-                    'students.*' => ['required', 'string', 'max:20']
+                    'students.*' => ['required', 'integer', 'min:1', 'digits_between:1,20']
                 ],
                 'deleteStudentFromClass' => [
                     'class_id' => ['required', 'string', 'max:20'],
