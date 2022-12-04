@@ -78,6 +78,9 @@ Route::group([
 
     Route::post('/admin/class/score', [ClassScoreController::class, 'storeByAdmin']);
     Route::put('/admin/class/score/{id}', [ClassScoreController::class, 'updateById']);
+    Route::delete('/admin/class/score/{id}', [ClassScoreController::class, 'deleteById']);
+    Route::get('/admin/class/score/{id}', [ClassScoreController::class, 'getById']);
+    Route::get('/admin/class/score', [ClassScoreController::class, 'get']);
 
     Route::post('/admin/student/discipline', [StudentDisciplineController::class, 'store']);
     Route::get('/admin/student/discipline', [StudentDisciplineController::class, 'get']);
