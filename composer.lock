@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1786cfbdb5dcda46992c16cf03dac840",
+    "content-hash": "ddf95da1e42ab9068485c5ba3789b590",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -573,16 +573,16 @@
         },
         {
             "name": "genocide/radiocrud",
-            "version": "v1.0.2",
+            "version": "v1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thePowerOfCreation21/genocide_radiocrud.git",
-                "reference": "179e6249eb97278d2bee95c61cb6bb5aa8d6a8c9"
+                "reference": "150ecc0fb035aa2b6d3934391a6cef5c183ef2c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thePowerOfCreation21/genocide_radiocrud/zipball/179e6249eb97278d2bee95c61cb6bb5aa8d6a8c9",
-                "reference": "179e6249eb97278d2bee95c61cb6bb5aa8d6a8c9",
+                "url": "https://api.github.com/repos/thePowerOfCreation21/genocide_radiocrud/zipball/150ecc0fb035aa2b6d3934391a6cef5c183ef2c3",
+                "reference": "150ecc0fb035aa2b6d3934391a6cef5c183ef2c3",
                 "shasum": ""
             },
             "require": {
@@ -611,12 +611,12 @@
                     "email": "dadekavweb2@gmail.com"
                 }
             ],
-            "description": "don't ask what is purpose of this package, i don't even know what is purpose of me being alive",
+            "description": "fester, simpler way to create CRUD system in laravel",
             "support": {
                 "issues": "https://github.com/thePowerOfCreation21/genocide_radiocrud/issues",
-                "source": "https://github.com/thePowerOfCreation21/genocide_radiocrud/tree/v1.0.2"
+                "source": "https://github.com/thePowerOfCreation21/genocide_radiocrud/tree/v1.4.0"
             },
-            "time": "2022-12-04T09:27:29+00:00"
+            "time": "2022-12-05T07:17:12+00:00"
         },
         {
             "name": "graham-campbell/result-type",
