@@ -20,7 +20,7 @@ class ClassScoreStudentResource extends JsonResource
             'student_id' => $this->student_id,
             'student' => new StudentCollectionResource($this->whenLoaded('student')),
             'class_score_id' => $this->class_score_id,
-            'class_score' => new ClassScoreResource($this->whenLoaded('class_score'))
+            'class_score' => new ClassScoreResource($this->whenLoaded('classScore'))
         ];
     }
 }
