@@ -279,4 +279,28 @@ class TeacherAction extends ActionService
 
         return parent::update($updateData, $updating);
     }
+
+    /**
+     * @param string $id
+     * @return mixed
+     */
+    public function acceptById (string $id): mixed
+    {
+        return TeacherModel::where('id', $id)
+            ->update([
+                'register_status' => 'accepted',
+            ]);
+    }
+
+    /**
+     * @param string $id
+     * @return mixed
+     */
+    public function rejectById (string $id): mixed
+    {
+        return TeacherModel::where('id', $id)
+            ->update([
+                'register_status' => 'rejected',
+            ]);
+    }
 }

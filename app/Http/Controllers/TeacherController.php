@@ -89,4 +89,28 @@ class TeacherController extends Controller
                 ->getById($id)
         );
     }
+
+    /**
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function acceptById (string $id): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'date' => (new TeacherAction())->acceptById($id)
+        ]);
+    }
+
+    /**
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function rejectById (string $id): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'date' => (new TeacherAction())->rejectById($id)
+        ]);
+    }
 }
