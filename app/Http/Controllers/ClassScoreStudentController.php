@@ -13,7 +13,7 @@ class ClassScoreStudentController extends Controller
             (new ClassScoreStudentAction())
                 ->setRequest($request)
                 ->setValidationRule('getQuery')
-                ->setRelations(['attendance.classCourse.classModel'])
+                ->setRelations(['classScore.classCourse.classModel'])
                 ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()
         );
