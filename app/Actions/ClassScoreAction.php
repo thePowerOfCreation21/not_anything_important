@@ -27,13 +27,13 @@ class ClassScoreAction extends ActionService
                     'students.*.score' => ['required', 'numeric', 'between:1,999.99'],
                 ],
                 'updateByAdmin' => [
-                    'class_course_id' => ['string', 'max:20'],
+                    // 'class_course_id' => ['string', 'max:20'],
                     'date' => ['date_format:Y-m-d'],
                     'educational_year' => ['string', 'min:2', 'max:50'],
                     'max_score' => ['numeric', 'between:1,999.99'],
-                    'students' => ['required', 'array', 'max:100'],
+                    'students' => ['array', 'max:100'],
                     'students.*.student_id' => ['required', 'string', 'max:20'],
-                    'students.*.score' => ['required', 'numeric', 'between:1,999.99'],
+                    'students.*.score' => ['numeric', 'between:1,999.99'],
                 ],
                 'getQuery' => [
                     'class_course_id' => ['string', 'max:20'],
@@ -101,5 +101,34 @@ class ClassScoreAction extends ActionService
         ClassScoreStudentModel::insert($classScoreStudents);
 
         return $classScore;
+    }
+
+    /**
+     * @param array $updateData
+     * @param callable|null $updating
+     * @return bool|int
+     */
+    public function update(array $updateData, callable $updating = null): bool|int
+    {
+        $updating = function ($eloquent, $updateData) use ($updating)
+        {
+            foreach ($eloquent->get() AS $classScore)
+            {
+                foreach ($updateData['students'] ?? [] AS $classScoreStudent)
+                {
+                    ClassScoreStudentModel::query()
+                        ->where('class_score_id', $classScore->id)
+                        ->where('student_id', $classScoreStudent['student_id'])
+                        ->update($classScoreStudent);
+                }
+            }
+
+            if (is_callable($updating))
+            {
+                $updating($eloquent, $updateData);
+            }
+        };
+
+        return parent::update($updateData, $updating);
     }
 }
