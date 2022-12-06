@@ -19,8 +19,9 @@ use App\Http\Controllers\StudentFinancialController;
 use App\Http\Controllers\GeneralStatisticController;
 use App\Http\Controllers\TeacherFinancialController;
 use App\Http\Controllers\StudentDisciplineController;
-use App\Http\Controllers\TeacherWorkExperienceController;
 use App\Http\Controllers\AttendanceStudentController;
+use App\Http\Controllers\ClassScoreStudentController;
+use App\Http\Controllers\TeacherWorkExperienceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +72,8 @@ Route::group([
     Route::delete('/admin/class/score/{id}', [ClassScoreController::class, 'deleteById']);
     Route::get('/admin/class/score/{id}', [ClassScoreController::class, 'getById']);
     Route::get('/admin/class/score', [ClassScoreController::class, 'get']);
+
+    Route::get('/admin/class_score_student', [ClassScoreStudentController::class, 'get']);
 
     Route::post('/admin/class', [ClassController::class, 'storeByAdmin']);
     Route::get('/admin/class', [ClassController::class, 'get']);

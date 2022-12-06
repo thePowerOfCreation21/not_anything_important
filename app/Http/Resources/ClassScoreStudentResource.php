@@ -14,6 +14,14 @@ class ClassScoreStudentResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->get,
+            'score' => $this->score,
+            'late' => $this->late,
+            'student_id' => $this->student_id,
+            'student' => new StudentCollectionResource($this->whenLoaded('student')),
+            'class_score_id' => $this->class_score_id,
+            'class_score' => new ClassScoreResource($this->whenLoaded('class_score'))
+        ];
     }
 }
