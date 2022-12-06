@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('class_score_id', 20);
             $table->string('student_id', 20);
             $table->string('score', 20);
-            $table->timestamps();
         });
     }
 

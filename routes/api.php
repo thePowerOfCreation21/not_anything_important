@@ -66,6 +66,12 @@ Route::group([
     Route::get('/admin/class_course', [ClassCourseController::class, 'get']);
     Route::delete('/admin/class_course/{id}', [ClassCourseController::class, 'deleteById']);
 
+    Route::post('/admin/class/score', [ClassScoreController::class, 'storeByAdmin']);
+    Route::put('/admin/class/score/{id}', [ClassScoreController::class, 'updateById']);
+    Route::delete('/admin/class/score/{id}', [ClassScoreController::class, 'deleteById']);
+    Route::get('/admin/class/score/{id}', [ClassScoreController::class, 'getById']);
+    Route::get('/admin/class/score', [ClassScoreController::class, 'get']);
+
     Route::post('/admin/class', [ClassController::class, 'storeByAdmin']);
     Route::get('/admin/class', [ClassController::class, 'get']);
     // Route::post('/admin/class/course', [ClassController::class, 'addCoursesToClass']);
@@ -75,12 +81,6 @@ Route::group([
     Route::get('/admin/class/{id}', [ClassController::class, 'getById']);
     Route::post('/admin/class/{id}', [ClassController::class, 'updateById']);
     Route::delete('/admin/class/{id}', [ClassController::class, 'deleteById']);
-
-    Route::post('/admin/class/score', [ClassScoreController::class, 'storeByAdmin']);
-    Route::put('/admin/class/score/{id}', [ClassScoreController::class, 'updateById']);
-    Route::delete('/admin/class/score/{id}', [ClassScoreController::class, 'deleteById']);
-    Route::get('/admin/class/score/{id}', [ClassScoreController::class, 'getById']);
-    Route::get('/admin/class/score', [ClassScoreController::class, 'get']);
 
     Route::post('/admin/student/discipline', [StudentDisciplineController::class, 'store']);
     Route::get('/admin/student/discipline', [StudentDisciplineController::class, 'get']);

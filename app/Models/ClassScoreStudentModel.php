@@ -19,6 +19,8 @@ class ClassScoreStudentModel extends Model
         'score'
     ];
 
+    public $timestamps = false;
+
     public function student (): HasMany
     {
         return $this->hasMany(ClassCourseModel::class, 'student_id', 'id');
