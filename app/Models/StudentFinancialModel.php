@@ -14,10 +14,15 @@ class StudentFinancialModel extends Model
 
     protected $fillable = [
         'student_id',
+        'payment_type',
+        'check_number',
+        'receipt_number',
         'amount',
         'date',
+        'payment_date',
         'educational_year',
-        'paid'
+        'paid',
+        'check_image'
     ];
 
     protected $casts = [
