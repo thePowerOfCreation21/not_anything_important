@@ -7,6 +7,7 @@ use App\Http\Controllers\ClassController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\ClassFileController;
 use App\Http\Controllers\ClassScoreController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ClassCourseController;
@@ -74,6 +75,8 @@ Route::group([
     Route::get('/admin/class/score', [ClassScoreController::class, 'get']);
 
     Route::get('/admin/class_score_student', [ClassScoreStudentController::class, 'get']);
+
+    Route::post('/admin/class_file', [ClassFileController::class, 'storeByAdmin']);
 
     Route::post('/admin/class', [ClassController::class, 'storeByAdmin']);
     Route::get('/admin/class', [ClassController::class, 'get']);
