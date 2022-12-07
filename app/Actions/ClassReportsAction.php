@@ -16,11 +16,20 @@ class ClassReportsAction extends ActionService
             ->setResource(ClassReportsResource::class)
             ->setValidationRules([
                 'store' => [
-                    'telegram' => ['required', 'string', 'min:2', 'max:5000']
+                    'date' => ['required', 'date_format:Y-m-d'],
+                    'period' => ['required', 'integer', 'between:1,10'],
+                    'class_course_id' => ['required', 'string', 'max:20'],
+                    'report' => ['required', 'string', 'max:5000']
                 ],
                 'update' => [
-                    'telegram' => ['string', 'min:2', 'max:5000']
+                    'date' => ['date_format:Y-m-d'],
+                    'period' => ['integer', 'between:1,10'],
+                    'class_course_id' => ['string', 'max:20'],
+                    'report' => ['string', 'max:5000']
                 ]
+            ])
+            ->setCasts([
+                'date' => ['jalali_to_gregorian:Y-m-d']
             ]);
         parent::__construct();
     }

@@ -27,6 +27,7 @@ class ClassReportsController extends Controller
         return response()->json(
             (new ClassReportsAction())
                 ->setRequest($request)
+                ->setRelations(['classCourse.classModel'])
                 ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()
         );
@@ -35,7 +36,9 @@ class ClassReportsController extends Controller
     public function getById(string $id): JsonResponse
     {
         return response()->json(
-            (new ClassReportsAction())->getById($id)
+            (new ClassReportsAction())
+                ->setRelations(['classCourse.classModel'])
+                ->getById($id)
         );
     }
 

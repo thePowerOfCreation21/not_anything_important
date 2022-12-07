@@ -15,8 +15,10 @@ return new class extends Migration
     {
         Schema::create('class_reports', function (Blueprint $table) {
             $table->id();
-            $table->string('telegram', 5000)->nullable();
-            $table->timestamps();
+            $table->timestamp('date');
+            $table->tinyInteger('period');
+            $table->bigInteger('class_course_id')->unsigned();
+            $table->string('report', 5000);
         });
     }
 
