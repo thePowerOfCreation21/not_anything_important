@@ -573,21 +573,21 @@
         },
         {
             "name": "genocide/radiocrud",
-            "version": "v1.4.2",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thePowerOfCreation21/genocide_radiocrud.git",
-                "reference": "a070cc545c5707a8c245c01be31432b1194943c4"
+                "reference": "bfe61d915a1a8944c5e5826cdb32123f37066260"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thePowerOfCreation21/genocide_radiocrud/zipball/a070cc545c5707a8c245c01be31432b1194943c4",
-                "reference": "a070cc545c5707a8c245c01be31432b1194943c4",
+                "url": "https://api.github.com/repos/thePowerOfCreation21/genocide_radiocrud/zipball/bfe61d915a1a8944c5e5826cdb32123f37066260",
+                "reference": "bfe61d915a1a8944c5e5826cdb32123f37066260",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
-                "laravel/framework": "9.42.*",
+                "laravel/framework": "^9.19",
                 "morilog/jalali": "^3.4",
                 "php": "^8.0.2"
             },
@@ -614,9 +614,9 @@
             "description": "fester, simpler way to create CRUD system in laravel",
             "support": {
                 "issues": "https://github.com/thePowerOfCreation21/genocide_radiocrud/issues",
-                "source": "https://github.com/thePowerOfCreation21/genocide_radiocrud/tree/v1.4.2"
+                "source": "https://github.com/thePowerOfCreation21/genocide_radiocrud/tree/v1.5.0"
             },
-            "time": "2022-12-07T08:55:05+00:00"
+            "time": "2022-12-08T06:20:40+00:00"
         },
         {
             "name": "graham-campbell/result-type",
