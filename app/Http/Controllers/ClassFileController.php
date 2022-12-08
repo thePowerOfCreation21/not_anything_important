@@ -24,4 +24,25 @@ class ClassFileController extends Controller
                 ->storeByAdminByRequest()
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByAdmin (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new ClassFileAction())
+                ->setRequest($request)
+                ->setValidationRule('getQuery')
+                ->setRelations([
+                    'author',
+                    'classModel',
+                    ['classCourse' => ['course', 'classModel']]
+                ])
+                ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
+    }
 }

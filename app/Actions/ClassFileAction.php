@@ -23,10 +23,50 @@ class ClassFileAction extends ActionService
                     'class_id' => ['nullable', 'string', 'max:20'],
                     'title' => ['required', 'string', 'max:20'],
                     'file' => ['required', 'file', 'mimes:png,jpg,jpeg,gif,svg,zip,rar,7zip,pdf', 'max:20000']
+                ],
+                'getQuery' => [
+                    'class_id' => ['string', 'max:20'],
+                    'class_course_id' => ['string', 'max:20'],
+                    'search' => ['string', 'max:150'],
+                    'added_by_admin' => ['boolean'],
+                    'added_by_teacher' => ['boolean'],
+                    'added_by_student' => ['boolean'],
                 ]
             ])
             ->setCasts([
                 'file' => ['file']
+            ])
+            ->setQueryToEloquentClosures([
+                'class_id' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where(function($q) use ($query){
+                        $q
+                            ->where('class_id', $query['class_id'])
+                            ->orWhereHas('classCourse', function($q) use($query){
+                                $q->where('class_id', $query['class_id']);
+                            });
+                    });
+                },
+                'class_course_id' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('class_course_id', $query['class_course_id']);
+                },
+                'search' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('title', 'LIKE', "%{$query['search']}%");
+                },
+                'added_by_admin' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('author_type', $query['added_by_admin'] ? '=' : '!=', 'App\\Models\\AdminModel');
+                },
+                'added_by_teacher' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('author_type', $query['added_by_teacher'] ? '=' : '!=', 'App\\Models\\TeacherModel');
+                },
+                'added_by_student' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('author_type', $query['added_by_student'] ? '=' : '!=', 'App\\Models\\StudentModel');
+                }
             ]);
 
         parent::__construct();

@@ -77,6 +77,7 @@ Route::group([
     Route::get('/admin/class_score_student', [ClassScoreStudentController::class, 'get']);
 
     Route::post('/admin/class_file', [ClassFileController::class, 'storeByAdmin']);
+    Route::get('/admin/class_file', [ClassFileController::class, 'getByAdmin']);
 
     Route::post('/admin/class', [ClassController::class, 'storeByAdmin']);
     Route::get('/admin/class', [ClassController::class, 'get']);
