@@ -43,6 +43,7 @@ class StudentFinancialAction extends ActionService
             ])
             ->setCasts([
                 'date' => ['jalali_to_gregorian:Y-m-d'],
+                'payment_date' => ['jalali_to_gregorian:Y-m-d'],
                 'check_image' => ['file', 'nullable']
             ])
             ->setQueryToEloquentClosures([
