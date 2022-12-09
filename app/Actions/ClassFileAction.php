@@ -105,4 +105,18 @@ class ClassFileAction extends ActionService
             'author_id' => $user->id
         ];
     }
+
+    /**
+     * @param callable|null $deleting
+     * @return mixed
+     */
+    public function delete(callable $deleting = null): mixed
+    {
+        foreach ($this->getEloquent()->get() AS $classFile)
+        {
+            is_file($classFile->file) && unlink($classFile->file);
+        }
+
+        return parent::delete($deleting);
+    }
 }

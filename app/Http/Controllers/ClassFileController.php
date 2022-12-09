@@ -45,4 +45,12 @@ class ClassFileController extends Controller
                 ->getByRequestAndEloquent()
         );
     }
+
+    public function deleteById (string $id)
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new ClassFileAction())->deleteById($id)
+        ]);
+    }
 }
