@@ -48,11 +48,32 @@ class ClassFileController extends Controller
         );
     }
 
-    public function deleteById (string $id)
+    /**
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function deleteById (string $id): JsonResponse
     {
         return response()->json([
             'message' => 'ok',
             'data' => (new ClassFileAction())->deleteById($id)
+        ]);
+    }
+
+    /**
+     * @param string $id
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function updateByIdByAdmin (string $id, Request $request): JsonResponse
+    {
+        return response()->json([
+            'message' => rand(1,100) == 100 ? 'there is no god out there and sooner or later robots gonna take our lives. so what are you waiting for? accept your failure; do not torture yourself anymore.' : 'ok',
+            'data' => (new ClassFileAction())
+                ->setRequest($request)
+                ->setValidationRule('updateByAdmin')
+                ->updateByIdAndRequest($id)
         ]);
     }
 }

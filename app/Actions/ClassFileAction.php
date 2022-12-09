@@ -25,6 +25,12 @@ class ClassFileAction extends ActionService
                     'title' => ['required', 'string', 'max:20'],
                     'file' => ['required', 'file', 'mimes:png,jpg,jpeg,gif,svg,zip,rar,7zip,pdf', 'max:20000']
                 ],
+                'updateByAdmin' => [
+                    'class_course_id' => ['nullable', 'string', 'max:20'],
+                    'class_id' => ['nullable', 'string', 'max:20'],
+                    'title' => ['string', 'max:20'],
+                    'file' => ['file', 'mimes:png,jpg,jpeg,gif,svg,zip,rar,7zip,pdf', 'max:20000']
+                ],
                 'getQuery' => [
                     'class_id' => ['string', 'max:20'],
                     'class_course_id' => ['string', 'max:20'],
@@ -139,5 +145,40 @@ class ClassFileAction extends ActionService
         }
 
         return parent::delete($deleting);
+    }
+
+    /**
+     * @param array $updateData
+     * @param callable|null $updating
+     * @return bool|int
+     */
+    public function update(array $updateData, callable $updating = null): bool|int
+    {
+        foreach ($this->getEloquent()->get() AS $classFile)
+        {
+            isset($updateData['file']) && is_file($classFile->file) && unlink($classFile->file);
+        }
+
+        return parent::update($updateData, $updating);
+    }
+
+    /**
+     * @param callable|null $updating
+     * @return bool|int
+     * @throws CustomException
+     */
+    public function updateByRequest(callable $updating = null): bool|int
+    {
+        $updateData = array_merge(
+            $this->getDataFromRequest(),
+            $this->getAuthorByRequest()
+        );
+
+        if (isset($updateData['file']))
+        {
+            $updateData['size'] = Helpers::humanFilesize($this->originalRequestData['file']->getSize());
+        }
+
+        return $this->update($updateData, $updating);
     }
 }
