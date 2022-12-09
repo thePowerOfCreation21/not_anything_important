@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('title', 250);
             $table->string('file', 500);
             $table->string('size', 100)->nullable();
+            $table->string('educational_year', 50)->nullable();
             $table->timestamps();
         });
     }

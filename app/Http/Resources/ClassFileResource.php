@@ -20,6 +20,7 @@ class ClassFileResource extends JsonResource
             'title' => $this->title,
             'file' => $this->file,
             'size' => $this->size,
+            'educational_year' => $this->educational_year,
             'created_at' => Helpers::getCustomDateCast($this->created_at),
             'class_course_id' => $this->when(! empty($this->class_course_id), $this->class_course_id),
             'class_course' => new ClassCourseResource($this->whenLoaded('classCourse')),

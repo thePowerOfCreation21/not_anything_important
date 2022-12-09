@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Helpers\PardisanHelper;
 use App\Http\Resources\ClassFileResource;
 use App\Models\AdminModel;
 use App\Models\ClassFileModel;
@@ -27,6 +28,7 @@ class ClassFileAction extends ActionService
                 'getQuery' => [
                     'class_id' => ['string', 'max:20'],
                     'class_course_id' => ['string', 'max:20'],
+                    'educational_year' => ['string', 'max:50'],
                     'search' => ['string', 'max:150'],
                     'added_by_admin' => ['boolean'],
                     'added_by_teacher' => ['boolean'],
@@ -73,6 +75,18 @@ class ClassFileAction extends ActionService
     }
 
     /**
+     * @param array $data
+     * @param callable|null $storing
+     * @return mixed
+     */
+    public function store(array $data, callable $storing = null): mixed
+    {
+        $data['educational_year'] = $data['educational_year'] ?? PardisanHelper::getCurrentEducationalYear();
+
+        return parent::store($data, $storing);
+    }
+
+    /**
      * @param callable|null $storing
      * @return mixed
      * @throws CustomException
@@ -84,7 +98,7 @@ class ClassFileAction extends ActionService
                 $this->getDataFromRequest(),
                 $this->getAuthorByRequest(),
                 [
-                    'size' => Helpers::humanFilesize($this->originalRequestData['file']->getSize())
+                    'size' => Helpers::humanFilesize($this->originalRequestData['file']->getSize()),
                 ]
             ),
             $storing

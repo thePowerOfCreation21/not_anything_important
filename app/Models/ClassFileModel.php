@@ -20,7 +20,8 @@ class ClassFileModel extends Model
         'class_id',
         'title',
         'file',
-        'size'
+        'size',
+        'educational_year'
     ];
 
     public function author (): MorphTo
