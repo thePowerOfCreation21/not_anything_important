@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\ClassFileAction;
+use App\Helpers\PardisanHelper;
 use Genocide\Radiocrud\Exceptions\CustomException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -41,6 +42,7 @@ class ClassFileController extends Controller
                     'classModel',
                     'classCourse' => ['course', 'classModel']
                 ])
+                ->mergeQueryWith(['educational_year' => PardisanHelper::getCurrentEducationalYear()])
                 ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()
         );

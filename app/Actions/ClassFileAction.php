@@ -68,6 +68,13 @@ class ClassFileAction extends ActionService
                 'added_by_student' => function (&$eloquent, $query)
                 {
                     $eloquent = $eloquent->where('author_type', $query['added_by_student'] ? '=' : '!=', 'App\\Models\\StudentModel');
+                },
+                'educational_year' => function (&$eloquent, $query)
+                {
+                    if ($query['educational_year'] != '*')
+                    {
+                        $eloquent = $eloquent->where('educational_year', $query['educational_year']);
+                    }
                 }
             ]);
 
