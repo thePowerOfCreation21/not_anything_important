@@ -76,4 +76,23 @@ class ClassFileController extends Controller
                 ->updateByIdAndRequest($id)
         ]);
     }
+
+    /**
+     * @param string $id
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getById (string $id): JsonResponse
+    {
+        return response()->json(
+            (new ClassFileAction())
+                ->setRelations([
+                    'author',
+                    'classModel',
+                    'classCourse' => ['course', 'classModel']
+                ])
+                ->makeEloquent()
+                ->getById($id)
+        );
+    }
 }

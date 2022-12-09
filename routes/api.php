@@ -78,6 +78,7 @@ Route::group([
 
     Route::post('/admin/class_file', [ClassFileController::class, 'storeByAdmin']);
     Route::get('/admin/class_file', [ClassFileController::class, 'getByAdmin']);
+    Route::get('/admin/class_file/{id}', [ClassFileController::class, 'getById']);
     Route::delete('/admin/class_file/{id}', [ClassFileController::class, 'deleteById']);
     Route::put('/admin/class_file/{id}', [ClassFileController::class, 'updateByIdByAdmin']);
 
