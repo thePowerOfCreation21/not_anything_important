@@ -39,7 +39,7 @@ class ClassFileController extends Controller
                 ->setRelations([
                     'author',
                     'classModel',
-                    ['classCourse' => ['course', 'classModel']]
+                    'classCourse' => ['course', 'classModel']
                 ])
                 ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()

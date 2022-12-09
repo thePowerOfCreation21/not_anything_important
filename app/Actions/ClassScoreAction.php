@@ -19,7 +19,7 @@ class ClassScoreAction extends ActionService
             ->setValidationRules([
                 'storeByAdmin' => [
                     'class_course_id' => ['required', 'string', 'max:20'],
-                    'date' => ['required', 'date_format:Y-m-d'],
+                    'date' => ['required', 'date_format:Y-m-d H:i'],
                     'educational_year' => ['nullable', 'string', 'min:2', 'max:50'],
                     'max_score' => ['numeric', 'between:1,999.99'],
                     'students' => ['required', 'array', 'max:100'],
@@ -28,7 +28,7 @@ class ClassScoreAction extends ActionService
                 ],
                 'updateByAdmin' => [
                     // 'class_course_id' => ['string', 'max:20'],
-                    'date' => ['date_format:Y-m-d'],
+                    'date' => ['date_format:Y-m-d H:i'],
                     'educational_year' => ['string', 'min:2', 'max:50'],
                     'max_score' => ['numeric', 'between:1,999.99'],
                     'students' => ['array', 'max:100'],
@@ -42,7 +42,7 @@ class ClassScoreAction extends ActionService
                     'to_date' => ['date_format:Y-m-d'],
                 ]
             ])->setCasts([
-                'date' => ['jalali_to_gregorian:Y-m-d'],
+                'date' => ['jalali_to_gregorian:Y-m-d H:i'],
                 'from_date' => ['jalali_to_gregorian:Y-m-d'],
                 'to_date' => ['jalali_to_gregorian:Y-m-d'],
             ])
