@@ -16,6 +16,9 @@ class FinancialTypeAction extends ActionService
             ->setValidationRules([
                 'store' => [
                     'title' => ['required', 'string', 'max:255']
+                ],
+                'update' => [
+                    'title' => ['string', 'max:255']
                 ]
             ]);
 
