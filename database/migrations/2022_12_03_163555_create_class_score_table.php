@@ -19,6 +19,8 @@ return new class extends Migration
             $table->timestamp('date');
             $table->string('educational_year', 50)->nullable();
             $table->decimal('max_score', 5, 2);
+            $table->string('submitter_type', 100);
+            $table->bigInteger('submitter_id')->unsigned();
             $table->timestamps();
         });
     }
