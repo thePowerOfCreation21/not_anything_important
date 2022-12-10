@@ -151,6 +151,8 @@ Route::group([
 
     Route::post('/admin/financial/type', [FinancialTypeController::class, 'store']);
     Route::get('/admin/financial/type', [FinancialTypeController::class, 'get']);
+    Route::get('/admin/financial/type/{id}', [FinancialTypeController::class, 'getById']);
+
 
     Route::post('/admin', [AdminController::class, 'register']);
     Route::put('/admin/{id}', [AdminController::class, 'updateById']);
