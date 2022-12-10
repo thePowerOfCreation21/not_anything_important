@@ -21,9 +21,9 @@ class ClassScoreStudentModel extends Model
 
     public $timestamps = false;
 
-    public function student (): HasMany
+    public function student (): BelongsTo
     {
-        return $this->hasMany(StudentModel::class, 'student_id', 'id');
+        return $this->belongsTo(StudentModel::class, 'student_id', 'id');
     }
 
     public function classScore(): BelongsTo
