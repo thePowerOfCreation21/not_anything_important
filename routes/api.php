@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FinancialTypeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
@@ -147,6 +148,12 @@ Route::group([
     Route::get('/admin/teacher/{id}', [TeacherController::class, 'getById']);
     Route::get('/admin/teacher/{id}/accept', [TeacherController::class, 'acceptById']);
     Route::get('/admin/teacher/{id}/reject', [TeacherController::class, 'rejectById']);
+
+    Route::post('/admin/financial/type', [FinancialTypeController::class, 'store']);
+    Route::get('/admin/financial/type', [FinancialTypeController::class, 'get']);
+    Route::get('/admin/financial/type/{id}', [FinancialTypeController::class, 'getById']);
+    Route::put('/admin/financial/type/{id}', [FinancialTypeController::class, 'updateById']);
+    Route::delete('/admin/financial/type/{id}', [FinancialTypeController::class, 'deleteById']);
 
     Route::post('/admin', [AdminController::class, 'register']);
     Route::put('/admin/{id}', [AdminController::class, 'updateById']);
