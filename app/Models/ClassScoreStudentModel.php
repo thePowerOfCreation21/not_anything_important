@@ -23,7 +23,7 @@ class ClassScoreStudentModel extends Model
 
     public function student (): HasMany
     {
-        return $this->hasMany(ClassCourseModel::class, 'student_id', 'id');
+        return $this->hasMany(StudentModel::class, 'student_id', 'id');
     }
 
     public function classScore(): BelongsTo
