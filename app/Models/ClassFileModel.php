@@ -19,6 +19,7 @@ class ClassFileModel extends Model
         'class_course_id',
         'class_id',
         'title',
+        'description',
         'file',
         'size',
         'educational_year'

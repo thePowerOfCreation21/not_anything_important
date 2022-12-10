@@ -19,6 +19,7 @@ class ClassFileResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'description' => $this->description,
             'file' => $this->file,
             'size' => $this->size,
             'educational_year' => $this->educational_year,

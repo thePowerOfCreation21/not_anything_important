@@ -23,12 +23,14 @@ class ClassFileAction extends ActionService
                     'class_course_id' => ['nullable', 'string', 'max:20'],
                     'class_id' => ['nullable', 'string', 'max:20'],
                     'title' => ['required', 'string', 'max:20'],
+                    'description' => ['nullable', 'string', 'max:5000'],
                     'file' => ['required', 'file', 'mimes:png,jpg,jpeg,gif,svg,zip,rar,7zip,pdf', 'max:20000']
                 ],
                 'updateByAdmin' => [
                     'class_course_id' => ['nullable', 'string', 'max:20'],
                     'class_id' => ['nullable', 'string', 'max:20'],
                     'title' => ['string', 'max:20'],
+                    'description' => ['nullable', 'string', 'max:5000'],
                     'file' => ['file', 'mimes:png,jpg,jpeg,gif,svg,zip,rar,7zip,pdf', 'max:20000']
                 ],
                 'getQuery' => [

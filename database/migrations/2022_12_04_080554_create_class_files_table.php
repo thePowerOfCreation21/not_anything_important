@@ -20,6 +20,7 @@ return new class extends Migration
             $table->bigInteger('class_course_id')->unsigned()->nullable();
             $table->bigInteger('class_id')->unsigned()->nullable();
             $table->string('title', 250);
+            $table->string('description', 5000)->nullable();
             $table->string('file', 500);
             $table->string('size', 100)->nullable();
             $table->string('educational_year', 50)->nullable();
