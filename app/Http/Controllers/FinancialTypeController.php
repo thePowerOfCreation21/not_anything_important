@@ -67,4 +67,13 @@ class FinancialTypeController extends Controller
                 ->updateByIdAndRequest($id)
         ]);
     }
+
+    public function deleteById(string $id): JsonResponse
+    {
+        return response()->json([
+            'message' => 'deleted',
+            'data' => (new FinancialTypeAction())
+                ->deleteById($id)
+        ]);
+    }
 }
