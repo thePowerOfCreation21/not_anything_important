@@ -150,6 +150,7 @@ Route::group([
     Route::get('/admin/teacher/{id}/reject', [TeacherController::class, 'rejectById']);
 
     Route::post('/admin/financial/type', [FinancialTypeController::class, 'store']);
+    Route::get('/admin/financial/type', [FinancialTypeController::class, 'get']);
 
     Route::post('/admin', [AdminController::class, 'register']);
     Route::put('/admin/{id}', [AdminController::class, 'updateById']);
