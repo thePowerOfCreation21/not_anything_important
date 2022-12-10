@@ -56,6 +56,7 @@ class ClassScoreController extends Controller
                 ->setValidationRule('getQuery')
                 ->setRelations([
                     'classCourse' => ['course', 'teacher', 'classModel'],
+                    'submitter'
                 ])
                 ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()
@@ -73,7 +74,8 @@ class ClassScoreController extends Controller
             (new ClassScoreAction())
                 ->setRelations([
                     'classCourse' => ['course', 'teacher', 'classModel'],
-                    'classScoreStudents' => ['student']
+                    'classScoreStudents' => ['student'],
+                    'submitter'
                 ])
                 ->makeEloquent()
                 ->getById($id)

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Helpers\PardisanHelper;
 use Genocide\Radiocrud\Helpers;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -27,12 +28,7 @@ class ClassFileResource extends JsonResource
             'class_id' => $this->when(! empty($this->class_id), $this->class_id),
             'class' => new ClassCourseResource($this->whenLoaded('classModel')),
             'author_id' => $this->author_id,
-            'author_type' => match ($this->author_type){
-                'App\\Models\\AdminModel' => 'admin',
-                'App\\Models\\StudentModel' => 'student',
-                'App\\Models\\TeacherModel' => 'teacher',
-                default => 'unknown'
-            },
+            'author_type' => PardisanHelper::getUserTypeByUserClass($this->author_type),
             'author' => match ($this->author_type){
                 'App\\Models\\AdminModel' => new AdminResource($this->whenLoaded('author')),
                 'App\\Models\\StudentModel' => new StudentCollectionResource($this->whenLoaded('author')),

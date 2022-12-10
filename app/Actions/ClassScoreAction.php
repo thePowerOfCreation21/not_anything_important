@@ -7,7 +7,9 @@ use App\Http\Resources\ClassScoreResource;
 use App\Models\ClassScoreModel;
 use App\Models\ClassScoreStudentModel;
 use App\Models\StudentModel;
+use Genocide\Radiocrud\Exceptions\CustomException;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
+use JetBrains\PhpStorm\ArrayShape;
 
 class ClassScoreAction extends ActionService
 {
@@ -71,6 +73,37 @@ class ClassScoreAction extends ActionService
     }
 
     /**
+     * @return array
+     * @throws CustomException
+     */
+    #[ArrayShape(['submitter_type' => "string", 'submitter_id' => "mixed"])]
+    public function getSubmitterByRequest (): array
+    {
+        $user = $this->getUserFromRequest();
+
+        return [
+            'submitter_type' => get_class($user),
+            'submitter_id' => $user->id
+        ];
+    }
+
+    /**
+     * @param callable|null $storing
+     * @return mixed
+     * @throws CustomException
+     */
+    public function storeByRequest(callable $storing = null): mixed
+    {
+        return $this->store(
+            array_merge(
+                $this->getDataFromRequest(),
+                $this->getSubmitterByRequest()
+            ),
+            $storing
+        );
+    }
+
+    /**
      * @param array $data
      * @param callable|null $storing
      * @return mixed
@@ -101,6 +134,22 @@ class ClassScoreAction extends ActionService
         ClassScoreStudentModel::insert($classScoreStudents);
 
         return $classScore;
+    }
+
+    /**
+     * @param callable|null $updating
+     * @return bool|int
+     * @throws CustomException
+     */
+    public function updateByRequest(callable $updating = null): bool|int
+    {
+        return $this->update(
+            array_merge(
+                $this->getDataFromRequest(),
+                $this->getSubmitterByRequest()
+            ),
+            $updating
+        );
     }
 
     /**

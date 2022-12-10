@@ -43,4 +43,18 @@ class PardisanHelper
     {
         return CalendarUtils::strftime('n', $time) < 4 ? CalendarUtils::strftime('Y', $time) - 1 : CalendarUtils::strftime('Y', $time);
     }
+
+    /**
+     * @param string $userClass
+     * @return string
+     */
+    public static function getUserTypeByUserClass (string $userClass): string
+    {
+        return match ($userClass){
+            'App\\Models\\AdminModel' => 'admin',
+            'App\\Models\\StudentModel' => 'student',
+            'App\\Models\\TeacherModel' => 'teacher',
+            default => 'unknown'
+        };
+    }
 }

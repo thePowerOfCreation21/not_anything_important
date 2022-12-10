@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Helpers\PardisanHelper;
 use Genocide\Radiocrud\Helpers;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -22,6 +23,14 @@ class ClassScoreResource extends JsonResource
             'max_score' => $this->max_score,
             'class_course_id' => $this->class_course_id,
             'class_course' => new ClassCourseResource($this->whenLoaded('classCourse')),
+            'submitter_id' => $this->submitter_id,
+            'submitter_type' => PardisanHelper::getUserTypeByUserClass($this->submitter_type),
+            'submitter' => match ($this->submitter_type){
+                'App\\Models\\AdminModel' => new AdminResource($this->whenLoaded('submitter')),
+                'App\\Models\\StudentModel' => new StudentCollectionResource($this->whenLoaded('submitter')),
+                'App\\Models\\TeacherModel' => new TeacherResource($this->whenLoaded('submitter')),
+                default => 'unknown'
+            },
             'class_score_students' => ClassScoreStudentResource::collection($this->whenLoaded('classScoreStudents'))
         ];
     }
