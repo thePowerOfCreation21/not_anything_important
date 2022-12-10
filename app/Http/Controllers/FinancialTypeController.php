@@ -24,4 +24,17 @@ class FinancialTypeController extends Controller
                 ->storeByRequest()
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function get(Request $request) : JsonResponse
+    {
+        return response()->json(
+            (new FinancialTypeAction())
+                ->setRequest($request)
+                ->getByRequestAndEloquent()
+        );
+    }
 }
