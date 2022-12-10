@@ -68,6 +68,10 @@ class FinancialTypeController extends Controller
         ]);
     }
 
+    /**
+     * @param string $id
+     * @return JsonResponse
+     */
     public function deleteById(string $id): JsonResponse
     {
         return response()->json([
