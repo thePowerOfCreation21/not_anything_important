@@ -16,7 +16,8 @@ class Financial extends Model
         'description',
         'financial_type_id',
         'amount',
-        'date'
+        'date',
+        'educational_year'
     ];
 
     protected $casts = [
