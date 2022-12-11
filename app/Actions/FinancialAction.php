@@ -22,6 +22,12 @@ class FinancialAction extends ActionService
                     'amount' => ['required', 'int', 'min:0','max:100000000'],
                     'date' => ['required', 'date_format:Y-m-d']
                 ],
+                'update' => [
+                    'title' => [ 'string', 'max:255'],
+                    'description' => ['string', 'max:500'],
+                    'amount' => ['int', 'min:0','max:100000000'],
+                    'date' => ['date_format:Y-m-d']
+                ],
                 'getQuery' => [
                     'educational_year' => ['string', 'max:50'],
                     'financial_type_id' => ['string', 'max:20'],
@@ -65,5 +71,15 @@ class FinancialAction extends ActionService
         $data['educational_year'] = PardisanHelper::getEducationalYearByGregorianDate($data['date']);
 
         return parent::store($data, $storing);
+    }
+
+    public function update(array $updateData, callable $updating = null): bool|int
+    {
+        if(isset($updateData['date']))
+        {
+            $updateData['educational_year'] = PardisanHelper::getEducationalYearByGregorianDate($updateData['date']);
+        }
+
+        return parent::update($updateData, $updating);
     }
 }
