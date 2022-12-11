@@ -36,6 +36,14 @@ class FinancialAction extends ActionService
                 {
                     $eloquent = $eloquent->where('financial_type_id', $query['financial_type_id']);
                 },
+                'from_date' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereDate('date', '>=', $query['from_date']);
+                },
+                'to_date' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereDate('date', '<=', $query['to_date']);
+                },
                 'educational_year' => function (&$eloquent, $query)
                 {
                     if ($query['educational_year']  != '*')
