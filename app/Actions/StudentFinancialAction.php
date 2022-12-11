@@ -5,6 +5,7 @@ namespace App\Actions;
 use App\Helpers\PardisanHelper;
 use App\Http\Resources\StudentFinancialResource;
 use App\Models\StudentFinancialModel;
+use Genocide\Radiocrud\Exceptions\CustomException;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
 
 class StudentFinancialAction extends ActionService
@@ -35,6 +36,10 @@ class StudentFinancialAction extends ActionService
                     'payment_date' => ['nullable', 'date_format:Y-m-d'],
                     'paid' => ['bool'],
                     'check_image' => ['nullable', 'file', 'mimes:png,jpg,jpeg,svg', 'max:3000']
+                ],
+                'sendSms' => [
+                    'student_financials' => ['required', 'array', 'max:100'],
+                    'student_financials.*' => ['integer', 'between:1,999999999999999999']
                 ],
                 'getQuery' => [
                     'student_id' => ['string', 'max:20'],
@@ -73,17 +78,7 @@ class StudentFinancialAction extends ActionService
                 },
                 'can_send_sms' => function (&$eloquent, $query)
                 {
-                    if ($query['can_send_sms'])
-                    {
-                        $eloquent = $eloquent
-                            ->where('paid', false)
-                            ->whereDate('date', '<=', date('Y-m-d', time() + (86400 * 7)));
-                    }
-                    else
-                    {
-                        $eloquent = $eloquent
-                            ->whereDate('date', '>', date('Y-m-d', time() + (86400 * 7)));
-                    }
+                    $eloquent = $eloquent->canSendSms($query['can_send_sms']);
                 }
             ]);
 
@@ -178,6 +173,10 @@ class StudentFinancialAction extends ActionService
         return parent::update($updateData, $updating);
     }
 
+    /**
+     * @param callable|null $deleting
+     * @return mixed
+     */
     public function delete(callable $deleting = null): mixed
     {
         $deleting = function (&$eloquent) use ($deleting)
@@ -212,5 +211,46 @@ class StudentFinancialAction extends ActionService
         };
 
         return parent::delete($deleting);
+    }
+
+    /**
+     * @return bool
+     * @throws CustomException
+     */
+    public function sendSmsByRequest (): bool
+    {
+        return $this->sendSmsByIds(
+            $this->getDataFromRequest()['student_financials'] ?? []
+        );
+    }
+
+    /**
+     * @param array $studentFinancialIds
+     * @return bool
+     */
+    public function sendSmsByIds (array $studentFinancialIds): bool
+    {
+        $currentTime = time();
+
+        foreach (
+            StudentFinancialModel::query()
+                ->whereHas('student')
+                ->canSendSms()
+                ->whereIn('id', $studentFinancialIds)
+                ->get()
+            AS $studentFinancial
+        )
+        {
+            if (strtotime($studentFinancial->date) <= $currentTime)
+            {
+                // TODO: send overdue payment sms
+            }
+            else
+            {
+                // TODO: send near-due payment sms
+            }
+        }
+
+        return true;
     }
 }

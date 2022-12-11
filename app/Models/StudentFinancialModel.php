@@ -32,8 +32,21 @@ class StudentFinancialModel extends Model
 
     public $timestamps = false;
 
+    // relations
     public function student (): BelongsTo
     {
         return $this->belongsTo(StudentModel::class, 'student_id', 'id');
+    }
+
+    // scopes
+    public function scopeCanSendSms ($q, bool $canSendSms = true): mixed
+    {
+        $condition = $canSendSms ? 'where' : 'whereNot';
+        return $q
+            ->$condition(function ($q){
+                $q
+                    ->where('paid', false)
+                    ->whereDate('date', '<=', date('Y-m-d', time() + (86400 * 7)));
+            });
     }
 }

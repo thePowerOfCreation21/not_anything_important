@@ -84,4 +84,20 @@ class StudentFinancialController extends Controller
                 ->deleteById($id)
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function sendSms (Request $request): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new StudentFinancialAction())
+                ->setRequest($request)
+                ->setValidationRule('sendSms')
+                ->sendSmsByRequest()
+        ]);
+    }
 }
