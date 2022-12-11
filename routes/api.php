@@ -156,7 +156,8 @@ Route::group([
     Route::put('/admin/financial/type/{id}', [FinancialTypeController::class, 'updateById']);
     Route::delete('/admin/financial/type/{id}', [FinancialTypeController::class, 'deleteById']);
 
-    Route::post('/admin/financial', [FinancialController::class, 'store']);
+    Route::post('/admin/financial/', [FinancialController::class, 'store']);
+    Route::get('/admin/financial/', [FinancialController::class, 'get']);
 
     Route::post('/admin', [AdminController::class, 'register']);
     Route::put('/admin/{id}', [AdminController::class, 'updateById']);
