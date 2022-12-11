@@ -18,8 +18,9 @@ return new class extends Migration
             $table->string('title', 255);
             $table->string('description', 500);
             $table->string('financial_type_id', 20);
-            $table->integer('amount', 20);
+            $table->integer('amount');
             $table->timestamp('date');
+            $table->string('educational_year', 50);
         });
     }
 
