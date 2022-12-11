@@ -40,6 +40,7 @@ class StudentFinancialAction extends ActionService
                     'student_id' => ['string', 'max:20'],
                     'from_date' => ['date_format:Y-m-d'],
                     'to_date' => ['date_format:Y-m-d'],
+                    'can_send_sms' => ['boolean'],
                     'educational_year' => ['string', 'max:50']
                 ]
             ])
@@ -70,6 +71,20 @@ class StudentFinancialAction extends ActionService
                 {
                     $eloquent = $eloquent->whereDate('date', '<=', $query['from_date']);
                 },
+                'can_send_sms' => function (&$eloquent, $query)
+                {
+                    if ($query['can_send_sms'])
+                    {
+                        $eloquent = $eloquent
+                            ->where('paid', false)
+                            ->whereDate('date', '<=', date('Y-m-d', time() + (86400 * 7)));
+                    }
+                    else
+                    {
+                        $eloquent = $eloquent
+                            ->whereDate('date', '>', date('Y-m-d', time() + (86400 * 7)));
+                    }
+                }
             ]);
 
         parent::__construct();
