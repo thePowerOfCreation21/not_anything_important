@@ -38,11 +38,15 @@ class StudentFinancialAction extends ActionService
                 ],
                 'getQuery' => [
                     'student_id' => ['string', 'max:20'],
+                    'from_date' => ['date_format:Y-m-d'],
+                    'to_date' => ['date_format:Y-m-d'],
                     'educational_year' => ['string', 'max:50']
                 ]
             ])
             ->setCasts([
                 'date' => ['jalali_to_gregorian:Y-m-d'],
+                'from_date' => ['jalali_to_gregorian:Y-m-d'],
+                'to_date' => ['jalali_to_gregorian:Y-m-d'],
                 'payment_date' => ['jalali_to_gregorian:Y-m-d'],
                 'check_image' => ['file', 'nullable']
             ])
@@ -57,6 +61,14 @@ class StudentFinancialAction extends ActionService
                     {
                         $eloquent = $eloquent->where('educational_year', $query['educational_year']);
                     }
+                },
+                'from_date' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereDate('date', '>=', $query['from_date']);
+                },
+                'to_date' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereDate('date', '<=', $query['from_date']);
                 },
             ]);
 
