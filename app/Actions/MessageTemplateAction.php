@@ -12,7 +12,14 @@ class MessageTemplateAction extends ActionService
     {
         $this
             ->setModel(MessageTemplate::class)
-            ->setResource(MessageTemplateResource::class);
+            ->setResource(MessageTemplateResource::class)
+            ->setValidationRules([
+                'store' => [
+                    'name' => ['required', 'string', 'max:255'],
+                    'text' => ['required', 'string', 'max:500'],
+                    'sms_status' => ['bool']
+                ]
+            ]);
 
         parent::__construct();
     }
