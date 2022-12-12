@@ -17,6 +17,7 @@ use App\Http\Controllers\TeacherSkillController;
 use App\Http\Controllers\ClassMessagesController;
 use App\Http\Controllers\WalletHistoryController;
 use App\Http\Controllers\FinancialTypeController;
+use App\Http\Controllers\MessageTemplateController;
 use App\Http\Controllers\EducationalYearController;
 use App\Http\Controllers\StudentFinancialController;
 use App\Http\Controllers\GeneralStatisticController;
@@ -162,6 +163,8 @@ Route::group([
     Route::get('/admin/financial/{id}', [FinancialController::class, 'getById']);
     Route::put('/admin/financial/{id}', [FinancialController::class, 'updateById']);
     Route::delete('/admin/financial/{id}', [FinancialController::class, 'deleteById']);
+
+    Route::post('/admin/message/template', [MessageTemplateController::class, 'store']);
 
     Route::post('/admin', [AdminController::class, 'register']);
     Route::put('/admin/{id}', [AdminController::class, 'updateById']);
