@@ -18,6 +18,11 @@ class MessageTemplateAction extends ActionService
                     'name' => ['required', 'string', 'max:255'],
                     'text' => ['required', 'string', 'max:500'],
                     'sms_status' => ['bool']
+                ],
+                'update' => [
+                    'name' => ['string', 'max:255'],
+                    'text' => ['string', 'max:500'],
+                    'sms_status' => ['bool']
                 ]
             ]);
 
