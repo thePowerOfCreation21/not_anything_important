@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\FinancialController;
 use App\Http\Controllers\ClassFileController;
@@ -169,6 +170,8 @@ Route::group([
     Route::get('/admin/message/template/{id}', [MessageTemplateController::class, 'getById']);
     Route::put('/admin/message/template/{id}', [MessageTemplateController::class, 'updateById']);
     Route::delete('/admin/message/template/{id}', [MessageTemplateController::class, 'deleteById']);
+
+    Route::post('/admin/student/message', [MessageController::class, 'store']);
 
     Route::post('/admin', [AdminController::class, 'register']);
     Route::put('/admin/{id}', [AdminController::class, 'updateById']);
