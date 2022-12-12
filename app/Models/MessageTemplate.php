@@ -16,4 +16,8 @@ class MessageTemplate extends Model
         'text',
         'sms_status'
     ];
+
+    protected $casts = [
+        'sms_status' => 'boolean'
+    ];
 }

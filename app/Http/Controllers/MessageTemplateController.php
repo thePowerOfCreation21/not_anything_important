@@ -25,4 +25,31 @@ class MessageTemplateController extends Controller
                 ->storeByRequest()
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function get(Request $request): JsonResponse
+    {
+        return response()->json(
+            (new MessageTemplateAction())
+                ->setRequest($request)
+                ->getByRequestAndEloquent()
+        );
+    }
+
+    /**
+     * @param string $id
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getById(string $id): JsonResponse
+    {
+        return response()->json(
+            (new MessageTemplateAction())
+                ->getById($id)
+        );
+    }
 }
