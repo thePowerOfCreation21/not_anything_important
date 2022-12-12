@@ -165,6 +165,8 @@ Route::group([
     Route::delete('/admin/financial/{id}', [FinancialController::class, 'deleteById']);
 
     Route::post('/admin/message/template', [MessageTemplateController::class, 'store']);
+    Route::get('/admin/message/template', [MessageTemplateController::class, 'get']);
+    Route::get('/admin/message/template/{id}', [MessageTemplateController::class, 'getById']);
 
     Route::post('/admin', [AdminController::class, 'register']);
     Route::put('/admin/{id}', [AdminController::class, 'updateById']);
