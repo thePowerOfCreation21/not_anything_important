@@ -168,6 +168,7 @@ Route::group([
     Route::get('/admin/message/template', [MessageTemplateController::class, 'get']);
     Route::get('/admin/message/template/{id}', [MessageTemplateController::class, 'getById']);
     Route::put('/admin/message/template/{id}', [MessageTemplateController::class, 'updateById']);
+    Route::delete('/admin/message/template/{id}', [MessageTemplateController::class, 'deleteById']);
 
     Route::post('/admin', [AdminController::class, 'register']);
     Route::put('/admin/{id}', [AdminController::class, 'updateById']);
