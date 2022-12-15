@@ -13,7 +13,7 @@ class MessageStudent extends Model
 
     protected $fillable = [
         'student_id',
-        'template_id',
+        'message_id',
         'is_seen'
     ];
 

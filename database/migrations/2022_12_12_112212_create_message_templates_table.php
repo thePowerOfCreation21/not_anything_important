@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', '255');
             $table->string('text', '500');
-            $table->boolean('sms_status')->default(false);
+            $table->boolean('is_smsable')->default(false);
             $table->timestamps();
         });
     }

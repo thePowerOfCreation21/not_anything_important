@@ -22,8 +22,8 @@ class MessageAction extends ActionService
                     'type' => ['required', 'string', 'in:sms,notification,toast'],
                     'text' => ['string', 'max:500'],
                     'template_id' => ['string', 'max:20'],
-                    'students_id' => ['required','array', 'max:100'],
-                    'students_id.*.student_id' => ['required', 'string', 'max:20']
+                    'students' => ['required','array', 'max:100'],
+                    'students.*' => ['required', 'integer', 'between:1,999999999999999999']
                 ]
             ]);
 
@@ -43,7 +43,7 @@ class MessageAction extends ActionService
         {
             $templateObject = (new MessageTemplateAction())->getById($data['template_id']);
 
-            if($templateObject->sms_status)
+            if($templateObject->is_smsable)
             {
                 //we have to send sms later.
             }
@@ -53,15 +53,17 @@ class MessageAction extends ActionService
 
         $message = parent::store($data, $storing);
 
-        $studentsId = [];
+        $messageStudents = [];
 
-        foreach ($data['students_id'] as $studentId)
+        foreach ($data['students'] as $studentId)
         {
-            $studentsId[$studentId['student_id']] = $studentId;
-            $studentsId[$studentId['student_id']]['message_id'] = $message->id;
+            $messageStudents[] = [
+                'student_id' => $studentId,
+                'message_id' => $message->id
+            ];
         }
 
-        MessageStudent::insert(array_values($studentsId));
+        MessageStudent::insert($messageStudents);
 
         return $message;
     }

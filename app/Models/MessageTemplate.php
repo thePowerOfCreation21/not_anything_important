@@ -14,10 +14,10 @@ class MessageTemplate extends Model
     protected $fillable = [
         'name',
         'text',
-        'sms_status'
+        'is_smsable'
     ];
 
     protected $casts = [
-        'sms_status' => 'boolean'
+        'is_smsable' => 'boolean'
     ];
 }
