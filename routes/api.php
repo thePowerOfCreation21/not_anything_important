@@ -1,13 +1,14 @@
 <?php
 
-use App\Http\Controllers\FinancialTypeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\FinancialController;
 use App\Http\Controllers\ClassFileController;
 use App\Http\Controllers\ClassScoreController;
 use App\Http\Controllers\AttendanceController;
@@ -16,6 +17,8 @@ use App\Http\Controllers\ClassReportsController;
 use App\Http\Controllers\TeacherSkillController;
 use App\Http\Controllers\ClassMessagesController;
 use App\Http\Controllers\WalletHistoryController;
+use App\Http\Controllers\FinancialTypeController;
+use App\Http\Controllers\MessageTemplateController;
 use App\Http\Controllers\EducationalYearController;
 use App\Http\Controllers\StudentFinancialController;
 use App\Http\Controllers\GeneralStatisticController;
@@ -155,6 +158,20 @@ Route::group([
     Route::get('/admin/financial/type/{id}', [FinancialTypeController::class, 'getById']);
     Route::put('/admin/financial/type/{id}', [FinancialTypeController::class, 'updateById']);
     Route::delete('/admin/financial/type/{id}', [FinancialTypeController::class, 'deleteById']);
+
+    Route::post('/admin/financial/', [FinancialController::class, 'store']);
+    Route::get('/admin/financial/', [FinancialController::class, 'get']);
+    Route::get('/admin/financial/{id}', [FinancialController::class, 'getById']);
+    Route::put('/admin/financial/{id}', [FinancialController::class, 'updateById']);
+    Route::delete('/admin/financial/{id}', [FinancialController::class, 'deleteById']);
+
+    Route::post('/admin/message/template', [MessageTemplateController::class, 'store']);
+    Route::get('/admin/message/template', [MessageTemplateController::class, 'get']);
+    Route::get('/admin/message/template/{id}', [MessageTemplateController::class, 'getById']);
+    Route::put('/admin/message/template/{id}', [MessageTemplateController::class, 'updateById']);
+    Route::delete('/admin/message/template/{id}', [MessageTemplateController::class, 'deleteById']);
+
+    Route::post('/admin/student/message', [MessageController::class, 'store']);
 
     Route::post('/admin', [AdminController::class, 'register']);
     Route::put('/admin/{id}', [AdminController::class, 'updateById']);
