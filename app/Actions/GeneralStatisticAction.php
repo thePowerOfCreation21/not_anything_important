@@ -2,53 +2,114 @@
 
 namespace App\Actions;
 
+use App\Helpers\PardisanHelper;
 use App\Http\Resources\GeneralStatisticResource;
 use App\Models\GeneralStatisticModel;
+use Genocide\Radiocrud\Exceptions\CustomException;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
+use JetBrains\PhpStorm\ArrayShape;
 
 class GeneralStatisticAction extends ActionService
 {
     public function __construct()
     {
         $this
-            ->setModel(GeneralStatisticModel::class)
-            ->setResource(GeneralStatisticResource::class)
             ->setValidationRules([
                 'getQuery' => [
-                    'label' => ['string', 'max:150'],
-                    'educational_year' => ['string', 'max:50']
+                    'from_date' => ['date_format:Y-m-d'],
+                    'to_date' => ['date_format:Y-m-d'],
                 ]
             ])
-            ->setQueryToEloquentClosures([
-                'label' => function (&$eloquent, $query)
-                {
-                    $eloquent = $eloquent->where('label', $query['label']);
-                },
-                'educational_year' => function (&$eloquent, $query)
-                {
-                    if ($query['educational_year']  != '*')
-                    {
-                        $eloquent = $eloquent->where('educational_year', $query['educational_year']);
-                    }
-                }
-            ])
-            ->setOrderBy(['educational_year' => 'DESC']);
+            ->setCasts([
+                'from_date' => ['jalali_to_gregorian:Y-m-d'],
+                'to_date' => ['jalali_to_gregorian:Y-m-d'],
+            ]);
 
         parent::__construct();
     }
 
     /**
-     * @param string $label
-     * @param string $educationalYear
-     * @return mixed
+     * @param array $query
+     * @return int[]
      */
-    public function getFirstByLabelAndEducationalYearOrCreate(string $label, string $educationalYear): mixed
+    #[ArrayShape(['paid' => "int|mixed", 'not_paid' => "int|mixed", 'total' => "int|mixed"])]
+    public function getStudentFinancialStatistics (array $query): array
     {
-        $generalStatistic = GeneralStatisticModel::where('label', $label)->where('educational_year', $educationalYear)->first();
+        $stats = [
+            'paid' => 0,
+            'not_paid' => 0,
+            'total' => 0
+        ];
 
-        return empty($generalStatistic) ? GeneralStatisticModel::create([
-            'label' => $label,
-            'educational_year' => $educationalYear
-        ]) : $generalStatistic;
+        foreach (
+            (new StudentFinancialAction())
+                ->setQuery($query)
+                ->makeEloquent()
+                ->getByEloquent()
+            AS $studentFinancial
+        )
+        {
+            if ($studentFinancial->paid)
+            {
+                $stats['paid'] += $studentFinancial->amount;
+            }
+            else
+            {
+                $stats['not_paid'] += $studentFinancial->amount;
+            }
+            $stats['total'] += $studentFinancial->amount;
+        }
+
+        return $stats;
+    }
+
+    /**
+     * @param array $query
+     * @return int[]
+     */
+    #[ArrayShape(['total' => "int|mixed"])]
+    public function getTeacherFinancialStatistics (array $query): array
+    {
+        $stats = [
+            'total' => 0
+        ];
+
+        foreach (
+            (new TeacherFinancialAction())
+                ->setQuery($query)
+                ->makeEloquent()
+                ->getByEloquent()
+            AS $teacherFinancial
+        )
+        {
+            $stats['total'] += $teacherFinancial->amount;
+        }
+
+        return $stats;
+    }
+
+    /**
+     * @param array $query
+     * @return array
+     */
+    #[ArrayShape(['student_financial' => "int[]", 'teacher_financial' => "int[]"])]
+    public function get (array $query): array
+    {
+        $query['educational_year'] = $query['educational_year'] ?? PardisanHelper::getCurrentEducationalYear();
+
+        return [
+            'student_financial' => $this->getStudentFinancialStatistics($query),
+            'teacher_financial' => $this->getTeacherFinancialStatistics($query)
+        ];
+    }
+
+    /**
+     * @return array
+     * @throws CustomException
+     */
+    #[ArrayShape(['student_financial' => "int[]", 'teacher_financial' => "int[]"])]
+    public function getByRequest (): array
+    {
+        return $this->get($this->getDataFromRequest());
     }
 }

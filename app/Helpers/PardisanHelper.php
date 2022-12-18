@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Models\StudentFinancialModel;
 use Morilog\Jalali\CalendarUtils;
 
 class PardisanHelper
@@ -56,5 +57,31 @@ class PardisanHelper
             'App\\Models\\TeacherModel' => 'teacher',
             default => 'unknown'
         };
+    }
+
+    /**
+     * @param $studentFinancial
+     * @return string
+     */
+    public static function getStudentFinancialPaymentStatus ($studentFinancial): string
+    {
+        if ($studentFinancial->paid)
+        {
+            return 'paid';
+        }
+
+        $due_time = strtotime($studentFinancial->date);
+        $current_time = time();
+
+        if ($due_time < $current_time)
+        {
+            return 'passed';
+        }
+        if ($due_time <= ($current_time + (86400 * 7)))
+        {
+            return 'near-due';
+        }
+
+        return 'not_paid';
     }
 }

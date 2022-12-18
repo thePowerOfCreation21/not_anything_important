@@ -22,9 +22,7 @@ class GeneralStatisticController extends Controller
             (new GeneralStatisticAction())
                 ->setRequest($request)
                 ->setValidationRule('getQuery')
-                ->mergeQueryWith(['educational_year' => PardisanHelper::getCurrentEducationalYear()])
-                ->makeEloquentViaRequest()
-                ->getByRequestAndEloquent()
+                ->getByRequest()
         );
     }
 }
