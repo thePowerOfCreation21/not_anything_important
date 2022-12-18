@@ -10,6 +10,7 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\FinancialController;
 use App\Http\Controllers\ClassFileController;
+use App\Http\Controllers\AdviceDateController;
 use App\Http\Controllers\ClassScoreController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ClassCourseController;
@@ -172,6 +173,12 @@ Route::group([
     Route::delete('/admin/message/template/{id}', [MessageTemplateController::class, 'deleteById']);
 
     Route::post('/admin/student/message', [MessageController::class, 'store']);
+
+    Route::post('/admin/advice/date', [AdviceDateController::class, 'store']);
+    Route::get('/admin/advice/date', [AdviceDateController::class, 'get']);
+    Route::get('/admin/advice/date/{id}', [AdviceDateController::class, 'getById']);
+    Route::put('/admin/advice/date/{id}', [AdviceDateController::class, 'updateById']);
+    Route::delete('/admin/advice/date/{id}', [AdviceDateController::class, 'deleteById']);
 
     Route::post('/admin', [AdminController::class, 'register']);
     Route::put('/admin/{id}', [AdminController::class, 'updateById']);
