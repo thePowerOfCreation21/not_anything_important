@@ -72,4 +72,17 @@ class AdviceDateController extends Controller
             (new AdviceDateAction())->getById($id)
         );
     }
+
+    /**
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function deleteById(string $id): JsonResponse
+    {
+        return response()->json([
+            'message' => 'deleted',
+            'data' => (new AdviceDateAction())
+                ->deleteById($id)
+        ]);
+    }
 }
