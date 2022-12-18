@@ -43,4 +43,21 @@ class AdviceDateController extends Controller
                 ->getByRequestAndEloquent()
         );
     }
+
+    /**
+     * @param Request $request
+     * @param string $id
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function updateById(Request $request, string $id): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new AdviceDateAction())
+                ->setRequest($request)
+                ->setValidationRule('update')
+                ->updateByIdAndRequest($id)
+        ]);
+    }
 }

@@ -18,6 +18,9 @@ class AdviceDateAction extends ActionService
                 'store' => [
                     'date' => ['required', 'date_format:Y-m-d']
                 ],
+                'update' => [
+                    'date' => ['date_format:Y-m-d']
+                ],
                 'getQuery' => [
                     'educational_year' => ['string', 'max:50']
                 ]
