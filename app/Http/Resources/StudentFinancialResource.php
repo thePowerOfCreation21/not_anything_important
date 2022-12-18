@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Helpers\PardisanHelper;
 use Genocide\Radiocrud\Helpers;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -24,6 +25,7 @@ class StudentFinancialResource extends JsonResource
             'paid' => $this->paid,
             'date' => Helpers::getCustomDateCast($this->date),
             'payment_date' => Helpers::getCustomDateCast($this->payment_date),
+            'payment_status' => PardisanHelper::getStudentFinancialPaymentStatus($this),
             'educational_year' => $this->educational_year,
             'check_image' => $this->check_image,
             'student_id' => $this->student_id,
