@@ -60,4 +60,16 @@ class AdviceDateController extends Controller
                 ->updateByIdAndRequest($id)
         ]);
     }
+
+    /**
+     * @param string $id
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getById(string $id): JsonResponse
+    {
+        return response()->json(
+            (new AdviceDateAction())->getById($id)
+        );
+    }
 }
