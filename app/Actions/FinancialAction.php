@@ -31,11 +31,15 @@ class FinancialAction extends ActionService
                 'getQuery' => [
                     'educational_year' => ['string', 'max:50'],
                     'financial_type_id' => ['string', 'max:20'],
-                    'search' => ['string', 'max:255']
+                    'search' => ['string', 'max:255'],
+                    'from_date' => ['date_format:Y-m-d'],
+                    'to_date' => ['date_format:Y-m-d'],
                 ]
             ])
             ->setCasts([
-                'date' => ['jalali_to_gregorian:Y-m-d']
+                'date' => ['jalali_to_gregorian:Y-m-d'],
+                'from_date' => ['jalali_to_gregorian:Y-m-d'],
+                'to_date' => ['jalali_to_gregorian:Y-m-d'],
             ])
             ->setQueryToEloquentClosures([
                 'financial_type_id' => function (&$eloquent, $query)
