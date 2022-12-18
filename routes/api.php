@@ -178,6 +178,7 @@ Route::group([
     Route::get('/admin/advice/date', [AdviceDateController::class, 'get']);
     Route::get('/admin/advice/date/{id}', [AdviceDateController::class, 'getById']);
     Route::put('/admin/advice/date/{id}', [AdviceDateController::class, 'updateById']);
+    Route::delete('/admin/advice/date/{id}', [AdviceDateController::class, 'deleteById']);
 
     Route::post('/admin', [AdminController::class, 'register']);
     Route::put('/admin/{id}', [AdminController::class, 'updateById']);
