@@ -17,10 +17,22 @@ class AdviceDateAction extends ActionService
             ->setValidationRules([
                 'store' => [
                     'date' => ['required', 'date_format:Y-m-d']
+                ],
+                'getQuery' => [
+                    'educational_year' => ['string', 'max:50']
                 ]
             ])
             ->setCasts([
                 'date' => ['jalali_to_gregorian:Y-m-d']
+            ])
+            ->setQueryToEloquentClosures([
+                'educational_year' => function (&$eloquent, $query)
+                {
+                    if ($query['educational_year']  != '*')
+                    {
+                        $eloquent = $eloquent->where('educational_year', $query['educational_year']);
+                    }
+                }
             ]);
         parent::__construct();
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PardisanHelper;
 use Illuminate\Http\Request;
 use App\Models\AdviceDateModel;
 use App\Actions\AdviceDateAction;
@@ -24,5 +25,22 @@ class AdviceDateController extends Controller
                 ->setValidationRule('store')
                 ->storeByRequest()
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function get(Request $request): JsonResponse
+    {
+        return response()->json(
+            (new AdviceDateAction())
+                ->setRequest($request)
+                ->setValidationRule('getQuery')
+                ->mergeQueryWith(['educational_year' => PardisanHelper::getCurrentEducationalYear()])
+                ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
     }
 }
