@@ -176,6 +176,7 @@ Route::group([
 
     Route::post('/admin/advice/date', [AdviceDateController::class, 'store']);
     Route::get('/admin/advice/date', [AdviceDateController::class, 'get']);
+    Route::put('/admin/advice/date/{id}', [AdviceDateController::class, 'updateById']);
 
     Route::post('/admin', [AdminController::class, 'register']);
     Route::put('/admin/{id}', [AdminController::class, 'updateById']);
