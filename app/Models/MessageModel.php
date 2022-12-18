@@ -5,19 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MessageTemplate extends Model
+class MessageModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'message_templates';
+    protected $table = 'messages';
 
     protected $fillable = [
-        'name',
+        'type',
         'text',
-        'is_smsable'
-    ];
-
-    protected $casts = [
-        'is_smsable' => 'boolean'
     ];
 }

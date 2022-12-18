@@ -2,9 +2,9 @@
 
 namespace App\Actions;
 
-use App\Models\MessageStudent;
+use App\Models\MessageStudentModel;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
-use App\Models\Message;
+use App\Models\MessageModel;
 use App\Actions\MessageStudentAction;
 use App\Actions\MessageTemplateAction;
 use Genocide\Radiocrud\Exceptions\CustomException;
@@ -15,7 +15,7 @@ class MessageAction extends ActionService
     public function __construct()
     {
         $this
-            ->setModel(Message::class)
+            ->setModel(MessageModel::class)
             ->setResource(MessageResource::class)
             ->setValidationRules([
                 'store' => [
@@ -63,7 +63,7 @@ class MessageAction extends ActionService
             ];
         }
 
-        MessageStudent::insert($messageStudents);
+        MessageStudentModel::insert($messageStudents);
 
         return $message;
     }

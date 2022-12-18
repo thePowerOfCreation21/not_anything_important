@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\MessageTemplate;
+use App\Models\MessageTemplateModel;
 use App\Actions\MessageTemplateAction;
 use Illuminate\Http\JsonResponse;
 use Genocide\Radiocrud\Exceptions\CustomException;
