@@ -3,7 +3,7 @@
 namespace App\Actions;
 
 use Genocide\Radiocrud\Services\ActionService\ActionService;
-use App\Models\Financial;
+use App\Models\FinancialModel;
 use App\Http\Resources\FinancialResource;
 use App\Helpers\PardisanHelper;
 
@@ -12,7 +12,7 @@ class FinancialAction extends ActionService
     public function __construct()
     {
         $this
-            ->setModel(Financial::class)
+            ->setModel(FinancialModel::class)
             ->setResource(FinancialResource::class)
             ->setValidationRules([
                 'store' => [

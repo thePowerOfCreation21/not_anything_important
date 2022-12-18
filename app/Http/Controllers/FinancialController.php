@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\PardisanHelper;
 use http\Env\Response;
 use Illuminate\Http\Request;
-use App\Models\Financial;
+use App\Models\FinancialModel;
 use App\Actions\FinancialAction;
 use Illuminate\Http\JsonResponse;
 use Genocide\Radiocrud\Exceptions\CustomException;

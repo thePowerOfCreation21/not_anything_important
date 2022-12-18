@@ -3,7 +3,7 @@
 namespace App\Actions;
 
 use Genocide\Radiocrud\Services\ActionService\ActionService;
-use App\Models\MessageTemplate;
+use App\Models\MessageTemplateModel;
 use App\Http\Resources\MessageTemplateResource;
 
 class MessageTemplateAction extends ActionService
@@ -11,7 +11,7 @@ class MessageTemplateAction extends ActionService
     public function __construct()
     {
         $this
-            ->setModel(MessageTemplate::class)
+            ->setModel(MessageTemplateModel::class)
             ->setResource(MessageTemplateResource::class)
             ->setValidationRules([
                 'store' => [

@@ -4,14 +4,14 @@ namespace App\Actions;
 
 use App\Http\Resources\FinancialTypeResource;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
-use App\Models\FinancialType;
+use App\Models\FinancialTypeModel;
 
 class FinancialTypeAction extends ActionService
 {
     public function __construct()
     {
         $this
-            ->setModel(FinancialType::class)
+            ->setModel(FinancialTypeModel::class)
             ->setResource(FinancialTypeResource::class)
             ->setValidationRules([
                 'store' => [
