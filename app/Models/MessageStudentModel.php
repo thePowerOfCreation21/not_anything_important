@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class MessageStudentModel extends Model
 {
@@ -20,4 +21,9 @@ class MessageStudentModel extends Model
     protected $casts = [
         'is_seen' => 'boolean'
     ];
+
+    public function student (): BelongsTo
+    {
+        return $this->belongsTo(StudentModel::class, 'student_id', 'id');
+    }
 }
