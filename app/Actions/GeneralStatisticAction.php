@@ -90,16 +90,42 @@ class GeneralStatisticAction extends ActionService
 
     /**
      * @param array $query
+     * @return int[]
+     */
+    #[ArrayShape(['total' => "int|mixed"])]
+    public function getFinancialStatistics (array $query): array
+    {
+        $stats = [
+            'total' => 0
+        ];
+
+        foreach (
+            (new FinancialAction())
+                ->setQuery($query)
+                ->makeEloquent()
+                ->getByEloquent()
+            AS $financial
+        )
+        {
+            $stats['total'] += $financial->amount;
+        }
+
+        return $stats;
+    }
+
+    /**
+     * @param array $query
      * @return array
      */
-    #[ArrayShape(['student_financial' => "int[]", 'teacher_financial' => "int[]"])]
+    #[ArrayShape(['student_financial' => "int[]", 'teacher_financial' => "int[]", 'financial' => "int[]"])]
     public function get (array $query): array
     {
         $query['educational_year'] = $query['educational_year'] ?? PardisanHelper::getCurrentEducationalYear();
 
         return [
             'student_financial' => $this->getStudentFinancialStatistics($query),
-            'teacher_financial' => $this->getTeacherFinancialStatistics($query)
+            'teacher_financial' => $this->getTeacherFinancialStatistics($query),
+            'financial' => $this->getFinancialStatistics($query)
         ];
     }
 
@@ -107,7 +133,7 @@ class GeneralStatisticAction extends ActionService
      * @return array
      * @throws CustomException
      */
-    #[ArrayShape(['student_financial' => "int[]", 'teacher_financial' => "int[]"])]
+    #[ArrayShape(['student_financial' => "int[]", 'teacher_financial' => "int[]", 'financial' => "int[]"])]
     public function getByRequest (): array
     {
         return $this->get($this->getDataFromRequest());
