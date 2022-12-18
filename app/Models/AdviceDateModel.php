@@ -13,7 +13,7 @@ class AdviceDateModel extends Model
 
     protected $fillable = [
         'date',
-        'educational_date'
+        'educational_year'
     ];
 
     public $timestamps = false;
