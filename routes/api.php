@@ -10,6 +10,7 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\FinancialController;
 use App\Http\Controllers\ClassFileController;
+use App\Http\Controllers\AdviceHourController;
 use App\Http\Controllers\AdviceDateController;
 use App\Http\Controllers\ClassScoreController;
 use App\Http\Controllers\AttendanceController;
@@ -188,6 +189,8 @@ Route::group([
     Route::get('/admin/advice/date/{id}', [AdviceDateController::class, 'getById']);
     Route::put('/admin/advice/date/{id}', [AdviceDateController::class, 'updateById']);
     Route::delete('/admin/advice/date/{id}', [AdviceDateController::class, 'deleteById']);
+
+    Route::post('/admin/advice/hour', [AdviceHourController::class, 'store']);
 
     Route::post('/admin', [AdminController::class, 'register']);
     Route::put('/admin/{id}', [AdminController::class, 'updateById']);
