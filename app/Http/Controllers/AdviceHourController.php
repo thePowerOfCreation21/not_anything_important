@@ -27,12 +27,29 @@ class AdviceHourController extends Controller
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function get(Request $request): JsonResponse
     {
         return response()->json(
             (new AdviceHourAction())
                 ->setRequest($request)
                 ->getByRequestAndEloquent()
+        );
+    }
+
+    /**
+     * @param string $id
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getById(string $id): JsonResponse
+    {
+        return response()->json(
+            (new AdviceHourAction())
+                ->getById($id)
         );
     }
 }
