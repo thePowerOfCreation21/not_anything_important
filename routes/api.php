@@ -25,6 +25,7 @@ use App\Http\Controllers\StudentFinancialController;
 use App\Http\Controllers\GeneralStatisticController;
 use App\Http\Controllers\TeacherFinancialController;
 use App\Http\Controllers\ContactUsContentController;
+use App\Http\Controllers\InventoryProductController;
 use App\Http\Controllers\StudentDisciplineController;
 use App\Http\Controllers\AttendanceStudentController;
 use App\Http\Controllers\ClassScoreStudentController;
@@ -55,6 +56,8 @@ Route::get('/contact_us_content', [ContactUsContentController::class, 'get']);
 Route::group([
     'middleware' => ['auth:admin']
 ], function(){
+    Route::post('/admin/inventory_product', [InventoryProductController::class, 'store']);
+
     Route::put('/admin/contact_us_content', [ContactUsContentController::class, 'update']);
 
     Route::post('/admin/student/wallet', [WalletHistoryController::class, 'store']);
