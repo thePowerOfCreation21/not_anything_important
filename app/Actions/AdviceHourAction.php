@@ -16,6 +16,9 @@ class AdviceHourAction extends ActionService
             ->setValidationRules([
                 'store' => [
                     'hour' => ['required', 'date_format:H:i:s']
+                ],
+                'update' => [
+                    'hour' => ['date_format:H:i:s']
                 ]
             ]);
         parent::__construct();

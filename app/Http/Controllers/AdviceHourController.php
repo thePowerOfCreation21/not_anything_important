@@ -52,4 +52,21 @@ class AdviceHourController extends Controller
                 ->getById($id)
         );
     }
+
+    /**
+     * @param Request $request
+     * @param string $id
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function updateById(Request $request, string $id): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new AdviceHourAction())
+                ->setRequest($request)
+                ->setValidationRule('update')
+                ->updateByIdAndRequest($id)
+         ]);
+    }
 }
