@@ -69,4 +69,17 @@ class AdviceHourController extends Controller
                 ->updateByIdAndRequest($id)
          ]);
     }
+
+    /**
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function deleteById(string $id): JsonResponse
+    {
+        return response()->json([
+            'message' => 'deleted',
+            'data' => (new AdviceHourAction())
+                ->deleteById($id)
+        ]);
+    }
 }
