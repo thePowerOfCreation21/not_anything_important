@@ -22,6 +22,12 @@ class InventoryProductAction extends ActionService
                     'stock' => ['integer', 'between:0,1000000'],
                     'description' => ['nullable', 'string', 'max:2500']
                 ],
+                'update' => [
+                    'title' => ['string', 'max:250'],
+                    'code' => ['string', 'max:50'],
+                    'stock' => ['integer', 'between:0,1000000'],
+                    'description' => ['nullable', 'string', 'max:2500']
+                ]
             ]);
         parent::__construct();
     }
@@ -37,6 +43,19 @@ class InventoryProductAction extends ActionService
         try
         {
             return parent::store($data, $storing);
+        }
+        catch (QueryException $e)
+        {
+            throw_if($e->getCode() == '23000', CustomException::class, 'code field is unique', 1136, 400);
+            throw $e;
+        }
+    }
+
+    public function update(array $updateData, callable $updating = null): bool|int
+    {
+        try
+        {
+            return parent::update($updateData, $updating);
         }
         catch (QueryException $e)
         {
