@@ -26,4 +26,13 @@ class AdviceHourController extends Controller
                 ->storeByRequest()
         ]);
     }
+
+    public function get(Request $request): JsonResponse
+    {
+        return response()->json(
+            (new AdviceHourAction())
+                ->setRequest($request)
+                ->getByRequestAndEloquent()
+        );
+    }
 }
