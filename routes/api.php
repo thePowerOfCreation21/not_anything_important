@@ -192,6 +192,7 @@ Route::group([
 
     Route::post('/admin/advice/hour', [AdviceHourController::class, 'store']);
     Route::get('/admin/advice/hour', [AdviceHourController::class, 'get']);
+    Route::get('/admin/advice/hour/{id}', [AdviceHourController::class, 'getById']);
 
     Route::post('/admin', [AdminController::class, 'register']);
     Route::put('/admin/{id}', [AdminController::class, 'updateById']);
