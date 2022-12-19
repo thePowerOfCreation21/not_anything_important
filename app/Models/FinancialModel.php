@@ -25,4 +25,9 @@ class FinancialModel extends Model
     ];
 
     public $timestamps = false;
+
+    public function financialType(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(FinancialTypeModel::class, 'financial_type_id', 'id');
+    }
 }
