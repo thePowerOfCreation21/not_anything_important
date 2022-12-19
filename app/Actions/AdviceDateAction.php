@@ -46,4 +46,14 @@ class AdviceDateAction extends ActionService
 
         return parent::store($data, $storing);
     }
+
+    public function update(array $updateData, callable $updating = null): bool|int
+    {
+        if(isset($updateData['date']))
+        {
+            $updateData['educational_year'] = PardisanHelper::getEducationalYearByGregorianDate($updateData['date']);
+        }
+
+        return parent::update($updateData, $updating);
+    }
 }
