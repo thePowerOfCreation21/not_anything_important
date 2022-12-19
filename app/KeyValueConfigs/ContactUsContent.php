@@ -15,8 +15,8 @@ class ContactUsContent extends KeyValueConfigService
         'instagram' => null
     ];
 
-    protected array $validation_rule = [
-        'address' => ['string', 'max:1000'],
+    protected string|array $validationRule = [
+        'address' => ['string', 'max:2500'],
         'phone_number' => ['string', 'max:15'],
         'whatsapp' => ['string', 'max:250'],
         'instagram' => ['string', 'max:250']

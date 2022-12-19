@@ -24,6 +24,7 @@ use App\Http\Controllers\EducationalYearController;
 use App\Http\Controllers\StudentFinancialController;
 use App\Http\Controllers\GeneralStatisticController;
 use App\Http\Controllers\TeacherFinancialController;
+use App\Http\Controllers\ContactUsContentController;
 use App\Http\Controllers\StudentDisciplineController;
 use App\Http\Controllers\AttendanceStudentController;
 use App\Http\Controllers\ClassScoreStudentController;
@@ -49,9 +50,13 @@ Route::post('/teacher/register_request', [TeacherController::class, 'registerReq
 
 Route::get('/educational_year', [EducationalYearController::class, 'get']);
 
+Route::get('/contact_us_content', [ContactUsContentController::class, 'get']);
+
 Route::group([
     'middleware' => ['auth:admin']
 ], function(){
+    Route::put('/admin/contact_us_content', [ContactUsContentController::class, 'update']);
+
     Route::post('/admin/student/wallet', [WalletHistoryController::class, 'store']);
     Route::get('/admin/student/wallet', [WalletHistoryController::class, 'get']);
 

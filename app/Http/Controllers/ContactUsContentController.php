@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\CustomException;
+use Genocide\Radiocrud\Exceptions\CustomException;
 use App\KeyValueConfigs\ContactUsContent;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -26,7 +26,9 @@ class ContactUsContentController extends Controller
      */
     public function update (Request $request): JsonResponse
     {
-        (new ContactUsContent())->update_by_request($request);
+        (new ContactUsContent())
+            ->setRequest($request)
+            ->update_by_request();
         return response()->json([
             'message' => 'updated'
         ]);
