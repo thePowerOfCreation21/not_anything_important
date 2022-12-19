@@ -17,12 +17,12 @@ class MessageTemplateAction extends ActionService
                 'store' => [
                     'name' => ['required', 'string', 'max:255'],
                     'text' => ['required', 'string', 'max:500'],
-                    'sms_status' => ['bool']
+                    'is_smsable' => ['bool']
                 ],
                 'update' => [
                     'name' => ['string', 'max:255'],
                     'text' => ['string', 'max:500'],
-                    'sms_status' => ['bool']
+                    'is_smsable' => ['bool']
                 ]
             ]);
 
