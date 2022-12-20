@@ -63,6 +63,7 @@ Route::group([
     Route::delete('/admin/inventory_product/{id}', [InventoryProductController::class, 'deleteById']);
 
     Route::post('/admin/inventory_product_history', [InventoryProductHistoryController::class, 'store']);
+    Route::delete('/admin/inventory_product_history/{id}', [InventoryProductHistoryController::class, 'deleteById']);
 
     Route::put('/admin/contact_us_content', [ContactUsContentController::class, 'update']);
 

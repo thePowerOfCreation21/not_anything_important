@@ -44,23 +44,29 @@ class InventoryProductHistoryAction extends ActionService
     /**
      * @param int $amount
      * @param string $action
+     * @param bool $reverse
      * @return int
      */
-    protected function castAmountByAction (int $amount, string $action): int
+    protected function castAmountByAction (int $amount, string $action, bool $reverse = false): int
     {
-        return $action == 'decrease' ? -$amount : $amount;
+        $amount =  $action == 'decrease' ? -$amount : $amount;
+        return $reverse ? -$amount : $amount;
     }
 
     /**
      * @param array $data
+     * @param bool $reverse
      * @return object
      * @throws CustomException
      * @throws \Throwable
      */
-    protected function updateInventoryProductStock (array $data): object
+    protected function updateInventoryProductStock (array $data, bool $reverse = false): object
     {
-        $inventoryProduct = (new InventoryProductAction())->getById($data['inventory_product_id']);
-        $inventoryProduct->stock = $inventoryProduct->stock + $this->castAmountByAction($data['amount'], $data['action']);
+        $inventoryProduct = (new InventoryProductAction())
+            ->applyResource(false)
+            ->getById($data['inventory_product_id']);
+
+        $inventoryProduct->stock += $this->castAmountByAction($data['amount'], $data['action'], $reverse);
 
         throw_if($inventoryProduct->stock < 0, CustomException::class, 'inventory product stock should not become less than 0', '1152', 400);
 
@@ -81,5 +87,21 @@ class InventoryProductHistoryAction extends ActionService
         $this->updateInventoryProductStock($data);
 
         return parent::store($data, $storing);
+    }
+
+    /**
+     * @param callable|null $deleting
+     * @return mixed
+     * @throws CustomException
+     * @throws \Throwable
+     */
+    public function delete(callable $deleting = null): mixed
+    {
+        foreach ($this->getEloquent()->get() AS $inventoryProductHistory)
+        {
+            $this->updateInventoryProductStock($inventoryProductHistory->toArray(), true);
+        }
+
+        return parent::delete($deleting);
     }
 }
