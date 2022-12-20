@@ -30,6 +30,7 @@ use App\Http\Controllers\StudentDisciplineController;
 use App\Http\Controllers\AttendanceStudentController;
 use App\Http\Controllers\ClassScoreStudentController;
 use App\Http\Controllers\TeacherWorkExperienceController;
+use App\Http\Controllers\InventoryProductHistoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,6 +61,8 @@ Route::group([
     Route::get('/admin/inventory_product', [InventoryProductController::class, 'get']);
     Route::put('/admin/inventory_product/{id}', [InventoryProductController::class, 'updateById']);
     Route::delete('/admin/inventory_product/{id}', [InventoryProductController::class, 'deleteById']);
+
+    Route::post('/admin/inventory_product_history', [InventoryProductHistoryController::class, 'store']);
 
     Route::put('/admin/contact_us_content', [ContactUsContentController::class, 'update']);
 
