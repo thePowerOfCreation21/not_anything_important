@@ -53,6 +53,7 @@ class InventoryProductController extends Controller
             (new InventoryProductAction())
                 ->setRequest($request)
                 ->setValidationRule('getQuery')
+                ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()
         );
     }

@@ -23,13 +23,33 @@ class InventoryProductHistoryAction extends ActionService
                     'action' => ['required', 'in:' . $allowedActionsString],
                     'amount' => ['required', 'integer', 'between:1,100000000'],
                     'date' => ['required', 'date_format:Y-m-d']
+                ],
+                'getQuery' => [
+                    'inventory_product_id' => ['integer'],
+                    'from_date' => ['date_format:Y-m-d'],
+                    'to_date' => ['date_format:Y-m-d'],
                 ]
             ])
             ->setCasts([
                 'date' => ['jalali_to_gregorian:Y-m-d'],
                 'from_date' => ['jalali_to_gregorian:Y-m-d'],
                 'to_date' => ['jalali_to_gregorian:Y-m-d'],
-            ]);
+            ])
+            ->setQueryToEloquentClosures([
+                'inventory_product_id' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('inventory_product_id', $query['inventory_product_id']);
+                },
+                'from_date' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereDate('date', '>=', $query['from_date']);
+                },
+                'to_date' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereDate('date', '<=', $query['to_date']);
+                },
+            ])
+            ->setOrderBy(['date' => 'DESC', 'id' => 'DESC']);
         parent::__construct();
     }
 

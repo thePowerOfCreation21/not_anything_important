@@ -36,4 +36,21 @@ class InventoryProductHistoryController extends Controller
             'data' => (new InventoryProductHistoryAction())->deleteById($id)
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function get (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new InventoryProductHistoryAction())
+                ->setRequest($request)
+                ->setValidationRule('getQuery')
+                ->setRelations(['inventoryProduct'])
+                ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
+    }
 }

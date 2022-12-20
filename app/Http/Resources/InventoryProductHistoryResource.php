@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Genocide\Radiocrud\Helpers;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class InventoryProductHistoryResource extends JsonResource
@@ -14,6 +15,13 @@ class InventoryProductHistoryResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'action' => $this->action,
+            'amount' => $this->amount,
+            'date' => Helpers::getCustomDateCast($this->date),
+            'inventory_product_id' => $this->inventory_product_id,
+            'inventory_product' => new InventoryProductResource($this->whenLoaded('inventoryProduct'))
+        ];
     }
 }
