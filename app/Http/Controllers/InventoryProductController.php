@@ -56,4 +56,16 @@ class InventoryProductController extends Controller
                 ->getByRequestAndEloquent()
         );
     }
+
+    /**
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function deleteById (string $id): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new InventoryProductAction())->deleteById($id)
+        ]);
+    }
 }

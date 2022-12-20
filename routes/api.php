@@ -59,6 +59,7 @@ Route::group([
     Route::post('/admin/inventory_product', [InventoryProductController::class, 'store']);
     Route::get('/admin/inventory_product', [InventoryProductController::class, 'get']);
     Route::put('/admin/inventory_product/{id}', [InventoryProductController::class, 'updateById']);
+    Route::delete('/admin/inventory_product/{id}', [InventoryProductController::class, 'deleteById']);
 
     Route::put('/admin/contact_us_content', [ContactUsContentController::class, 'update']);
 
