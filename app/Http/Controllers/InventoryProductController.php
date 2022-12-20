@@ -61,6 +61,18 @@ class InventoryProductController extends Controller
     /**
      * @param string $id
      * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getById (string $id): JsonResponse
+    {
+        return response()->json(
+            (new InventoryProductAction())->getById($id)
+        );
+    }
+
+    /**
+     * @param string $id
+     * @return JsonResponse
      */
     public function deleteById (string $id): JsonResponse
     {
