@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class InventoryProductModel extends Model
 {
@@ -21,4 +22,9 @@ class InventoryProductModel extends Model
     protected $casts = [
         'stock' => 'integer'
     ];
+
+    public function inventoryProductHistories (): HasMany
+    {
+        return $this->hasMany(InventoryProductHistoryModel::class, 'inventory_product_id', 'id');
+    }
 }
