@@ -26,6 +26,7 @@ class InventoryProductHistoryAction extends ActionService
                 ],
                 'getQuery' => [
                     'inventory_product_id' => ['integer'],
+                    'inventory_product_code' => ['string', 'max:50'],
                     'from_date' => ['date_format:Y-m-d'],
                     'to_date' => ['date_format:Y-m-d'],
                 ]
@@ -39,6 +40,12 @@ class InventoryProductHistoryAction extends ActionService
                 'inventory_product_id' => function (&$eloquent, $query)
                 {
                     $eloquent = $eloquent->where('inventory_product_id', $query['inventory_product_id']);
+                },
+                'inventory_product_code' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereHas('inventoryProduct', function($q) use ($query){
+                        $q->where('code', $query['inventory_product_code']);
+                    });
                 },
                 'from_date' => function (&$eloquent, $query)
                 {
