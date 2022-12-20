@@ -33,16 +33,15 @@ class InventoryProductAction extends ActionService
     }
 
     /**
-     * @param array $data
-     * @param callable|null $storing
+     * @param callable $try
      * @return mixed
      * @throws \Throwable
      */
-    public function store(array $data, callable $storing = null): mixed
+    protected function tryCatch (callable $try): mixed
     {
         try
         {
-            return parent::store($data, $storing);
+            return $try();
         }
         catch (QueryException $e)
         {
@@ -51,16 +50,28 @@ class InventoryProductAction extends ActionService
         }
     }
 
+    /**
+     * @param array $data
+     * @param callable|null $storing
+     * @return mixed
+     * @throws \Throwable
+     */
+    public function store(array $data, callable $storing = null): mixed
+    {
+        return $this->tryCatch(function () use ($data, $storing){
+            return parent::store($data, $storing);
+        });
+    }
+
+    /**
+     * @param array $updateData
+     * @param callable|null $updating
+     * @return bool|int
+     */
     public function update(array $updateData, callable $updating = null): bool|int
     {
-        try
-        {
+        return $this->tryCatch(function () use ($updateData, $updating){
             return parent::update($updateData, $updating);
-        }
-        catch (QueryException $e)
-        {
-            throw_if($e->getCode() == '23000', CustomException::class, 'code field is unique', 1136, 400);
-            throw $e;
-        }
+        });
     }
 }
