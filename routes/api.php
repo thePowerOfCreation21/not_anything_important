@@ -57,6 +57,7 @@ Route::group([
     'middleware' => ['auth:admin']
 ], function(){
     Route::post('/admin/inventory_product', [InventoryProductController::class, 'store']);
+    Route::get('/admin/inventory_product', [InventoryProductController::class, 'get']);
     Route::put('/admin/inventory_product/{id}', [InventoryProductController::class, 'updateById']);
 
     Route::put('/admin/contact_us_content', [ContactUsContentController::class, 'update']);

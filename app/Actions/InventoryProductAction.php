@@ -27,7 +27,20 @@ class InventoryProductAction extends ActionService
                     'code' => ['string', 'max:50'],
                     'stock' => ['integer', 'between:0,1000000'],
                     'description' => ['nullable', 'string', 'max:2500']
+                ],
+                'getQuery' => [
+                    'search' => ['string', 'max:150'],
                 ]
+            ])
+            ->setQueryToEloquentClosures([
+                'search' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where(function ($q) use($query){
+                        $q
+                            ->where('title', 'LIKE', "%{$query['search']}%")
+                            ->orWhere('code', 'LIKE', "%{$query['search']}%");
+                    });
+                }
             ]);
         parent::__construct();
     }
@@ -67,6 +80,7 @@ class InventoryProductAction extends ActionService
      * @param array $updateData
      * @param callable|null $updating
      * @return bool|int
+     * @throws \Throwable
      */
     public function update(array $updateData, callable $updating = null): bool|int
     {
