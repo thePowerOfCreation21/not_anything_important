@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ClassController;
+use App\Http\Controllers\AdviceController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\MessageController;
@@ -195,6 +196,8 @@ Route::group([
     Route::get('/admin/advice/hour/{id}', [AdviceHourController::class, 'getById']);
     Route::put('/admin/advice/hour/{id}', [AdviceHourController::class, 'updateById']);
     Route::delete('/admin/advice/hour/{id}', [AdviceHourController::class, 'deleteById']);
+
+    Route::put('/admin/advice/{id}', [AdviceController::class, 'updateById']);
 
     Route::post('/admin', [AdminController::class, 'register']);
     Route::put('/admin/{id}', [AdminController::class, 'updateById']);
