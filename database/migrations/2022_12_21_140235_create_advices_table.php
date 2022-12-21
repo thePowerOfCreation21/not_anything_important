@@ -18,7 +18,8 @@ return new class extends Migration
             $table->time('hour');
             $table->timestamp('date');
             $table->string('student_id', 20);
-            $table->string('status')->default('pending');
+            $table->string('status', 255)->default('pending');
+            $table->string('educational_year', 50);
             $table->timestamps();
         });
     }

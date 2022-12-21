@@ -15,7 +15,8 @@ class AdviceModel extends Model
         'hour',
         'date',
         'student_id',
-        'status'
+        'status',
+        'educational_year'
     ];
 
     public function student(): \Illuminate\Database\Eloquent\Relations\BelongsTo
