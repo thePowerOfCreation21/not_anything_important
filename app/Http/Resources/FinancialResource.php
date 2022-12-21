@@ -16,6 +16,7 @@ class FinancialResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
             'financial_type_id' => $this->financial_type_id,
