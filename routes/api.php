@@ -198,6 +198,7 @@ Route::group([
     Route::delete('/admin/advice/hour/{id}', [AdviceHourController::class, 'deleteById']);
 
     Route::put('/admin/advice/{id}', [AdviceController::class, 'updateById']);
+    Route::get('/admin/advice', [AdviceController::class, 'get']);
 
     Route::post('/admin', [AdminController::class, 'register']);
     Route::put('/admin/{id}', [AdminController::class, 'updateById']);
