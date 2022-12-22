@@ -53,8 +53,13 @@ class TeacherModel extends Model
         return $this->hasMany(TeacherSkillModel::class, 'teacher_id', 'id');
     }
 
-    public function classCourses ()
+    public function classCourses (): HasMany
     {
         return $this->hasMany(ClassCourseModel::class, 'teacher_id', 'id');
+    }
+
+    public function entrances (): HasMany
+    {
+        return $this->hasMany(TeacherEntranceModel::class, 'teacher_id', 'id');
     }
 }
