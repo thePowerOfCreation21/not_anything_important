@@ -20,7 +20,10 @@ class TeacherFinancialResource extends JsonResource
             'amount' => $this->amount,
             'date' => Helpers::getCustomDateCast($this->date),
             'educational_year' => $this->educational_year,
-            'teacher_id' => $this->teacher_id
+            'receipt_image' => $this->receipt_image,
+            'description' => $this->description,
+            'teacher_id' => $this->teacher_id,
+            'teacher' => new TeacherResource($this->whenLoaded('teacher'))
         ];
     }
 }

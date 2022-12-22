@@ -18,11 +18,15 @@ class TeacherFinancialAction extends ActionService
                 'store' => [
                     'teacher_id' => ['required', 'string', 'max:20'],
                     'amount' => ['required', 'int', 'min:0', 'max:100000000'],
-                    'date' => ['required', 'date_format:Y-m-d']
+                    'date' => ['required', 'date_format:Y-m-d'],
+                    'receipt_image' => ['nullable', 'file', 'mimes:png,jpg,jpeg,svg', 'max:3000'],
+                    'description' => ['nullable', 'string', 'max:2500']
                 ],
                 'update' => [
                     'amount' => ['int', 'min:0', 'max:100000000'],
-                    'date' => ['date_format:Y-m-d']
+                    'date' => ['date_format:Y-m-d'],
+                    'receipt_image' => ['nullable', 'file', 'mimes:png,jpg,jpeg,svg', 'max:3000'],
+                    'description' => ['nullable', 'string', 'max:2500']
                 ],
                 'getQuery' => [
                     'teacher_id' => ['string', 'max:20'],
@@ -30,7 +34,8 @@ class TeacherFinancialAction extends ActionService
                 ]
             ])
             ->setCasts([
-                'date' => ['jalali_to_gregorian:Y-m-d']
+                'date' => ['jalali_to_gregorian:Y-m-d'],
+                'receipt_image' => ['nullable', 'file']
             ])
             ->setQueryToEloquentClosures([
                 'teacher_id' => function (&$eloquent, $query)
@@ -80,19 +85,10 @@ class TeacherFinancialAction extends ActionService
 
             foreach ($eloquent->get() AS $teacherFinancial)
             {
-                /*
-                $teacherFinancialGeneralStatistic = (new GeneralStatisticAction())->getFirstByLabelAndEducationalYearOrCreate('teacher_financial', $teacherFinancial->educational_year);
-
-                $teacherFinancialGeneralStatistic->paid -= $teacherFinancial->amount;
-
-                $teacherFinancialGeneralStatistic->save();
-
-                $newGeneralStatistic = (new GeneralStatisticAction())->getFirstByLabelAndEducationalYearOrCreate('teacher_financial', $updateData['educational_year'] ?? $teacherFinancial->educational_year);
-
-                $newGeneralStatistic->paid += $updateData['amount'] ?? $teacherFinancial->amount;
-
-                $newGeneralStatistic->save();
-                */
+                if (array_key_exists('receipt_image', $updateData) && is_file($teacherFinancial->receipt_image))
+                {
+                    unlink($teacherFinancial->receipt_image);
+                }
             }
             if(is_callable($updating))
             {

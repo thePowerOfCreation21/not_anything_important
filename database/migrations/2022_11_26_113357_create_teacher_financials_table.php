@@ -19,6 +19,8 @@ return new class extends Migration
             $table->integer('amount');
             $table->timestamp('date');
             $table->string('educational_year', 50);
+            $table->string('receipt_image', 500)->nullable();
+            $table->string('description', 2500)->nullable();
         });
     }
 

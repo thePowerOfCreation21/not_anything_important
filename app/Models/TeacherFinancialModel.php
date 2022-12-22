@@ -15,7 +15,9 @@ class TeacherFinancialModel extends Model
         'teacher_id',
         'amount',
         'date',
-        'educational_year'
+        'educational_year',
+        'receipt_image',
+        'description'
     ];
 
     protected $casts = [
@@ -23,4 +25,9 @@ class TeacherFinancialModel extends Model
     ];
 
     public $timestamps = false;
+
+    public function teacher (): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(TeacherModel::class, 'teacher_id', 'id');
+    }
 }
