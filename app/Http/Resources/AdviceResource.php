@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Genocide\Radiocrud\Helpers;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class FinancialResource extends JsonResource
+class AdviceResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,12 +17,11 @@ class FinancialResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->title,
-            'description' => $this->description,
-            'financial_type_id' => $this->financial_type_id,
-            'financial_type' => new FinancialTypeResource($this->whenLoaded('financialType')),
-            'amount' => $this->amount,
-            'date' => Helpers::getCustomDateCast($this->date)
+            'hour' => $this->hour,
+            'date' => Helpers::getCustomDateCast($this->date),
+            'student_id' => $this->student_id,
+            'student' => new StudentResource($this->whenLoaded('student')),
+            'status' => $this->status
         ];
     }
 }
