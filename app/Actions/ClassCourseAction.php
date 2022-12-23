@@ -19,6 +19,11 @@ class ClassCourseAction extends ActionService
                     'teacher_id' => ['required', 'string', 'max:20'],
                     'course_id' => ['required', 'string', 'max:20'],
                 ],
+                'update' => [
+                    'class_id' => ['string', 'max:20'],
+                    'teacher_id' => ['string', 'max:20'],
+                    'course_id' => ['string', 'max:20'],
+                ],
                 'getQuery' => [
                     'class_id' => ['string', 'max:20'],
                     'teacher_id' => ['string', 'max:20'],

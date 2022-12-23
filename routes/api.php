@@ -90,6 +90,7 @@ Route::group([
     Route::put('/admin/class/reports/{id}', [ClassReportsController::class, 'updateById']);
 
     Route::post('/admin/class_course', [ClassCourseController::class, 'store']);
+    Route::put('/admin/class_course/{id}', [ClassCourseController::class, 'updateById']);
     Route::get('/admin/class_course', [ClassCourseController::class, 'get']);
     Route::delete('/admin/class_course/{id}', [ClassCourseController::class, 'deleteById']);
 

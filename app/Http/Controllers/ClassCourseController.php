@@ -27,6 +27,23 @@ class ClassCourseController extends Controller
 
     /**
      * @param string $id
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function updateById (string $id, Request $request): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new ClassCourseAction())
+                ->setRequest($request)
+                ->setValidationRule('update')
+                ->updateByIdAndRequest($id)
+        ]);
+    }
+
+    /**
+     * @param string $id
      * @return JsonResponse
      */
     public function deleteById (string $id): JsonResponse
@@ -51,6 +68,18 @@ class ClassCourseController extends Controller
                 ->setRelations(['classModel', 'course', 'teacher'])
                 ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()
+        );
+    }
+
+    /**
+     * @param string $id
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getById(string $id): JsonResponse
+    {
+        return response()->json(
+            (new ClassCourseAction())->getById($id)
         );
     }
 }
