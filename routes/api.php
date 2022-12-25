@@ -62,6 +62,7 @@ Route::group([
 ], function(){
     Route::post('/admin/teacher_entrance', [TeacherEntranceController::class, 'store']);
     Route::get('/admin/teacher_entrance', [TeacherEntranceController::class, 'get']);
+    Route::put('/admin/teacher_entrance/{id}', [TeacherEntranceController::class, 'updateById']);
 
     Route::post('/admin/inventory_product', [InventoryProductController::class, 'store']);
     Route::get('/admin/inventory_product', [InventoryProductController::class, 'get']);
