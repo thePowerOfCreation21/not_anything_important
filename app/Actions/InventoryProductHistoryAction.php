@@ -22,7 +22,7 @@ class InventoryProductHistoryAction extends ActionService
                     'inventory_product_id' => ['required', 'integer'],
                     'action' => ['required', 'in:' . $allowedActionsString],
                     'amount' => ['required', 'integer', 'between:1,100000000'],
-                    'date' => ['required', 'date_format:Y-m-d']
+                    'date' => ['required', 'date_format:Y-m-d H:i:s']
                 ],
                 'getQuery' => [
                     'inventory_product_id' => ['integer'],
