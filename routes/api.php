@@ -64,6 +64,7 @@ Route::group([
     Route::get('/admin/teacher_entrance', [TeacherEntranceController::class, 'get']);
     Route::get('/admin/teacher_entrance/{id}', [TeacherEntranceController::class, 'getById']);
     Route::put('/admin/teacher_entrance/{id}', [TeacherEntranceController::class, 'updateById']);
+    Route::delete('/admin/teacher_entrance/{id}', [TeacherEntranceController::class, 'deleteById']);
 
     Route::post('/admin/inventory_product', [InventoryProductController::class, 'store']);
     Route::get('/admin/inventory_product', [InventoryProductController::class, 'get']);

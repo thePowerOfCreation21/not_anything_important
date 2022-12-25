@@ -73,4 +73,15 @@ class TeacherEntranceController extends Controller
                 ->getById($id)
         );
     }
+
+    /**
+     * @return JsonResponse
+     */
+    public function deleteById (string $id): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new TeacherEntranceAction())->deleteById($id)
+        ]);
+    }
 }
