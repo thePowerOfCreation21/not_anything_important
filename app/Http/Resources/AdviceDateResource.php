@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Genocide\Radiocrud\Helpers;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AdviceDateResource extends JsonResource
@@ -14,6 +15,10 @@ class AdviceDateResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'date' => Helpers::getCustomDateCast($this->date),
+            'educational_year' => $this->educational_year
+        ];
     }
 }
