@@ -32,7 +32,7 @@ class InventoryProductHistoryAction extends ActionService
                 ]
             ])
             ->setCasts([
-                'date' => ['jalali_to_gregorian:Y-m-d'],
+                'date' => ['jalali_to_gregorian:Y-m-d H:i'],
                 'from_date' => ['jalali_to_gregorian:Y-m-d'],
                 'to_date' => ['jalali_to_gregorian:Y-m-d'],
             ])
