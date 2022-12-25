@@ -14,6 +14,14 @@ class ClassCourseResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'class_id' => $this->class_id,
+            'class' => new ClassResource($this->whenLoaded('classModel')),
+            'course_id' => $this->course_id,
+            'course' => new CourseResource($this->whenLoaded('course')),
+            'teacher_id' => $this->teacher_id,
+            'teacher' => new TeacherResource($this->whenLoaded('teacher'))
+        ];
     }
 }

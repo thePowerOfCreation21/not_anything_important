@@ -79,7 +79,10 @@ class ClassCourseController extends Controller
     public function getById(string $id): JsonResponse
     {
         return response()->json(
-            (new ClassCourseAction())->getById($id)
+            (new ClassCourseAction())
+                ->setRelations(['classModel', 'course', 'teacher'])
+                ->makeEloquent()
+                ->getById($id)
         );
     }
 }
