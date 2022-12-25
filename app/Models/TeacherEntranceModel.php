@@ -21,8 +21,10 @@ class TeacherEntranceModel extends Model
 
     protected $casts = [
         'week_day' => 'integer',
+        /*
         'entrance' => 'datetime:H:i',
         'exit' => 'datetime:H:i',
+        */
     ];
 
     public $timestamps = false;

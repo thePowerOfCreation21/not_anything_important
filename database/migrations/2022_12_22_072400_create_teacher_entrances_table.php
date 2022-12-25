@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('teacher_id')->references('id')->on('teachers')->onDelete('cascade');
             $table->tinyInteger('week_day');
             $table->time('entrance');
-            $table->time('exit');
+            $table->time('exit')->nullable();
         });
     }
 

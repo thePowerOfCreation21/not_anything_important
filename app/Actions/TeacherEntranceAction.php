@@ -20,7 +20,21 @@ class TeacherEntranceAction extends ActionService
                     'teacher_id' => ['required', 'integer', 'exists:teachers,id'],
                     'entrance' => ['required', 'date_format:H:i'],
                     'exit' => ['date_format:H:i'],
+                ],
+                'getQuery' => [
+                    'teacher_id' => ['integer'],
+                    'week_day' => ['integer', 'between:1,7']
                 ]
+            ])
+            ->setQueryToEloquentClosures([
+                'teacher_id' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('teacher_id', $query['teacher_id']);
+                },
+                'week_day' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('week_day', $query['week_day']);
+                }
             ]);
 
         parent::__construct();

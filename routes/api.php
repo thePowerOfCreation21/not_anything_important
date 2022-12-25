@@ -61,6 +61,7 @@ Route::group([
     'middleware' => ['auth:admin']
 ], function(){
     Route::post('/admin/teacher_entrance', [TeacherEntranceController::class, 'store']);
+    Route::get('/admin/teacher_entrance', [TeacherEntranceController::class, 'get']);
 
     Route::post('/admin/inventory_product', [InventoryProductController::class, 'store']);
     Route::get('/admin/inventory_product', [InventoryProductController::class, 'get']);
