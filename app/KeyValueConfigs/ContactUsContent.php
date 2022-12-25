@@ -12,13 +12,17 @@ class ContactUsContent extends KeyValueConfigService
         'address' => null,
         'phone_number' => null,
         'whatsapp' => null,
-        'instagram' => null
+        'instagram' => null,
+        'telegram' => null,
+        'email' => null
     ];
 
     protected string|array $validationRule = [
         'address' => ['string', 'max:2500'],
         'phone_number' => ['string', 'max:15'],
         'whatsapp' => ['string', 'max:250'],
-        'instagram' => ['string', 'max:250']
+        'instagram' => ['string', 'max:250'],
+        'telegram' => ['string', 'max:250'],
+        'email' => ['string', 'max:250'],
     ];
 }
