@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('teacher_id')->unsigned();
             $table->foreign('teacher_id')->references('id')->on('teachers')->onDelete('cascade');
+            $table->tinyInteger('week_day');
             $table->time('entrance');
             $table->time('exit')->nullable();
             $table->timestamp('date');

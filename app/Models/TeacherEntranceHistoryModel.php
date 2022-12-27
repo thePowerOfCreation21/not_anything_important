@@ -14,6 +14,7 @@ class TeacherEntranceHistoryModel extends Model
 
     protected $fillable = [
         'teacher_id',
+        'week_day',
         'entrance',
         'exit',
         'date'
