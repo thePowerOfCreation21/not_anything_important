@@ -46,6 +46,15 @@ class PardisanHelper
     }
 
     /**
+     * @param int|null $time
+     * @return int
+     */
+    public static function getWeekDayByTime(int $time = null): int
+    {
+        return CalendarUtils::strftime('w', $time ?? time());
+    }
+
+    /**
      * @param string $userClass
      * @return string
      */
