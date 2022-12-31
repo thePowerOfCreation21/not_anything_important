@@ -23,6 +23,9 @@ class TeacherEntranceHistoryAction extends ActionService
                     'entrance' => ['required', 'date_format:H:i'],
                     'exit' => ['date_format:H:i'],
                 ],
+                'update' => [
+                    'exit' => ['date_format:H:i'],
+                ],
             ])
             ->setCasts([
                 'date' => ['jalali_to_gregorian:Y-m-d'],
@@ -30,6 +33,12 @@ class TeacherEntranceHistoryAction extends ActionService
         parent::__construct();
     }
 
+    /**
+     * @param array $data
+     * @param callable|null $storing
+     * @return mixed
+     * @throws \Exception
+     */
     public function store(array $data, callable $storing = null): mixed
     {
         $data['week_day'] = PardisanHelper::getWeekDayByGregorianDate($data['date']);
