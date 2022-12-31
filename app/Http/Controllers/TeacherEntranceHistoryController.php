@@ -73,4 +73,16 @@ class TeacherEntranceHistoryController extends Controller
                 ->getById($id)
         );
     }
+
+    /**
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function deleteById (string $id): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new TeacherEntranceHistoryAction())->deleteById($id)
+        ]);
+    }
 }
