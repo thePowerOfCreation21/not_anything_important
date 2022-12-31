@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use App\Models\StudentFinancialModel;
+use DateTime;
 use Morilog\Jalali\CalendarUtils;
 
 class PardisanHelper
@@ -29,10 +30,20 @@ class PardisanHelper
      * @param string $format
      * @return int
      */
+    public static function jalaliDateToTime (string $date, string $format = 'Y-m-d H:i:s'): int
+    {
+        return CalendarUtils::createCarbonFromFormat($format, $date)->timestamp;
+    }
+
+    /**
+     * @param string $date
+     * @param string $format
+     * @return int
+     */
     public static function getEducationalYearByJalaliDate (string $date, string $format = 'Y-m-d H:i:s'): int
     {
         return self::getEducationalYearByTime(
-          CalendarUtils::createCarbonFromFormat($format, $date)->timestamp
+            self::jalaliDateToTime($date, $format)
         );
     }
 
@@ -52,6 +63,27 @@ class PardisanHelper
     public static function getWeekDayByTime(int $time = null): int
     {
         return CalendarUtils::strftime('w', $time ?? time());
+    }
+
+    /**
+     * @param string $date
+     * @param string $format
+     * @return int
+     */
+    public static function getWeekDayByJalaliDate (string $date, string $format = 'Y-m-d H:i:s'): int
+    {
+        return self::getWeekDayByTime(
+            self::jalaliDateToTime($date, $format)
+        );
+    }
+
+    /**
+     * @param string $date
+     * @return int
+     */
+    public static function getWeekDayByGregorianDate (string $date): int
+    {
+        return self::getWeekDayByTime(strtotime($date));
     }
 
     /**

@@ -33,8 +33,8 @@ use App\Http\Controllers\StudentDisciplineController;
 use App\Http\Controllers\AttendanceStudentController;
 use App\Http\Controllers\ClassScoreStudentController;
 use App\Http\Controllers\TeacherWorkExperienceController;
+use App\Http\Controllers\TeacherEntranceHistoryController;
 use App\Http\Controllers\InventoryProductHistoryController;
-use Morilog\Jalali\CalendarUtils;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,6 +66,8 @@ Route::group([
     Route::get('/admin/teacher_entrance/{id}', [TeacherEntranceController::class, 'getById']);
     Route::put('/admin/teacher_entrance/{id}', [TeacherEntranceController::class, 'updateById']);
     Route::delete('/admin/teacher_entrance/{id}', [TeacherEntranceController::class, 'deleteById']);
+
+    Route::post('/admin/teacher_entrance_history', [TeacherEntranceHistoryController::class, 'store']);
 
     Route::post('/admin/inventory_product', [InventoryProductController::class, 'store']);
     Route::get('/admin/inventory_product', [InventoryProductController::class, 'get']);

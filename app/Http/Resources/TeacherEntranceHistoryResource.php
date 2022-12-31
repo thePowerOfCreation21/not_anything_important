@@ -20,6 +20,7 @@ class TeacherEntranceHistoryResource extends JsonResource
             'week_day' => $this->week_day,
             'entrance' => substr($this->entrance, 0, 5),
             'exit' => $this->when(! empty($this->exit), substr($this->exit, 0, 5)),
+            'late_string' => $this->late_string,
             'date' => Helpers::getCustomDateCast($this->date),
             'teacher_id' => $this->teacher_id,
             'teacher' => new TeacherResource($this->whenLoaded('teacher'))

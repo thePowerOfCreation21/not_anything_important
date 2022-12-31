@@ -17,6 +17,7 @@ class TeacherEntranceHistoryModel extends Model
         'week_day',
         'entrance',
         'exit',
+        'late_string',
         'date'
     ];
 

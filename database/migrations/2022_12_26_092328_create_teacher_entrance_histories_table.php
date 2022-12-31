@@ -20,6 +20,7 @@ return new class extends Migration
             $table->tinyInteger('week_day');
             $table->time('entrance');
             $table->time('exit')->nullable();
+            $table->string('late_string', 150)->nullable();
             $table->timestamp('date');
         });
     }
