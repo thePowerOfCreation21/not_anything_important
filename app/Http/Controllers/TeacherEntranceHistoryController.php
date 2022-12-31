@@ -41,4 +41,21 @@ class TeacherEntranceHistoryController extends Controller
                 ->updateByIdAndRequest($id)
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function get (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new TeacherEntranceHistoryAction())
+                ->setRequest($request)
+                ->setValidationRule('getQuery')
+                ->setRelations(['teacher'])
+                ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
+    }
 }

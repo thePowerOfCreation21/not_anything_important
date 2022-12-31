@@ -26,9 +26,35 @@ class TeacherEntranceHistoryAction extends ActionService
                 'update' => [
                     'exit' => ['date_format:H:i'],
                 ],
+                'getQuery' => [
+                    'teacher_id' => ['integer'],
+                    'from_date' => ['date_format:Y-m-d'],
+                    'to_date' => ['date_format:Y-m-d'],
+                ]
             ])
             ->setCasts([
+                'week_day' => ['integer', 'between:1,7'],
                 'date' => ['jalali_to_gregorian:Y-m-d'],
+                'from_date' => ['jalali_to_gregorian:Y-m-d'],
+                'to_date' => ['jalali_to_gregorian:Y-m-d'],
+            ])
+            ->setQueryToEloquentClosures([
+                'teacher_id' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('teacher_id', $query['teacher_id']);
+                },
+                'from_date' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereDate('date', '>=', $query['from_date']);
+                },
+                'to_date' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereDate('date', '<=', $query['from_date']);
+                },
+                'week_day' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('week_day', $query['week_day']);
+                }
             ]);
         parent::__construct();
     }
