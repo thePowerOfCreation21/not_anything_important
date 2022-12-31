@@ -70,6 +70,7 @@ Route::group([
     Route::post('/admin/teacher_entrance_history', [TeacherEntranceHistoryController::class, 'store']);
     Route::put('/admin/teacher_entrance_history/{id}', [TeacherEntranceHistoryController::class, 'updateById']);
     Route::get('/admin/teacher_entrance_history', [TeacherEntranceHistoryController::class, 'get']);
+    Route::get('/admin/teacher_entrance_history/{id}', [TeacherEntranceHistoryController::class, 'getById']);
 
     Route::post('/admin/inventory_product', [InventoryProductController::class, 'store']);
     Route::get('/admin/inventory_product', [InventoryProductController::class, 'get']);

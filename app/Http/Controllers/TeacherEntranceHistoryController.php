@@ -58,4 +58,19 @@ class TeacherEntranceHistoryController extends Controller
                 ->getByRequestAndEloquent()
         );
     }
+
+    /**
+     * @param string $id
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getById (string $id): JsonResponse
+    {
+        return response()->json(
+            (new TeacherEntranceHistoryAction())
+                ->setRelations(['teacher'])
+                ->makeEloquent()
+                ->getById($id)
+        );
+    }
 }
