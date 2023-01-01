@@ -60,6 +60,7 @@ Route::get('/educational_year', [EducationalYearController::class, 'get']);
 Route::get('/contact_us_content', [ContactUsContentController::class, 'get']);
 
 Route::get('/gallery_image', [GalleryImageController::class, 'get']);
+Route::get('/gallery_image/{id}', [GalleryImageController::class, 'getById']);
 
 Route::group([
     'middleware' => ['auth:admin']
