@@ -27,13 +27,13 @@ class TeacherEntranceHistoryAction extends ActionService
                     'exit' => ['date_format:H:i'],
                 ],
                 'getQuery' => [
+                    'week_day' => ['integer', 'between:1,7'],
                     'teacher_id' => ['integer'],
                     'from_date' => ['date_format:Y-m-d'],
                     'to_date' => ['date_format:Y-m-d'],
                 ]
             ])
             ->setCasts([
-                'week_day' => ['integer', 'between:1,7'],
                 'date' => ['jalali_to_gregorian:Y-m-d'],
                 'from_date' => ['jalali_to_gregorian:Y-m-d'],
                 'to_date' => ['jalali_to_gregorian:Y-m-d'],
