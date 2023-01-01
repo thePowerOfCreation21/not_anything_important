@@ -12,7 +12,15 @@ class GalleryImageAction extends ActionService
     {
         $this
             ->setModel(GalleryImageModel::class)
-            ->setResource(GalleryImageResource::class);
+            ->setResource(GalleryImageResource::class)
+            ->setValidationRules([
+                'store' => [
+                    'image' => ['required', 'file', 'mimes:png,jpg,jpeg,svg', 'max:5000']
+                ]
+            ])
+            ->setCasts([
+                'image' => ['file']
+            ]);
         parent::__construct();
     }
 }

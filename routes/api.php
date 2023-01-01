@@ -18,6 +18,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ClassCourseController;
 use App\Http\Controllers\ClassReportsController;
 use App\Http\Controllers\TeacherSkillController;
+use App\Http\Controllers\GalleryImageController;
 use App\Http\Controllers\ClassMessagesController;
 use App\Http\Controllers\WalletHistoryController;
 use App\Http\Controllers\FinancialTypeController;
@@ -78,6 +79,8 @@ Route::group([
     Route::get('/admin/inventory_product/{id}', [InventoryProductController::class, 'getById']);
     Route::put('/admin/inventory_product/{id}', [InventoryProductController::class, 'updateById']);
     Route::delete('/admin/inventory_product/{id}', [InventoryProductController::class, 'deleteById']);
+
+    Route::post('/admin/gallery_image', [GalleryImageController::class, 'store']);
 
     Route::post('/admin/inventory_product_history', [InventoryProductHistoryController::class, 'store']);
     Route::get('/admin/inventory_product_history', [InventoryProductHistoryController::class, 'get']);
