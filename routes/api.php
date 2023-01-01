@@ -84,6 +84,7 @@ Route::group([
     Route::delete('/admin/inventory_product/{id}', [InventoryProductController::class, 'deleteById']);
 
     Route::post('/admin/gallery_image', [GalleryImageController::class, 'store']);
+    Route::delete('/admin/gallery_image/{id}', [GalleryImageController::class, 'deleteById']);
 
     Route::post('/admin/inventory_product_history', [InventoryProductHistoryController::class, 'store']);
     Route::get('/admin/inventory_product_history', [InventoryProductHistoryController::class, 'get']);

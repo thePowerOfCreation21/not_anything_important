@@ -26,6 +26,18 @@ class GalleryImageController extends Controller
     }
 
     /**
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function deleteById (string $id): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new GalleryImageAction())->deleteById($id)
+        ]);
+    }
+
+    /**
      * @param Request $request
      * @return JsonResponse
      */
