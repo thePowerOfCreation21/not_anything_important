@@ -17,11 +17,12 @@ class SurveyModel extends Model
         'teacher_id',
         'text',
         'is_active',
-        'is_template'
+        'participants_count',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'participants_count' => 'integer'
     ];
 
     public function teacher (): BelongsTo

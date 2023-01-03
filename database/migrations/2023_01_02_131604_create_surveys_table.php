@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('text', 5000);
             $table->boolean('is_active')->default(false);
             // $table->boolean('is_template')->default(false);
+            $table->integer('participants_count')->unsigned()->default(0);
             $table->timestamps();
         });
     }
