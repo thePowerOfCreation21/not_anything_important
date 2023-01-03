@@ -19,7 +19,7 @@ class MessageAction extends ActionService
             ->setResource(MessageResource::class)
             ->setValidationRules([
                 'store' => [
-                    'type' => ['required', 'string', 'in:sms,notification,toast'],
+                    'type' => ['required', 'string', 'in:sms,notification,toast,message'],
                     'text' => ['string', 'max:500'],
                     'template_id' => ['string', 'max:20'],
                     'students' => ['required','array', 'max:100'],
