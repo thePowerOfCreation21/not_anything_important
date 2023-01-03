@@ -21,7 +21,26 @@ class SurveyAction extends ActionService
                     'is_active' => ['boolean'],
                     'options' => ['required', 'array', 'max:4'],
                     'options.*' => ['required', 'string', 'max:250'],
-                ]
+                ],
+                'getQuery' => [
+                    'student_id' => ['integer'],
+                    'teacher_id' => ['integer'],
+                    'is_active' => ['boolean']
+                ],
+            ])
+            ->setQueryToEloquentClosures([
+                'student_id' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->forStudent($query['student_id']);
+                },
+                'teacher_id' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('teacher_id', $query['teacher_id']);
+                },
+                'is_active' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('is_active', $query['is_active']);
+                }
             ]);
         parent::__construct();
     }

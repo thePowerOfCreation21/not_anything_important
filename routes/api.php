@@ -67,6 +67,7 @@ Route::group([
     'middleware' => ['auth:admin']
 ], function(){
     Route::post('/admin/survey', [SurveyController::class, 'store']);
+    Route::get('/admin/survey', [SurveyController::class, 'get']);
 
     Route::post('/admin/teacher_entrance', [TeacherEntranceController::class, 'store']);
     Route::get('/admin/teacher_entrance', [TeacherEntranceController::class, 'get']);

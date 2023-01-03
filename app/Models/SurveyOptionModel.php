@@ -18,10 +18,6 @@ class SurveyOptionModel extends Model
         'participants_count'
     ];
 
-    protected $casts = [
-        'participants_count' => ['integer']
-    ];
-
     public $timestamps = false;
 
     public function survey (): BelongsTo

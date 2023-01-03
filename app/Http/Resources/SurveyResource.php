@@ -14,6 +14,14 @@ class SurveyResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'text' => $this->text,
+            'is_active' => (bool)$this->is_active,
+            'participants_count' => (int)$this->participants_count,
+            'teacher_id' => $this->teacher_id,
+            'teacher' => $this->whenLoaded('teacher'),
+            'options' => SurveyOptionResource::collection($this->whenLoaded('surveyOptions'))
+        ];
     }
 }

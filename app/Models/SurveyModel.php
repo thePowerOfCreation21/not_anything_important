@@ -20,17 +20,29 @@ class SurveyModel extends Model
         'participants_count',
     ];
 
-    protected $casts = [
-        'is_active' => 'boolean',
-        'participants_count' => 'integer'
-    ];
+    public function scopeForStudent($q, string $studentId)
+    {
+        $q
+            ->whereNull('teacher_id')
+            ->orWhere(function ($q) use($studentId){
+                $q->whereHas('teacher', function($q) use($studentId){
+                    $q->whereHas('classCourses', function($q) use($studentId){
+                        $q->whereHas('classModel', function($q) use($studentId){
+                            $q->whereHas('students', function($q) use($studentId){
+                                $q->where('id', $studentId);
+                            });
+                        });
+                    });
+                });
+            });
+    }
 
     public function teacher (): BelongsTo
     {
         return $this->belongsTo(TeacherModel::class, 'teacher_id', 'id');
     }
 
-    public function SurveyOptions (): HasMany
+    public function surveyOptions (): HasMany
     {
         return $this->hasMany(SurveyOptionModel::class, 'survey_id', 'id');
     }
