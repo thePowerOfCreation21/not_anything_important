@@ -41,4 +41,19 @@ class SurveyController extends Controller
                 ->getByRequestAndEloquent()
         );
     }
+
+    /**
+     * @param string $id
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getById (string $id): JsonResponse
+    {
+        return response()->json(
+            (new SurveyAction())
+                ->setRelations(['surveyOptions'])
+                ->makeEloquent()
+                ->getById($id)
+        );
+    }
 }
