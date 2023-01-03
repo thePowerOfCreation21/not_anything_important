@@ -14,7 +14,7 @@ class SurveyOptionModel extends Model
 
     protected $fillable = [
         'survey_id',
-        'text',
+        'title',
         'participants_count'
     ];
 
