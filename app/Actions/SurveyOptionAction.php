@@ -12,7 +12,12 @@ class SurveyOptionAction extends ActionService
     {
         $this
             ->setModel(SurveyOptionModel::class)
-            ->setResource(SurveyOptionResource::class);
+            ->setResource(SurveyOptionResource::class)
+            ->setValidationRules([
+                'update' => [
+                    'title' => ['string', 'max:250']
+                ]
+            ]);
         parent::__construct();
     }
 }

@@ -20,6 +20,7 @@ use App\Http\Controllers\ClassCourseController;
 use App\Http\Controllers\ClassReportsController;
 use App\Http\Controllers\TeacherSkillController;
 use App\Http\Controllers\GalleryImageController;
+use App\Http\Controllers\SurveyOptionController;
 use App\Http\Controllers\ClassMessagesController;
 use App\Http\Controllers\WalletHistoryController;
 use App\Http\Controllers\FinancialTypeController;
@@ -70,6 +71,8 @@ Route::group([
     Route::get('/admin/survey', [SurveyController::class, 'get']);
     Route::get('/admin/survey/{id}', [SurveyController::class, 'getById']);
     Route::put('/admin/survey/{id}', [SurveyController::class, 'updateById']);
+
+    Route::put('/admin/survey_option/{id}', [SurveyOptionController::class, 'updateById']);
 
     Route::post('/admin/teacher_entrance', [TeacherEntranceController::class, 'store']);
     Route::get('/admin/teacher_entrance', [TeacherEntranceController::class, 'get']);
