@@ -14,8 +14,15 @@ class SurveyOptionModel extends Model
 
     protected $fillable = [
         'survey_id',
-        'text'
+        'text',
+        'participants_count'
     ];
+
+    protected $casts = [
+        'participants_count' => ['integer']
+    ];
+
+    public $timestamps = false;
 
     public function survey (): BelongsTo
     {

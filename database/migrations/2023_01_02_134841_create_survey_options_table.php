@@ -18,6 +18,7 @@ return new class extends Migration
             $table->bigInteger('survey_id')->unsigned();
             $table->foreign('survey_id')->references('id')->on('surveys')->onDelete('cascade');
             $table->string('text', 2500);
+            $table->integer('participants_count')->unsigned()->default(0);
         });
     }
 
