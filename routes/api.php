@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\AdviceController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\TeacherController;
@@ -65,6 +66,8 @@ Route::get('/gallery_image/{id}', [GalleryImageController::class, 'getById']);
 Route::group([
     'middleware' => ['auth:admin']
 ], function(){
+    Route::post('/admin/survey', [SurveyController::class, 'store']);
+
     Route::post('/admin/teacher_entrance', [TeacherEntranceController::class, 'store']);
     Route::get('/admin/teacher_entrance', [TeacherEntranceController::class, 'get']);
     Route::get('/admin/teacher_entrance/{id}', [TeacherEntranceController::class, 'getById']);
