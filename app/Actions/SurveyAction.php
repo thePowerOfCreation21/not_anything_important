@@ -3,6 +3,7 @@
 namespace App\Actions;
 
 use App\Models\SurveyOptionModel;
+use Genocide\Radiocrud\Exceptions\CustomException;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
 use App\Models\SurveyModel;
 use App\Http\Resources\SurveyResource;
@@ -20,6 +21,13 @@ class SurveyAction extends ActionService
                     'text' => ['required', 'string', 'max:5000'],
                     'is_active' => ['boolean'],
                     'options' => ['required', 'array', 'max:4'],
+                    'options.*' => ['required', 'string', 'max:250'],
+                ],
+                'update' => [
+                    'teacher_id' => ['nullable', 'integer', 'exists:teachers,id'],
+                    'text' => ['string', 'max:5000'],
+                    'is_active' => ['boolean'],
+                    'options' => ['array', 'max:4'],
                     'options.*' => ['required', 'string', 'max:250'],
                 ],
                 'getQuery' => [
@@ -46,6 +54,27 @@ class SurveyAction extends ActionService
     }
 
     /**
+     * @param array $surveyOptions
+     * @param string $surveyId
+     * @param bool $deleteOldOptions
+     * @return mixed
+     */
+    public function storeSurveyOptionsFromRequest (array $surveyOptions, string $surveyId, bool $deleteOldOptions = false): mixed
+    {
+        if ($deleteOldOptions) SurveyOptionModel::query()->where('survey_id', $surveyId)->delete();
+
+        foreach ($surveyOptions AS $key => $surveyOption)
+        {
+            $surveyOptions[$key] = [
+                'survey_id' => $surveyId,
+                'title' => $surveyOption
+            ];
+        }
+
+        return SurveyOptionModel::insert($surveyOptions);
+    }
+
+    /**
      * @param array $data
      * @param callable|null $storing
      * @return mixed
@@ -54,16 +83,22 @@ class SurveyAction extends ActionService
     {
         $survey = parent::store($data, $storing);
 
-        foreach ($data['options'] AS $key => $surveyOption)
-        {
-            $data['options'][$key] = [
-                'survey_id' => $survey->id,
-                'title' => $surveyOption
-            ];
-        }
-
-        SurveyOptionModel::insert($data['options']);
+        $this->storeSurveyOptionsFromRequest($data['options'], $survey->id);
 
         return $survey;
+    }
+
+    /**
+     * @param array $updateData
+     * @param callable|null $updating
+     * @return bool|int
+     */
+    public function update(array $updateData, callable $updating = null): bool|int
+    {
+        foreach ($this->startEloquentIfIsNull()->eloquent AS $survey)
+        {
+            if (isset($data['options'])) $this->storeSurveyOptionsFromRequest($data['options'], $survey->id, true);
+        }
+        return parent::update($updateData, $updating);
     }
 }
