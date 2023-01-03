@@ -22,7 +22,6 @@ class SurveyModel extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
-        'is_template' => 'boolean'
     ];
 
     public function teacher (): BelongsTo

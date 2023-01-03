@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('teacher_id')->references('id')->on('teachers')->onDelete('cascade');
             $table->string('text', 5000);
             $table->boolean('is_active')->default(false);
-            $table->boolean('is_template')->default(false);
+            // $table->boolean('is_template')->default(false);
             $table->timestamps();
         });
     }
