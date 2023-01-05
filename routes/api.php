@@ -10,6 +10,7 @@ use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\FoodDateController;
 use App\Http\Controllers\FinancialController;
 use App\Http\Controllers\ClassFileController;
 use App\Http\Controllers\AdviceHourController;
@@ -67,6 +68,8 @@ Route::get('/gallery_image/{id}', [GalleryImageController::class, 'getById']);
 Route::group([
     'middleware' => ['auth:admin']
 ], function(){
+    Route::post('/admin/food_date', [FoodDateController::class, 'store']);
+
     Route::post('/admin/survey', [SurveyController::class, 'store']);
     Route::get('/admin/survey', [SurveyController::class, 'get']);
     Route::get('/admin/survey/{id}', [SurveyController::class, 'getById']);
@@ -246,3 +249,11 @@ Route::group([
     Route::get('/admin/{id}', [AdminController::class, 'getById']);
     Route::delete('/admin/{id}', [AdminController::class, 'deleteById']);
 });
+
+/*
+Route::get('/test', function(){
+    $dateTime = new DateTime('now');
+    $dateTime->modify('first day of next month');
+    return $dateTime->format('Y-m-d');
+});
+*/
