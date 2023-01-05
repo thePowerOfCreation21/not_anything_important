@@ -13,9 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('date_food_pivot', function (Blueprint $table) {
+        Schema::create('food_date_food_pivot', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->bigInteger('food_date_id')->unsigned();
+            $table->foreign('food_date_id')->references('id')->on('food_dates')->onDelete('cascade');
+            $table->bigInteger('food_id')->unsigned();
+            $table->foreign('food_id')->references('id')->on('foods')->onDelete('cascade');
         });
     }
 
