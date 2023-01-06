@@ -43,6 +43,14 @@ return [
         'admin' => [
             'driver' => 'sanctum',
             'provider' => 'admins'
+        ],
+        'student' => [
+            'driver' => 'sanctum',
+            'provider' => 'students'
+        ],
+        'teacher' => [
+            'driver' => 'sanctum',
+            'provider' => 'teachers'
         ]
     ],
 
@@ -72,6 +80,16 @@ return [
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\AdminModel::class,
+        ],
+
+        'students' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\StudentModel::class,
+        ],
+
+        'teachers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\TeacherModel::class,
         ],
 
         // 'users' => [
