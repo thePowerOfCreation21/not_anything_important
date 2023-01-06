@@ -15,10 +15,10 @@ class AdviceHourAction extends ActionService
             ->setResource(AdviceHourResource::class)
             ->setValidationRules([
                 'store' => [
-                    'hour' => ['required', 'date_format:H:i:s']
+                    'hour' => ['required', 'string', 'max:50']
                 ],
                 'update' => [
-                    'hour' => ['date_format:H:i:s']
+                    'hour' => ['string', 'max:50']
                 ]
             ]);
         parent::__construct();

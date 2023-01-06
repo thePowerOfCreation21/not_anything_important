@@ -39,6 +39,7 @@ use App\Http\Controllers\ClassScoreStudentController;
 use App\Http\Controllers\TeacherWorkExperienceController;
 use App\Http\Controllers\TeacherEntranceHistoryController;
 use App\Http\Controllers\InventoryProductHistoryController;
+use Morilog\Jalali\CalendarUtils;
 
 /*
 |--------------------------------------------------------------------------
@@ -249,11 +250,3 @@ Route::group([
     Route::get('/admin/{id}', [AdminController::class, 'getById']);
     Route::delete('/admin/{id}', [AdminController::class, 'deleteById']);
 });
-
-/*
-Route::get('/test', function(){
-    $dateTime = new DateTime('now');
-    $dateTime->modify('first day of next month');
-    return $dateTime->format('Y-m-d');
-});
-*/

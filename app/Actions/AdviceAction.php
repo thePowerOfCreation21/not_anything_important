@@ -16,7 +16,7 @@ class AdviceAction extends ActionService
             ->setResource(AdviceResource::class)
             ->setValidationRules([
                 'update' => [
-                    'hour' => ['date_format:H:i:s'],
+                    'hour' => ['string', 'max:50'],
                     'date' => ['date_format:Y-m-d'],
                     'status' => ['string', 'in:pending,accepted,rejected', 'max:255']
                 ],

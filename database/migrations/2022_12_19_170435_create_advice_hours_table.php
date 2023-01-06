@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('advice_hours', function (Blueprint $table) {
             $table->id();
-            $table->time('hour')->unique();
+            $table->string('hour', 50)->unique();
         });
     }
 

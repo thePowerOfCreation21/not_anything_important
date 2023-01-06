@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('advices', function (Blueprint $table) {
             $table->id();
-            $table->time('hour');
+            $table->string('hour', 50);
             $table->timestamp('date');
             $table->string('student_id', 20);
             $table->string('status', 255)->default('pending');
