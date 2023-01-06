@@ -10,6 +10,7 @@ use Genocide\Radiocrud\Services\ActionService\ActionService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use JetBrains\PhpStorm\ArrayShape;
 use Morilog\Jalali\CalendarUtils;
 
 class StudentAction extends ActionService
@@ -250,6 +251,10 @@ class StudentAction extends ActionService
                     'register_status' => ['string', 'max:150'],
                     'from_created_at' => ['date_format:Y-m-d'],
                     'to_created_at' => ['date_format:Y-m-d'],
+                ],
+                'login' => [
+                    'meli_code' => ['required', 'string', 'max:25'],
+                    'password' => ['required', 'string', 'max:100']
                 ]
             ])
             ->setCasts([
@@ -470,5 +475,36 @@ class StudentAction extends ActionService
             ->update([
                 'register_status' => 'rejected',
             ]);
+    }
+
+    /**
+     * @param array $data
+     * @return array
+     * @throws CustomException
+     */
+    #[ArrayShape(['student' => "mixed", 'token' => "mixed"])]
+    public function login (array $data): array
+    {
+        $student = StudentModel::query()->where('meli_code', $data['meli_code'])->first();
+
+        if (!empty($student) && Hash::check($data['password'], $student->password))
+        {
+            return [
+                'student' => $this->applyResourceToEntity($student),
+                'token' => $student->createToken('auth')->plainTextToken
+            ];
+        }
+
+        throw new CustomException('login info was wrong', '513540', 400);
+    }
+
+    /**
+     * @return array
+     * @throws CustomException
+     */
+    #[ArrayShape(['student' => "mixed", 'token' => "mixed"])]
+    public function loginByRequest (): array
+    {
+        return $this->login($this->getDataFromRequest());
     }
 }

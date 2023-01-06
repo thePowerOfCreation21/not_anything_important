@@ -144,4 +144,19 @@ class StudentController extends Controller
                 ->storeByRequest()
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function login (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new StudentAction())
+                ->setRequest($request)
+                ->setValidationRule('login')
+                ->loginByRequest()
+        );
+    }
 }

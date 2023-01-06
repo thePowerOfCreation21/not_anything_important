@@ -39,7 +39,6 @@ use App\Http\Controllers\ClassScoreStudentController;
 use App\Http\Controllers\TeacherWorkExperienceController;
 use App\Http\Controllers\TeacherEntranceHistoryController;
 use App\Http\Controllers\InventoryProductHistoryController;
-use Morilog\Jalali\CalendarUtils;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +53,8 @@ use Morilog\Jalali\CalendarUtils;
 
 
 Route::post('/admin/login', [AdminController::class, 'login']);
+
+Route::post('/student/login', [StudentController::class, 'login']);
 
 Route::post('/student/register_request', [StudentController::class, 'registerRequest']);
 
