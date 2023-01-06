@@ -38,6 +38,7 @@ class StudentFinancialController extends Controller
                 ->setRequest($request)
                 ->setValidationRule('getQuery')
                 ->mergeQueryWith(['educational_year' => PardisanHelper::getCurrentEducationalYear()])
+                ->setRelations(['student'])
                 ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()
         );
@@ -51,7 +52,10 @@ class StudentFinancialController extends Controller
     public function getById (string $id): JsonResponse
     {
         return response()->json(
-            (new StudentFinancialAction())->getById($id)
+            (new StudentFinancialAction())
+                ->setRelations(['student'])
+                ->makeEloquent()
+                ->getById($id)
         );
     }
 
