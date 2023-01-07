@@ -194,4 +194,18 @@ class StudentController extends Controller
                 ->checkOtpByRequest()
         );
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getInfo (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new StudentAction())
+                ->setRequest($request)
+                ->getUserFromRequest()
+        );
+    }
 }

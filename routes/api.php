@@ -253,3 +253,9 @@ Route::group([
     Route::get('/admin/{id}', [AdminController::class, 'getById']);
     Route::delete('/admin/{id}', [AdminController::class, 'deleteById']);
 });
+
+Route::group([
+    'middleware' => ['auth:student']
+], function(){
+    Route::get('/student/info', [StudentController::class, 'getInfo']);
+});
