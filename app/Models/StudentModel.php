@@ -94,7 +94,9 @@ class StudentModel extends Model
     ];
 
     protected $hidden = [
-        'password'
+        'password',
+        'otp',
+        'otp_expires_at'
     ];
 
     protected $casts = [

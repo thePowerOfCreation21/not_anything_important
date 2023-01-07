@@ -111,6 +111,7 @@ class StudentCollectionResource extends JsonResource
             'level' => $this->level,
             'educational_year' => $this->educational_year,
             'register_status' => $this->register_status,
+            'should_change_password' => $this->should_change_password,
             'created_at' => Helpers::getCustomDateCast($this->created_at)
         ];
     }

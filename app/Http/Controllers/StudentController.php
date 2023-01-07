@@ -178,4 +178,20 @@ class StudentController extends Controller
             'message' => 'ok'
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     * @throws Throwable
+     */
+    public function checkOtp (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new StudentAction())
+                ->setRequest($request)
+                ->setValidationRule('checkOtp')
+                ->checkOtpByRequest()
+        );
+    }
 }

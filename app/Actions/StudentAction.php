@@ -261,6 +261,10 @@ class StudentAction extends ActionService
                 ],
                 'sendOtp' => [
                     'mobile_number' => ['required', 'string', 'max:50']
+                ],
+                'checkOtp' => [
+                    'mobile_number' => ['required', 'string', 'max:50'],
+                    'otp' => ['required', 'string', 'max:6']
                 ]
             ])
             ->setCasts([
@@ -484,6 +488,19 @@ class StudentAction extends ActionService
     }
 
     /**
+     * @param StudentModel|Model $student
+     * @return array
+     */
+    #[ArrayShape(['student' => "mixed", 'token' => "mixed"])]
+    protected function getLoginInfoByStudent (StudentModel|Model $student): array
+    {
+        return [
+            'student' => $this->applyResourceToEntity($student),
+            'token' => $student->createToken('auth')->plainTextToken
+        ];
+    }
+
+    /**
      * @param array $data
      * @return array
      * @throws CustomException
@@ -495,10 +512,7 @@ class StudentAction extends ActionService
 
         if (!empty($student) && Hash::check($data['password'], $student->password))
         {
-            return [
-                'student' => $this->applyResourceToEntity($student),
-                'token' => $student->createToken('auth')->plainTextToken
-            ];
+            return $this->getLoginInfoByStudent($student);
         }
 
         throw new CustomException('login info was wrong', '513540', 400);
@@ -521,7 +535,7 @@ class StudentAction extends ActionService
      */
     public function sendOtp (StudentModel|Model $student): StudentModel
     {
-        throw_if($student->otp_expires_at > time(), 'otp already sent', '16562', 400);
+        throw_if($student->otp_expires_at > time(), CustomException::class, 'otp already sent', '16562', 400);
 
         $otp = random_int(111111, 999999);
 
@@ -545,5 +559,34 @@ class StudentAction extends ActionService
         $data = $this->getDataFromRequest();
 
         return $this->sendOtp(StudentModel::query()->where('mobile_number', $data['mobile_number'])->firstOrFail());
+    }
+
+    /**
+     * @param array $data
+     * @return array
+     * @throws Throwable
+     */
+    #[ArrayShape(['student' => "mixed", 'token' => "mixed"])]
+    public function checkOtp (array $data): array
+    {
+        $student = StudentModel::query()->where('mobile_number', $data['mobile_number'])->firstOrFail();
+
+        throw_if($student->otp_expires_at < time() || !Hash::check($data['otp'], $student->otp), CustomException::class, 'otp is wrong or expired', '293770', 400);
+
+        $student->should_change_password = true;
+        $student->save();
+
+        return $this->getLoginInfoByStudent($student);
+    }
+
+    /**
+     * @return array
+     * @throws CustomException
+     * @throws Throwable
+     */
+    #[ArrayShape(['student' => "mixed", 'token' => "mixed"])]
+    public function checkOtpByRequest (): array
+    {
+        return $this->checkOtp($this->getDataFromRequest());
     }
 }

@@ -56,6 +56,7 @@ Route::post('/admin/login', [AdminController::class, 'login']);
 
 Route::post('/student/login', [StudentController::class, 'login']);
 Route::post('/student/send_otp', [StudentController::class, 'sendOtp']);
+Route::post('/student/check_otp', [StudentController::class, 'checkOtp']);
 
 Route::post('/student/register_request', [StudentController::class, 'registerRequest']);
 
