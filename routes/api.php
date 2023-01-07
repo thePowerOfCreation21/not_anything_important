@@ -259,4 +259,10 @@ Route::group([
 ], function(){
     Route::get('/student/info', [StudentController::class, 'getInfo']);
     Route::post('/student/change_password', [StudentController::class, 'changePassword']);
+
+    Route::group([
+        'middleware' => ['CheckIfStudentShouldChangePassword']
+    ], function(){
+        Route::get('/student/class_report', [ClassReportsController::class, 'getByStudent']);
+    });
 });

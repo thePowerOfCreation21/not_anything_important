@@ -6,6 +6,7 @@ use App\Actions\ClassAction;
 use App\Actions\ClassReportsAction;
 use App\Actions\CourseAction;
 use App\Actions\TeacherAction;
+use Genocide\Radiocrud\Exceptions\CustomException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -51,5 +52,22 @@ class ClassReportsController extends Controller
                 ->setValidationRule('update')
                 ->updateByIdAndRequest($id)
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByStudent (Request $request) : JsonResponse
+    {
+        return response()->json(
+            (new ClassReportsAction())
+                ->setRequest($request)
+                ->setRelations(['classCourse.classModel'])
+                ->mergeQueryWith(['student_id' => $request->user()->id])
+                ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
     }
 }

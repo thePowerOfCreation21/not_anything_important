@@ -29,4 +29,15 @@ class ClassReportsModel extends Model
     {
         return $this->belongsTo(ClassCourseModel::class, 'class_course_id', 'id');
     }
+
+    public function scopeForStudent($q, string $studentId)
+    {
+        $q->whereHas('classCourse', function($q) use($studentId){
+            $q->whereHas('classModel', function($q) use($studentId){
+                $q->whereHas('students', function($q) use($studentId){
+                    $q->where('students.id', $studentId);
+                });
+            });
+        });
+    }
 }
