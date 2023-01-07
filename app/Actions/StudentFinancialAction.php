@@ -47,6 +47,12 @@ class StudentFinancialAction extends ActionService
                     'to_date' => ['date_format:Y-m-d'],
                     'can_send_sms' => ['boolean'],
                     'educational_year' => ['string', 'max:50']
+                ],
+                'getByStudent' => [
+                    'from_date' => ['date_format:Y-m-d'],
+                    'to_date' => ['date_format:Y-m-d'],
+                    'can_send_sms' => ['boolean'],
+                    'educational_year' => ['string', 'max:50']
                 ]
             ])
             ->setCasts([

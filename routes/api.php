@@ -266,5 +266,7 @@ Route::group([
         Route::get('/student/class_report', [ClassReportsController::class, 'getByStudent']);
 
         Route::get('/student/class_file', [ClassFileController::class, 'getByStudent']);
+
+        Route::get('/student/financial', [StudentFinancialController::class, 'getByStudent']);
     });
 });
