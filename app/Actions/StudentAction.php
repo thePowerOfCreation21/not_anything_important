@@ -7,11 +7,14 @@ use App\Http\Resources\StudentResource;
 use App\Models\StudentModel;
 use Genocide\Radiocrud\Exceptions\CustomException;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use JetBrains\PhpStorm\ArrayShape;
 use Morilog\Jalali\CalendarUtils;
+use Throwable;
 
 class StudentAction extends ActionService
 {
@@ -255,6 +258,9 @@ class StudentAction extends ActionService
                 'login' => [
                     'meli_code' => ['required', 'string', 'max:25'],
                     'password' => ['required', 'string', 'max:100']
+                ],
+                'sendOtp' => [
+                    'mobile_number' => ['required', 'string', 'max:50']
                 ]
             ])
             ->setCasts([
@@ -506,5 +512,38 @@ class StudentAction extends ActionService
     public function loginByRequest (): array
     {
         return $this->login($this->getDataFromRequest());
+    }
+
+    /**
+     * @param StudentModel|Model $student
+     * @return StudentModel
+     * @throws Throwable
+     */
+    public function sendOtp (StudentModel|Model $student): StudentModel
+    {
+        throw_if($student->otp_expires_at > time(), 'otp already sent', '16562', 400);
+
+        $otp = random_int(111111, 999999);
+
+        // TODO: send sms
+        Log::info("OTP: $otp");
+
+        $student->otp_expires_at = time() + 120;
+        $student->otp = Hash::make($otp);
+        $student->save();
+
+        return $student;
+    }
+
+    /**
+     * @return StudentModel
+     * @throws CustomException
+     * @throws Throwable
+     */
+    public function sendOtpByRequest (): StudentModel
+    {
+        $data = $this->getDataFromRequest();
+
+        return $this->sendOtp(StudentModel::query()->where('mobile_number', $data['mobile_number'])->firstOrFail());
     }
 }

@@ -8,6 +8,7 @@ use App\Http\Resources\StudentCollectionResource;
 use Genocide\Radiocrud\Exceptions\CustomException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Throwable;
 
 class StudentController extends Controller
 {
@@ -158,5 +159,23 @@ class StudentController extends Controller
                 ->setValidationRule('login')
                 ->loginByRequest()
         );
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     * @throws Throwable
+     */
+    public function sendOtp (Request $request): JsonResponse
+    {
+        (new StudentAction())
+            ->setRequest($request)
+            ->setValidationRule('sendOtp')
+            ->sendOtpByRequest();
+
+        return response()->json([
+            'message' => 'ok'
+        ]);
     }
 }
