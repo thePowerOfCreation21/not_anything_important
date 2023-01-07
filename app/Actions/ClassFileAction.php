@@ -83,6 +83,10 @@ class ClassFileAction extends ActionService
                     {
                         $eloquent = $eloquent->where('educational_year', $query['educational_year']);
                     }
+                },
+                'student_id' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->forStudent($query['student_id']);
                 }
             ]);
 

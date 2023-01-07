@@ -95,4 +95,29 @@ class ClassFileController extends Controller
                 ->getById($id)
         );
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByStudent (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new ClassFileAction())
+                ->setRequest($request)
+                ->setValidationRule('getQuery')
+                ->setRelations([
+                    'author',
+                    'classModel',
+                    'classCourse' => ['course', 'classModel']
+                ])
+                ->mergeQueryWith([
+                    'educational_year' => PardisanHelper::getCurrentEducationalYear(),
+                    'student_id' => $request->user()->id
+                ])
+                ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
+    }
 }
