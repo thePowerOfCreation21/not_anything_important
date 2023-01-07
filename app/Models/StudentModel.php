@@ -88,7 +88,7 @@ class StudentModel extends Model
         'should_change_password',
         'password',
         'register_status',
-        'last_time_sms_sent'
+        'last_time_sms_sent',
     ];
 
     protected $hidden = [
@@ -97,7 +97,8 @@ class StudentModel extends Model
 
     protected $casts = [
         'wallet_amount' => 'integer',
-        'last_time_sms_sent' => 'integer'
+        'last_time_sms_sent' => 'integer',
+        'should_change_password' => 'boolean'
     ];
 
     public function financials (): HasMany
