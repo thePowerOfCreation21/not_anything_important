@@ -91,6 +91,8 @@ return new class extends Migration
             $table->string('password', 150);
             $table->string('register_status', 50);
             $table->timestamp('last_time_sms_sent')->nullable();
+            $table->bigInteger('otp_expires_at')->default(0);
+            $table->string('otp', 100)->nullable();
             $table->timestamps();
         });
     }
