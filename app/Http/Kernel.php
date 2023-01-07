@@ -54,7 +54,8 @@ class Kernel extends HttpKernel
      * @var array<string, class-string|string>
      */
     protected $routeMiddleware = [
-        'preventBlockedUser' => \App\Http\Middleware\IsUserBlockedMiddleware::class,
+        'CheckIfStudentShouldChangePassword' => \App\Http\Middleware\CheckIfStudentShouldChangePasswordMiddleware::class,
+        'PreventBlockedUser' => \App\Http\Middleware\IsUserBlockedMiddleware::class,
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
