@@ -208,4 +208,22 @@ class StudentController extends Controller
                 ->getUserFromRequest()
         );
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     * @throws Throwable
+     */
+    public function changePassword (Request $request): JsonResponse
+    {
+        (new StudentAction())
+            ->setRequest($request)
+            ->setValidationRule('changePassword')
+            ->changePasswordByRequest();
+
+        return response()->json([
+            'message' => 'password changed successfully'
+        ]);
+    }
 }

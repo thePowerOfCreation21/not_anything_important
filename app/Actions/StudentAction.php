@@ -265,6 +265,10 @@ class StudentAction extends ActionService
                 'checkOtp' => [
                     'mobile_number' => ['required', 'string', 'max:50'],
                     'otp' => ['required', 'string', 'max:6']
+                ],
+                'changePassword' => [
+                    'current_password' => ['string', 'max:100'],
+                    'new_password' => ['required', 'string', 'max:100']
                 ]
             ])
             ->setCasts([
@@ -588,5 +592,35 @@ class StudentAction extends ActionService
     public function checkOtpByRequest (): array
     {
         return $this->checkOtp($this->getDataFromRequest());
+    }
+
+    /**
+     * @param StudentModel|Model $student
+     * @param array $data
+     * @return Model|StudentModel
+     * @throws Throwable
+     */
+    public function changePassword (StudentModel|Model $student, array $data): Model|StudentModel
+    {
+        throw_if(
+            !$student->should_change_password && (!isset($data['current_password']) || !Hash::check($data['current_password'], $student->password)),
+            CustomException::class, 'current password should be set and should be equal to current password of student', '923686', 400
+        );
+
+        $student->should_change_password = false;
+        $student->password = Hash::make($data['new_password']);
+        $student->save();
+
+        return $student;
+    }
+
+    /**
+     * @return Model|StudentModel
+     * @throws CustomException
+     * @throws Throwable
+     */
+    public function changePasswordByRequest (): Model|StudentModel
+    {
+        return $this->changePassword($this->request->user(), $this->getDataFromRequest());
     }
 }

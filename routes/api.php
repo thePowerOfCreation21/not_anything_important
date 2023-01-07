@@ -258,4 +258,5 @@ Route::group([
     'middleware' => ['auth:student']
 ], function(){
     Route::get('/student/info', [StudentController::class, 'getInfo']);
+    Route::post('/student/change_password', [StudentController::class, 'changePassword']);
 });
