@@ -28,4 +28,19 @@ class ClassMessageStudentModel extends Model
     {
         return $this->belongsTo(ClassMessageModel::class, 'class_message_id', 'id');
     }
+
+    /**
+     * call this function to seen message
+     *
+     * @return $this
+     */
+    public function seen(): static
+    {
+        if (!$this->is_seen)
+        {
+            $this->is_seen = true;
+            $this->save();
+        }
+        return $this;
+    }
 }

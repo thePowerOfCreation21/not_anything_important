@@ -271,5 +271,6 @@ Route::group([
         Route::get('/student/financial', [StudentFinancialController::class, 'getByStudent']);
 
         Route::get('/student/class_message', [ClassMessageStudentController::class, 'getByStudent']);
+        Route::get('/student/class_message/{id}', [ClassMessageStudentController::class, 'getByIdByStudent']);
     });
 });
