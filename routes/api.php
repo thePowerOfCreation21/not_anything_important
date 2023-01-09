@@ -10,6 +10,7 @@ use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\FoodDateController;
 use App\Http\Controllers\FinancialController;
 use App\Http\Controllers\ClassFileController;
@@ -69,6 +70,8 @@ Route::get('/contact_us_content', [ContactUsContentController::class, 'get']);
 
 Route::get('/gallery_image', [GalleryImageController::class, 'get']);
 Route::get('/gallery_image/{id}', [GalleryImageController::class, 'getById']);
+
+Route::get('/about_us', [AboutUsController::class, 'get']);
 
 Route::group([
     'middleware' => ['auth:admin']
