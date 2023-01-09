@@ -36,6 +36,7 @@ use App\Http\Controllers\InventoryProductController;
 use App\Http\Controllers\StudentDisciplineController;
 use App\Http\Controllers\AttendanceStudentController;
 use App\Http\Controllers\ClassScoreStudentController;
+use App\Http\Controllers\ClassMessageStudentController;
 use App\Http\Controllers\TeacherWorkExperienceController;
 use App\Http\Controllers\TeacherEntranceHistoryController;
 use App\Http\Controllers\InventoryProductHistoryController;
@@ -268,5 +269,7 @@ Route::group([
         Route::get('/student/class_file', [ClassFileController::class, 'getByStudent']);
 
         Route::get('/student/financial', [StudentFinancialController::class, 'getByStudent']);
+
+        Route::get('/student/class_message', [ClassMessageStudentController::class, 'getByStudent']);
     });
 });
