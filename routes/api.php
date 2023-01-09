@@ -76,6 +76,8 @@ Route::get('/about_us', [AboutUsController::class, 'get']);
 Route::group([
     'middleware' => ['auth:admin']
 ], function(){
+    Route::put('/admin/about_us', [AboutUsController::class, 'update']);
+
     Route::post('/admin/food_date', [FoodDateController::class, 'store']);
 
     Route::post('/admin/survey', [SurveyController::class, 'store']);

@@ -2,7 +2,6 @@
 
 namespace App\KeyValueConfigs;
 
-use Genocide\Radiocrud\Helpers;
 use Genocide\Radiocrud\Services\KeyValueConfigService;
 
 class AboutUs extends KeyValueConfigService
@@ -17,8 +16,8 @@ class AboutUs extends KeyValueConfigService
 
     protected array|string $validationRule = [
         'text' => ['nullable', 'string', 'max:25000'],
-        'image' => ['file', 'mimes:mp4,webm,ogg,3gp,3g2,3gpp,3gpp2,png,jpg,jpeg,gif', 'max:5000'],
-        'video' => ['file', 'mimes:mp4,webm,ogg,3gp,3g2,3gpp,3gpp2,png,jpg,jpeg,gif', 'max:10000'],
+        'image' => ['file', 'mimes:png,jpg,jpeg,svg', 'max:5000'],
+        'video' => ['file', 'mimes:mp4,webm,ogg,3gp,3g2,3gpp,3gpp2', 'max:10000'],
     ];
 
     protected array $casts = [
