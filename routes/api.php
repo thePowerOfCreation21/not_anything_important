@@ -272,5 +272,7 @@ Route::group([
 
         Route::get('/student/class_message', [ClassMessageStudentController::class, 'getByStudent']);
         Route::get('/student/class_message/{id}', [ClassMessageStudentController::class, 'getByIdByStudent']);
+
+        Route::get('/student/class', [ClassController::class, 'getByStudent']);
     });
 });

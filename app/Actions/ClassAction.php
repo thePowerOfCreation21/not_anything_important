@@ -64,6 +64,12 @@ class ClassAction extends ActionService
                       $q->where('title', 'LIKE', "%{$search}%")
                         ->orWhere('level', 'LIKE', "%{$search}%");
                     });
+                },
+                'student_id' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereHas('students', function($q) use($query){
+                        $q->where('students.id', $query['student_id']);
+                    });
                 }
             ]);
         parent::__construct();

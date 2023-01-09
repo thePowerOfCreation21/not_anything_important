@@ -127,4 +127,24 @@ class ClassController extends Controller
                 ->deleteStudentFromClassByRequest()
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByStudent (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new ClassAction())
+                ->setRequest($request)
+                ->setValidationRule('getQuery')
+                ->mergeQueryWith([
+                    'student_id' => $request->user()->id,
+                    'educational_year' => PardisanHelper::getCurrentEducationalYear()
+                ])
+                ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
+    }
 }
