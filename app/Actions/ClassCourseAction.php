@@ -42,6 +42,10 @@ class ClassCourseAction extends ActionService
                 'course_id' => function (&$eloquent, $query)
                 {
                     $eloquent = $eloquent->where('course_id', $query['course_id']);
+                },
+                'student_id' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->forStudent($query['student_id']);
                 }
             ])
             ->setResource(ClassCourseResource::class);

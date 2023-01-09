@@ -34,4 +34,13 @@ class ClassCourseModel extends Model
     {
         return $this->belongsTo(TeacherModel::class, 'teacher_id', 'id');
     }
+
+    public function scopeForStudent($q, string $studentId)
+    {
+        $q->whereHas('classModel', function($q) use($studentId){
+            $q->whereHas('students', function($q) use($studentId){
+                $q->where('students.id', $studentId);
+            });
+        });
+    }
 }

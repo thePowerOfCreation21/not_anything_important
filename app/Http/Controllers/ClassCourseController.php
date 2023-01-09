@@ -85,4 +85,22 @@ class ClassCourseController extends Controller
                 ->getById($id)
         );
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByStudent (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new ClassCourseAction())
+                ->setRequest($request)
+                ->setValidationRule('getQuery')
+                ->setRelations(['classModel', 'course', 'teacher'])
+                ->mergeQueryWith(['student_id' => $request->user()->id])
+                ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
+    }
 }
