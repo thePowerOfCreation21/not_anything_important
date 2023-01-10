@@ -26,13 +26,29 @@ class WalletHistoryAction extends ActionService
                 ],
                 'getQuery' => [
                     'student_id' => ['string', 'max:20']
+                ],
+                'getByStudent' => [
+                    'from_created_at' => ['date_format:Y-m-d'],
+                    'to_created_at' => ['date_format:Y-m-d'],
                 ]
+            ])
+            ->setCasts([
+                'from_created_at' => ['jalali_to_gregorian:Y-m-d'],
+                'to_created_at' => ['jalali_to_gregorian:Y-m-d'],
             ])
             ->setQueryToEloquentClosures([
                 'student_id' => function (&$eloquent, $query)
                 {
                     $eloquent = $eloquent->where('student_id', $query['student_id']);
-                }
+                },
+                'from_created_at' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereDate('created_at', '>=', $query['from_created_at']);
+                },
+                'to_created_at' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereDate('created_at', '<=', $query['from_created_at']);
+                },
             ]);
 
         parent::__construct();

@@ -42,4 +42,22 @@ class WalletHistoryController extends Controller
             ->getByRequestAndEloquent()
         );
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByStudent (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new WalletHistoryAction())
+                ->setRequest($request)
+                ->setValidationRule('getByStudent')
+                ->mergeQueryWith(['student_id' => $request->user()->id])
+                ->setRelations(['student'])
+                ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
+    }
 }
