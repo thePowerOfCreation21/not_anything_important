@@ -25,4 +25,26 @@ class AttendanceStudentController extends Controller
                 ->getByRequestAndEloquent()
         );
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByStudent (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new AttendanceStudentAction())
+                ->setRequest($request)
+                ->mergeQueryWith(['student_id' => $request->user()->id])
+                ->setRelations([
+                    'attendance' => [
+                        'classCourse' => ['teacher', 'course', 'class']
+                    ],
+                    'student'
+                ])
+                ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
+    }
 }
