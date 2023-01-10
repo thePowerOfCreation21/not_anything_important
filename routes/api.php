@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\AdviceController;
@@ -76,6 +77,8 @@ Route::get('/about_us', [AboutUsController::class, 'get']);
 Route::group([
     'middleware' => ['auth:admin']
 ], function(){
+    Route::post('/admin/news', [NewsController::class, 'store']);
+
     Route::put('/admin/about_us', [AboutUsController::class, 'update']);
 
     Route::post('/admin/food_date', [FoodDateController::class, 'store']);
