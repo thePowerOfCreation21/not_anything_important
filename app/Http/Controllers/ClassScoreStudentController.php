@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\ClassScoreStudentAction;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ClassScoreStudentController extends Controller
@@ -16,6 +17,27 @@ class ClassScoreStudentController extends Controller
                 ->setRelations(['classScore.classCourse.classModel'])
                 ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getByStudent (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new ClassScoreStudentAction())
+                ->mergeQueryWith(['student_id' => $request->user()->id])
+                ->setRelations([
+                    'classScore' => [
+                        'classCourse' => ['course', 'teacher', 'classModel'],
+                        'submitter',
+                    ],
+                    'student'
+                ])
+                ->makeEloquent()
+                ->groupByScoreByEloquent()
         );
     }
 }

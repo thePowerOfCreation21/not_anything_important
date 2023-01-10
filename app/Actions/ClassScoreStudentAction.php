@@ -60,4 +60,18 @@ class ClassScoreStudentAction extends ActionService
 
         parent::__construct();
     }
+
+    /**
+     * @return array
+     */
+    public function groupByScoreByEloquent (): array
+    {
+        $result = [];
+
+        foreach ($this->startEloquentIfIsNull()->eloquent->get() AS $classScoreStudent)
+            if (isset($classScoreStudent?->classScore?->classCourse?->course))
+                $result[$classScoreStudent->classScore->classCourse->course->title][] = $this->applyResourceToEntity($classScoreStudent);
+
+        return $result;
+    }
 }

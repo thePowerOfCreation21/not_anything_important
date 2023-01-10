@@ -277,6 +277,8 @@ Route::group([
     Route::group([
         'middleware' => ['CheckIfStudentShouldChangePassword']
     ], function(){
+        Route::get('/student/class_score_student', [ClassScoreStudentController::class, 'getByStudent']);
+
         Route::get('/student/class_report', [ClassReportsController::class, 'getByStudent']);
 
         Route::get('/student/class_file', [ClassFileController::class, 'getByStudent']);

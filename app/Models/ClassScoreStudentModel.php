@@ -28,6 +28,6 @@ class ClassScoreStudentModel extends Model
 
     public function classScore(): BelongsTo
     {
-        return $this->belongsTo(ClassScoreModel::class, 'class_course_id', 'id');
+        return $this->belongsTo(ClassScoreModel::class, 'class_score_id', 'id');
     }
 }
