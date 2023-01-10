@@ -43,6 +43,18 @@ class NewsController extends Controller
     }
 
     /**
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function deleteById (string $id): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new NewsAction())->deleteById($id)
+        ]);
+    }
+
+    /**
      * @param Request $request
      * @return JsonResponse
      * @throws CustomException

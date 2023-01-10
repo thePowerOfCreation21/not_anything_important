@@ -82,6 +82,7 @@ Route::group([
 ], function(){
     Route::post('/admin/news', [NewsController::class, 'store']);
     Route::put('/admin/news/{id}', [NewsController::class, 'updateById']);
+    Route::delete('/admin/news/{id}', [NewsController::class, 'deleteById']);
 
     Route::put('/admin/about_us', [AboutUsController::class, 'update']);
 

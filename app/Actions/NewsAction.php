@@ -48,6 +48,15 @@ class NewsAction extends ActionService
     }
 
     /**
+     * @return void
+     */
+    protected function deleteImagesByEloquent ()
+    {
+        foreach ($this->startEloquentIfIsNull()->eloquent->get() AS $product)
+            if (is_file($product->image)) unlink($product->image);
+    }
+
+    /**
      * @param array $updateData
      * @param callable|null $updating
      * @return bool|int
@@ -55,9 +64,15 @@ class NewsAction extends ActionService
     public function update(array $updateData, callable $updating = null): bool|int
     {
         // deleting old image file, if "image" field is present at $updateData
-        foreach ($this->startEloquentIfIsNull()->eloquent->get() AS $product)
-            if (array_key_exists('image', $updateData) && is_file($product->image)) unlink($product->image);
+        if (array_key_exists('image', $updateData)) $this->deleteImagesByEloquent();
 
         return parent::update($updateData, $updating);
+    }
+
+    public function delete(callable $deleting = null): mixed
+    {
+        $this->deleteImagesByEloquent();
+
+        return parent::delete($deleting);
     }
 }
