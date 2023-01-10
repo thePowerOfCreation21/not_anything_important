@@ -25,10 +25,24 @@ class NewsAction extends ActionService
                     'content' => ['nullable', 'string', 'max:50000'],
                     'image' => ['nullable', 'file', 'mimes:png,jpg,jpeg,svg', 'max:5000'],
                     'is_important' => ['boolean']
+                ],
+                'get' => [
+                    'search' => ['string' , 'max:250'],
+                    'is_important' => ['boolean']
                 ]
             ])
             ->setCasts([
                 'image' => ['file', 'nullable']
+            ])
+            ->setQueryToEloquentClosures([
+                'search' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('title', 'LIKE', "%{$query['search']}%");
+                },
+                'is_important' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('is_important', $query['is_important']);
+                }
             ]);
         parent::__construct();
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Genocide\Radiocrud\Helpers;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class NewsResource extends JsonResource
@@ -14,6 +15,13 @@ class NewsResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'content' => $this->content,
+            'image' => $this->image,
+            'is_important' => (bool) $this->is_important,
+            'created_at' => Helpers::getCustomDateCast($this->created_at)
+        ];
     }
 }

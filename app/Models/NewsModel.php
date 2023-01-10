@@ -17,8 +17,4 @@ class NewsModel extends Model
         'image',
         'is_important'
     ];
-
-    protected $casts = [
-        'is_important' => 'boolean'
-    ];
 }
