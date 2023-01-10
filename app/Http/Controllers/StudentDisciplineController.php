@@ -106,4 +106,21 @@ class StudentDisciplineController extends Controller
                 ->getByRequestAndEloquent()
         );
     }
+
+    /**
+     * @param string $id
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByIdByStudent (string $id, Request $request): JsonResponse
+    {
+        return response()->json(
+            (new StudentDisciplineAction())
+                ->mergeQueryWith(['student_id' => $request->user()->id])
+                ->setRelations(['student'])
+                ->makeEloquent()
+                ->getById($id)
+        );
+    }
 }

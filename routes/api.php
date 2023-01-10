@@ -278,6 +278,7 @@ Route::group([
         'middleware' => ['CheckIfStudentShouldChangePassword']
     ], function(){
         Route::get('/student/discipline', [StudentDisciplineController::class, 'getByStudent']);
+        Route::get('/student/discipline/{id}', [StudentDisciplineController::class, 'getByIdByStudent']);
 
         Route::get('/student/attendance_student', [AttendanceStudentController::class, 'getByStudent']);
 
