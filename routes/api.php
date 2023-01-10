@@ -74,6 +74,9 @@ Route::get('/gallery_image/{id}', [GalleryImageController::class, 'getById']);
 
 Route::get('/about_us', [AboutUsController::class, 'get']);
 
+Route::get('/news', [NewsController::class, 'get']);
+Route::get('/news/{id}', [NewsController::class, 'getById']);
+
 Route::group([
     'middleware' => ['auth:admin']
 ], function(){
