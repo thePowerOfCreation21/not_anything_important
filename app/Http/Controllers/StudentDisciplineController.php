@@ -85,4 +85,25 @@ class StudentDisciplineController extends Controller
                 ->deleteById($id)
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByStudent (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new StudentDisciplineAction())
+                ->setRequest($request)
+                ->setValidationRule('getByStudent')
+                ->setRelations(['student'])
+                ->mergeQueryWith([
+                    'educational_year' => PardisanHelper::getCurrentEducationalYear(),
+                    'student_id' => $request->user()->id
+                ])
+                ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
+    }
 }

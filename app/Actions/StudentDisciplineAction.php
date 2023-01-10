@@ -30,6 +30,11 @@ class StudentDisciplineAction extends ActionService
                     'from_date' => ['date_format:Y-m-d'],
                     'to_date' => ['date_format:Y-m-d'],
                     'educational_year' => ['string', 'max:50']
+                ],
+                'getByStudent' => [
+                    'from_date' => ['date_format:Y-m-d'],
+                    'to_date' => ['date_format:Y-m-d'],
+                    'educational_year' => ['string', 'max:50']
                 ]
             ])
             ->setCasts([
