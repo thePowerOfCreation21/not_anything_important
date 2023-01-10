@@ -78,6 +78,7 @@ Route::group([
     'middleware' => ['auth:admin']
 ], function(){
     Route::post('/admin/news', [NewsController::class, 'store']);
+    Route::put('/admin/news/{id}', [NewsController::class, 'updateById']);
 
     Route::put('/admin/about_us', [AboutUsController::class, 'update']);
 
