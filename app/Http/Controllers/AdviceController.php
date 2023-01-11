@@ -8,6 +8,7 @@ use App\Models\AdviceModel;
 use App\Actions\AdviceAction;
 use Illuminate\Http\JsonResponse;
 use Genocide\Radiocrud\Exceptions\CustomException;
+use Throwable;
 
 class AdviceController extends Controller
 {
@@ -43,5 +44,22 @@ class AdviceController extends Controller
                 ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()
         );
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     * @throws Throwable
+     */
+    public function storeByStudent (Request $request): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new AdviceAction())
+                ->setRequest($request)
+                ->setValidationRule('storeByStudent')
+                ->storeByStudentByRequest()
+        ]);
     }
 }
