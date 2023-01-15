@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('advice_date_id')->constrained('advice_dates')->onDelete('cascade');
             $table->foreignId('advice_hour_id')->constrained('advice_hours')->onDelete('cascade');
-            $table->string('student_id', 20);
+            $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
             $table->string('status', 255)->default('pending');
             $table->string('educational_year', 50);
             $table->timestamps();

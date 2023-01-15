@@ -280,6 +280,7 @@ Route::group([
         Route::get('/student/advice_hour', [AdviceHourController::class, 'get']);
         Route::get('/student/advice_date', [AdviceDateController::class, 'getByStudent']);
         Route::post('/student/advice', [AdviceController::class, 'storeByStudent']);
+        Route::get('/student/advice', [AdviceController::class, 'getByStudent']);
 
         Route::get('/student/wallet_history', [WalletHistoryController::class, 'getByStudent']);
 

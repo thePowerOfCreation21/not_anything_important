@@ -63,4 +63,25 @@ class AdviceController extends Controller
                 ->storeByStudentByRequest()
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByStudent(Request $request): JsonResponse
+    {
+        return response()->json(
+            (new AdviceAction())
+                ->setRequest($request)
+                ->setValidationRule('getQuery')
+                ->setRelations(['student'])
+                ->mergeQueryWith([
+                    'educational_year' => PardisanHelper::getCurrentEducationalYear(),
+                    'student_id' => $request->user()->id
+                ])
+                ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
+    }
 }

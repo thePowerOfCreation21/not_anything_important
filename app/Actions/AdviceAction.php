@@ -19,13 +19,20 @@ class AdviceAction extends ActionService
             ->setResource(AdviceResource::class)
             ->setValidationRules([
                 'storeByStudent' => [
-                    'advice_hour_id' => ['string', 'max:50', 'exists:advice_hours,hour'],
-                    'advice_date_id' => ['date_format:Y-m-d'],
+                    'advice_hour_id' => ['integer', 'exists:advice_hours,id'],
+                    'advice_date_id' => ['integer'],
                 ],
                 'update' => [
                     'status' => ['string', 'in:pending,accepted,rejected', 'max:255']
                 ],
                 'getQuery' => [
+                    'student_id' => ['integer'],
+                    'search' => ['string', 'max:255'],
+                    'from_date' => ['date_format:Y-m-d'],
+                    'to_date' => ['date_format:Y-m-d'],
+                    'educational_year' => ['string', 'max:50']
+                ],
+                'getByStudent' => [
                     'search' => ['string', 'max:255'],
                     'from_date' => ['date_format:Y-m-d'],
                     'to_date' => ['date_format:Y-m-d'],
@@ -38,6 +45,10 @@ class AdviceAction extends ActionService
                 'to_date' => ['jalali_to_gregorian:Y-m-d'],
             ])
             ->setQueryToEloquentClosures([
+                'student_id' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('student_id', $query['student_id']);
+                },
                 'from_date' => function (&$eloquent, $query)
                 {
                     $eloquent = $eloquent->whereHas('adviceDate', function($q) use ($query){

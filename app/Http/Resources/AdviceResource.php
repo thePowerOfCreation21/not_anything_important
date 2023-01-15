@@ -17,11 +17,10 @@ class AdviceResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'hour' => $this->hour,
-            'date' => Helpers::getCustomDateCast($this->date),
-            'student_id' => $this->student_id,
-            'student' => new StudentResource($this->whenLoaded('student')),
-            'status' => $this->status
+            'status' => $this->status,
+            'hour' => new AdviceHourResource($this->whenLoaded('adviceHour')),
+            'date' => new AdviceDateResource($this->whenLoaded('adviceDate')),
+            'student' => new StudentCollectionResource($this->whenLoaded('student')),
         ];
     }
 }
