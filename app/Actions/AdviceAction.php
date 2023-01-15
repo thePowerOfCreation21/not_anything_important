@@ -3,6 +3,7 @@
 namespace App\Actions;
 
 use App\Helpers\PardisanHelper;
+use App\Models\AdviceDateModel;
 use Genocide\Radiocrud\Exceptions\CustomException;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
 use App\Models\AdviceModel;
@@ -18,12 +19,10 @@ class AdviceAction extends ActionService
             ->setResource(AdviceResource::class)
             ->setValidationRules([
                 'storeByStudent' => [
-                    'hour' => ['string', 'max:50', 'exists:advice_hours,hour'],
-                    'date' => ['date_format:Y-m-d', 'exists:advice_dates,date'],
+                    'advice_hour_id' => ['string', 'max:50', 'exists:advice_hours,hour'],
+                    'advice_date_id' => ['date_format:Y-m-d'],
                 ],
                 'update' => [
-                    'hour' => ['string', 'max:50'],
-                    'date' => ['date_format:Y-m-d'],
                     'status' => ['string', 'in:pending,accepted,rejected', 'max:255']
                 ],
                 'getQuery' => [
@@ -41,11 +40,15 @@ class AdviceAction extends ActionService
             ->setQueryToEloquentClosures([
                 'from_date' => function (&$eloquent, $query)
                 {
-                    $eloquent = $eloquent->whereDate('date', '>=', $query['from_date']);
+                    $eloquent = $eloquent->whereHas('adviceDate', function($q) use ($query){
+                        $q->whereDate('advice_dates.date', '>=', $query['from_date']);
+                    });
                 },
                 'to_date' => function (&$eloquent, $query)
                 {
-                    $eloquent = $eloquent->whereDate('date', '<=', $query['to_date']);
+                    $eloquent = $eloquent->whereHas('adviceDate', function($q) use ($query){
+                        $q->whereDate('advice_dates.date', '<=', $query['to_date']);
+                    });
                 },
                 'educational_year' => function (&$eloquent, $query)
                 {
@@ -91,12 +94,22 @@ class AdviceAction extends ActionService
      */
     public function store(array $data, callable $storing = null): mixed
     {
+        $adviceDate = AdviceDateModel::query()
+            ->where('id', $data['advice_date_id'])
+            ->firstOrFail();
+
+        throw_if(strtotime($adviceDate->date) < time(), CustomException::class, 'could not store advice for passed dates', '986756', 400);
+
+        $data['educational_year'] = $adviceDate->educational_year;
+
         throw_if(
-            AdviceModel::query()->where('student_id', $data['student_id'])->whereDate('date', $data['date'])->exists(),
+            AdviceModel::query()
+                ->where('student_id', $data['student_id'])
+                ->where('advice_date_id', $data['advice_date_id'])
+                // ->where('hour_id', $data['hour_id'])
+                ->exists(),
             CustomException::class, 'this student already has advice in this date', '37102', 400
         );
-
-        $data['educational_year'] = PardisanHelper::getEducationalYearByGregorianDate($data['date']);
 
         return parent::store($data, $storing);
     }

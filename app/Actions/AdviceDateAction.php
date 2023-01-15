@@ -22,11 +22,15 @@ class AdviceDateAction extends ActionService
                     'date' => ['date_format:Y-m-d']
                 ],
                 'getQuery' => [
-                    'educational_year' => ['string', 'max:50']
+                    'educational_year' => ['string', 'max:50'],
+                    'from_date' => ['date_format:Y-m-d'],
+                    'to_date' => ['date_format:Y-m-d'],
                 ]
             ])
             ->setCasts([
-                'date' => ['jalali_to_gregorian:Y-m-d']
+                'date' => ['jalali_to_gregorian:Y-m-d'],
+                'from_date' => ['jalali_to_gregorian:Y-m-d'],
+                'to_date' => ['jalali_to_gregorian:Y-m-d'],
             ])
             ->setQueryToEloquentClosures([
                 'educational_year' => function (&$eloquent, $query)
@@ -35,7 +39,15 @@ class AdviceDateAction extends ActionService
                     {
                         $eloquent = $eloquent->where('educational_year', $query['educational_year']);
                     }
-                }
+                },
+                'from_date' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereDate('date', '>=', $query['from_date']);
+                },
+                'to_date' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereDate('date', '<=', $query['to_date']);
+                },
             ]);
         parent::__construct();
     }
