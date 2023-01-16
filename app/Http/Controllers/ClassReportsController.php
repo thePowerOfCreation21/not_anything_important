@@ -90,4 +90,23 @@ class ClassReportsController extends Controller
                 ->getByRequestAndEloquent()
         );
     }
+
+    /**
+     * @param string $id
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByIdByTeacher(string $id, Request $request) : JsonResponse
+    {
+        return response()->json(
+            (new ClassReportsAction())
+                ->setRequest($request)
+                ->setValidationRule('getQuery')
+                ->setRelations(['classCourse.classModel'])
+                ->mergeQueryWith(['teacher_id' => $request->user()->id])
+                ->makeEloquentViaRequest()
+                ->getById($id)
+        );
+    }
 }
