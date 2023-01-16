@@ -77,6 +77,8 @@ Route::get('/about_us', [AboutUsController::class, 'get']);
 Route::get('/news', [NewsController::class, 'get']);
 Route::get('/news/{id}', [NewsController::class, 'getById']);
 
+Route::post('/teacher/login', [TeacherController::class, 'login']);
+
 Route::group([
     'middleware' => ['auth:admin']
 ], function(){

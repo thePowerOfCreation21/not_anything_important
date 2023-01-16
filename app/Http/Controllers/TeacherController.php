@@ -6,6 +6,7 @@ use App\Actions\TeacherAction;
 use Genocide\Radiocrud\Exceptions\CustomException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Throwable;
 
 class TeacherController extends Controller
 {
@@ -112,5 +113,18 @@ class TeacherController extends Controller
             'message' => 'ok',
             'date' => (new TeacherAction())->rejectById($id)
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     * @throws Throwable
+     */
+    public function login (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new TeacherAction())->setRequest($request)->loginByRequest()
+        );
     }
 }

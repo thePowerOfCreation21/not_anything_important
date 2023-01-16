@@ -12,6 +12,8 @@ use Genocide\Radiocrud\Services\ActionService\ActionService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use JetBrains\PhpStorm\ArrayShape;
+use Throwable;
 
 class TeacherAction extends ActionService
 {
@@ -101,6 +103,10 @@ class TeacherAction extends ActionService
                     'from_created_at' => ['date_format:Y-m-d'],
                     'to_created_at' => ['date_format:Y-m-d'],
                     'search' => ['string', 'max:150'],
+                ],
+                'login' => [
+                    'national_id' => ['required', 'string', 'max:50'],
+                    'password' => ['required', 'string', 'max:100']
                 ]
             ])
             ->setCasts([
@@ -302,5 +308,35 @@ class TeacherAction extends ActionService
             ->update([
                 'register_status' => 'rejected',
             ]);
+    }
+
+    /**
+     * @return array
+     * @throws CustomException
+     * @throws Throwable
+     */
+    #[ArrayShape(['token' => "mixed"])]
+    public function loginByRequest (): array
+    {
+        return $this->login(
+            $this->setValidationRule('login')->getDataFromRequest()
+        );
+    }
+
+    /**
+     * @param array $data
+     * @return array
+     * @throws Throwable
+     */
+    #[ArrayShape(['token' => "mixed"])]
+    public function login (array $data): array
+    {
+        $teacher = TeacherModel::query()->where('national_id', $data['national_id'])->firstOrFail();
+
+        throw_if(! Hash::check($data['password'], $teacher->password), CustomException::class, 'password is wrong', '84054', 400);
+
+        return [
+            'token' => $teacher->createToken('auth')->plainTextToken
+        ];
     }
 }
