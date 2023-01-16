@@ -31,13 +31,15 @@ class ClassReportsAction extends ActionService
                     'from_date' => ['date_format:Y-m-d'],
                     'to_date' => ['date_format:Y-m-d'],
                     'class_course_id' => ['integer'],
-                    'class_id' => ['integer']
+                    'class_id' => ['integer'],
+                    'course_id' => ['integer']
                 ],
                 'getByStudent' => [
                     'from_date' => ['date_format:Y-m-d'],
                     'to_date' => ['date_format:Y-m-d'],
                     'class_course_id' => ['integer'],
-                    'class_id' => ['integer']
+                    'class_id' => ['integer'],
+                    'course_id' => ['integer']
                 ]
             ])
             ->setCasts([
@@ -58,6 +60,12 @@ class ClassReportsAction extends ActionService
                 {
                     $eloquent = $eloquent->where('class_course_id', $query['class_course_id']);
                 },
+                'course_id' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereHas('classCourse', function($q) use($query){
+                        $q->where('course_id', $query['course_id']);
+                    });
+                },
                 'class_id' => function (&$eloquent, $query)
                 {
                     $eloquent = $eloquent->whereHas('classCourse', function ($q) use($query){
@@ -67,6 +75,10 @@ class ClassReportsAction extends ActionService
                 'student_id' => function (&$eloquent, $query)
                 {
                     $eloquent = $eloquent->forStudent($query['student_id']);
+                },
+                'teacher_id' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->forTeacher($query['teacher_id']);
                 }
             ]);
         parent::__construct();

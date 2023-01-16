@@ -40,4 +40,11 @@ class ClassReportsModel extends Model
             });
         });
     }
+
+    public function scopeForTeacher ($q, string $teacherId)
+    {
+        $q->whereHas('classCourse', function($q) use($teacherId){
+            $q->where('teacher_id', $teacherId);
+        });
+    }
 }

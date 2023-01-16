@@ -317,4 +317,6 @@ Route::group([
     Route::post('/teacher/change_password', [TeacherController::class, 'changePassword']);
 
     Route::get('/teacher/teacher_financial', [TeacherFinancialController::class, 'getByTeacher']);
+
+    Route::get('/teacher/class_report', [ClassReportsController::class, 'getByTeacher']);
 });

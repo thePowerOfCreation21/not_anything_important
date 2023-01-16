@@ -28,6 +28,7 @@ class ClassReportsController extends Controller
         return response()->json(
             (new ClassReportsAction())
                 ->setRequest($request)
+                ->setValidationRule('getQuery')
                 ->setRelations(['classCourse.classModel'])
                 ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()
@@ -64,8 +65,27 @@ class ClassReportsController extends Controller
         return response()->json(
             (new ClassReportsAction())
                 ->setRequest($request)
+                ->setValidationRule('getByStudent')
                 ->setRelations(['classCourse.classModel'])
                 ->mergeQueryWith(['student_id' => $request->user()->id])
+                ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByTeacher(Request $request) : JsonResponse
+    {
+        return response()->json(
+            (new ClassReportsAction())
+                ->setRequest($request)
+                ->setValidationRule('getQuery')
+                ->setRelations(['classCourse.classModel'])
+                ->mergeQueryWith(['teacher_id' => $request->user()->id])
                 ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()
         );
