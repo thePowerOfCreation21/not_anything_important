@@ -86,4 +86,24 @@ class TeacherFinancialController extends Controller
                 ->deleteById($id)
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByTeacher(Request $request): JsonResponse
+    {
+        return response()->json(
+            (new TeacherFinancialAction())
+                ->setRequest($request)
+                ->setValidationRule('getByTeacher')
+                ->mergeQueryWith([
+                    'educational_year' => PardisanHelper::getCurrentEducationalYear(),
+                    'teacher_id' => $request->user()->id
+                ])
+                ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
+    }
 }

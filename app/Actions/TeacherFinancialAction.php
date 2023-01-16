@@ -31,7 +31,10 @@ class TeacherFinancialAction extends ActionService
                 'getQuery' => [
                     'teacher_id' => ['string', 'max:20'],
                     'educational_year' => ['string', 'max:50']
-                ]
+                ],
+                'getByTeacher' => [
+                    'educational_year' => ['string', 'max:50']
+                ],
             ])
             ->setCasts([
                 'date' => ['jalali_to_gregorian:Y-m-d'],

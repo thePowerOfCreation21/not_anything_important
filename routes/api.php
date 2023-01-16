@@ -315,4 +315,6 @@ Route::group([
 ], function (){
     Route::get('/teacher/info', [TeacherController::class, 'getInfo']);
     Route::post('/teacher/change_password', [TeacherController::class, 'changePassword']);
+
+    Route::get('/teacher/teacher_financial', [TeacherFinancialController::class, 'getByTeacher']);
 });
