@@ -309,3 +309,9 @@ Route::group([
         Route::get('/student/class_course/{id}', [ClassCourseController::class, 'getByIdByStudent']);
     });
 });
+
+Route::group([
+    'middleware' => ['auth:teacher']
+], function (){
+    Route::get('/teacher/info', [TeacherController::class, 'getInfo']);
+});
