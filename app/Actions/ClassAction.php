@@ -70,6 +70,12 @@ class ClassAction extends ActionService
                     $eloquent = $eloquent->whereHas('students', function($q) use($query){
                         $q->where('students.id', $query['student_id']);
                     });
+                },
+                'teacher_id' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereHas('course', function($q) use($query){
+                        $q->where('teacher_id', $query['teacher_id']);
+                    });
                 }
             ]);
         parent::__construct();

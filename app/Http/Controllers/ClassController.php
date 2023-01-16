@@ -166,4 +166,43 @@ class ClassController extends Controller
                 ->getById($id)
         );
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByTeacher (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new ClassAction())
+                ->setRequest($request)
+                ->setValidationRule('getQuery')
+                ->mergeQueryWith([
+                    'teacher_id' => $request->user()->id,
+                    'educational_year' => PardisanHelper::getCurrentEducationalYear()
+                ])
+                ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
+    }
+
+    /**
+     * @param string $id
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByIdByTeacher(string $id, Request $request): JsonResponse
+    {
+        return response()->json(
+            (new ClassAction())
+                ->setRelations([
+                    'courses' => ['teacher', 'course']
+                ])
+                ->mergeQueryWith(['teacher_id' => $request->user()->id])
+                ->makeEloquent()
+                ->getById($id)
+        );
+    }
 }
