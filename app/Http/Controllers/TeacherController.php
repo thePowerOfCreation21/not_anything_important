@@ -138,4 +138,20 @@ class TeacherController extends Controller
             $request->user()
         );
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     * @throws Throwable
+     */
+    public function changePassword (Request $request): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new TeacherAction())
+                ->setRequest($request)
+                ->changePasswordByRequest()
+        ]);
+    }
 }

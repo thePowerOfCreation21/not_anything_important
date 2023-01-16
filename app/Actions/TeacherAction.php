@@ -107,6 +107,10 @@ class TeacherAction extends ActionService
                 'login' => [
                     'national_id' => ['required', 'string', 'max:50'],
                     'password' => ['required', 'string', 'max:100']
+                ],
+                'changePassword' => [
+                    'current_password' => ['required', 'string', 'max:100'],
+                    'new_password' => ['required', 'string', 'max:100']
                 ]
             ])
             ->setCasts([
@@ -338,5 +342,32 @@ class TeacherAction extends ActionService
         return [
             'token' => $teacher->createToken('auth')->plainTextToken
         ];
+    }
+
+    /**
+     * @return bool
+     * @throws CustomException
+     * @throws Throwable
+     */
+    public function changePasswordByRequest (): bool
+    {
+        return $this->changePassword(
+            $this->setValidationRule('changePassword')->getDataFromRequest(),
+            $this->request->user()
+        );
+    }
+
+    /**
+     * @param array $data
+     * @param TeacherModel $teacher
+     * @return bool
+     * @throws Throwable
+     */
+    public function changePassword (array $data, TeacherModel $teacher): bool
+    {
+        throw_if(! Hash::check($data['current_password'], $teacher->password), CustomException::class, 'current_password is wrong', '978244', 400);
+
+        $teacher->password = Hash::make($data['new_password']);
+        return $teacher->save();
     }
 }
