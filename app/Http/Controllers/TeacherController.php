@@ -127,4 +127,15 @@ class TeacherController extends Controller
             (new TeacherAction())->setRequest($request)->loginByRequest()
         );
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getInfo (Request $request): JsonResponse
+    {
+        return response()->json(
+            $request->user()
+        );
+    }
 }
