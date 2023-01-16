@@ -320,6 +320,6 @@ Route::group([
 
     Route::get('/teacher/class_report', [ClassReportsController::class, 'getByTeacher']);
 
-    Route::get('/student/class', [ClassController::class, 'getByTeacher']);
-    Route::get('/student/class/{id}', [ClassController::class, 'getByIdByTeacher']);
+    Route::get('/teacher/class', [ClassController::class, 'getByTeacher']);
+    Route::get('/teacher/class/{id}', [ClassController::class, 'getByIdByTeacher']);
 });
