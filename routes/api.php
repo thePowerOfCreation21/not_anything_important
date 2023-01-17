@@ -314,6 +314,7 @@ Route::group([
     'middleware' => ['auth:teacher']
 ], function (){
     Route::get('/teacher/class_file', [ClassFileController::class, 'getByTeacher']);
+    Route::get('/teacher/class_file/{id}', [ClassFileController::class, 'getByIdByTeacher']);
 
     Route::get('/teacher/attendance', [AttendanceController::class, 'getByTeacher']);
     Route::get('/teacher/attendance/{id}', [AttendanceController::class, 'getByIdByTeacher']);
