@@ -7,6 +7,7 @@ use App\Helpers\PardisanHelper;
 use Genocide\Radiocrud\Exceptions\CustomException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Throwable;
 
 class ClassFileController extends Controller
 {
@@ -165,5 +166,21 @@ class ClassFileController extends Controller
                 ->makeEloquent()
                 ->getById($id)
         );
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException|Throwable
+     */
+    public function storeByTeacher (Request $request): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new ClassFileAction())
+                ->setRequest($request)
+                ->setValidationRule('storeByTeacher')
+                ->storeByTeacherByRequest()
+        ]);
     }
 }

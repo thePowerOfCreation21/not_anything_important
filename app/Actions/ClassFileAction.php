@@ -5,11 +5,13 @@ namespace App\Actions;
 use App\Helpers\PardisanHelper;
 use App\Http\Resources\ClassFileResource;
 use App\Models\AdminModel;
+use App\Models\ClassCourseModel;
 use App\Models\ClassFileModel;
 use Genocide\Radiocrud\Exceptions\CustomException;
 use Genocide\Radiocrud\Helpers;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
 use JetBrains\PhpStorm\ArrayShape;
+use Throwable;
 
 class ClassFileAction extends ActionService
 {
@@ -22,6 +24,12 @@ class ClassFileAction extends ActionService
                 'storeByAdmin' => [
                     'class_course_id' => ['nullable', 'string', 'max:20'],
                     'class_id' => ['nullable', 'string', 'max:20'],
+                    'title' => ['required', 'string', 'max:20'],
+                    'description' => ['nullable', 'string', 'max:5000'],
+                    'file' => ['required', 'file', 'mimes:png,jpg,jpeg,gif,svg,zip,rar,7zip,pdf', 'max:20000']
+                ],
+                'storeByTeacher' => [
+                    'class_course_id' => ['required', 'integer'],
                     'title' => ['required', 'string', 'max:20'],
                     'description' => ['nullable', 'string', 'max:5000'],
                     'file' => ['required', 'file', 'mimes:png,jpg,jpeg,gif,svg,zip,rar,7zip,pdf', 'max:20000']
@@ -121,6 +129,32 @@ class ClassFileAction extends ActionService
         return $this->store(
             array_merge(
                 $this->getDataFromRequest(),
+                $this->getAuthorByRequest(),
+                [
+                    'size' => Helpers::humanFilesize($this->originalRequestData['file']->getSize()),
+                ]
+            ),
+            $storing
+        );
+    }
+
+    /**
+     * @param callable|null $storing
+     * @return mixed
+     * @throws CustomException|Throwable
+     */
+    public function storeByTeacherByRequest (callable $storing = null): mixed
+    {
+        $data = $this->getDataFromRequest();
+
+        throw_if(
+            ! ClassCourseModel::query()->where('id', $data['class_course_id'])->where('teacher_id', $this->request->user()->id)->exists(),
+            CustomException::class, 'class_course_id is wrong', '914875', 400
+        );
+
+        return $this->store(
+            array_merge(
+                $data,
                 $this->getAuthorByRequest(),
                 [
                     'size' => Helpers::humanFilesize($this->originalRequestData['file']->getSize()),

@@ -313,6 +313,7 @@ Route::group([
 Route::group([
     'middleware' => ['auth:teacher']
 ], function (){
+    Route::post('/teacher/class_file', [ClassFileController::class, 'storeByTeacher']);
     Route::get('/teacher/class_file', [ClassFileController::class, 'getByTeacher']);
     Route::get('/teacher/class_file/{id}', [ClassFileController::class, 'getByIdByTeacher']);
 
