@@ -61,6 +61,12 @@ class AttendanceAction extends ActionService
                 {
                     $eloquent = $eloquent->where('class_course_id', $query['class_course_id']);
                 },
+                'teacher_id' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereHas('classCourse', function ($q) use($query){
+                        $q->where('teacher_id', $query['teacher_id']);
+                    });
+                },
                 'from_date' => function (&$eloquent, $query)
                 {
                     $eloquent = $eloquent->whereDate('date', '>=', $query['from_date']);

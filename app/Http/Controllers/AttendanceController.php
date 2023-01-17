@@ -85,4 +85,22 @@ class AttendanceController extends Controller
             'data' => (new AttendanceAction())->deleteById($id)
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByTeacher (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new AttendanceAction())
+                ->setRequest($request)
+                ->setValidationRule('getQuery')
+                ->setRelations(['classCourse.classModel'])
+                ->mergeQueryWith(['teacher_id' => $request->user()->id])
+                ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
+    }
 }
