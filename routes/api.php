@@ -316,6 +316,8 @@ Route::group([
     Route::get('/teacher/attendance', [AttendanceController::class, 'getByTeacher']);
     Route::get('/teacher/attendance/{id}', [AttendanceController::class, 'getByIdByTeacher']);
 
+    Route::get('/teacher/class_course', [ClassCourseController::class, 'getByTeacher']);
+
     Route::get('/teacher/info', [TeacherController::class, 'getInfo']);
     Route::post('/teacher/change_password', [TeacherController::class, 'changePassword']);
 

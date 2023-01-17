@@ -28,6 +28,10 @@ class ClassCourseAction extends ActionService
                     'class_id' => ['string', 'max:20'],
                     'teacher_id' => ['string', 'max:20'],
                     'course_id' => ['string', 'max:20'],
+                ],
+                'getByTeacher' => [
+                    'class_id' => ['string', 'max:20'],
+                    'course_id' => ['string', 'max:20'],
                 ]
             ])
             ->setQueryToEloquentClosures([
