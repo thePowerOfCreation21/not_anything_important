@@ -41,6 +41,11 @@ class ClassFileAction extends ActionService
                     'description' => ['nullable', 'string', 'max:5000'],
                     'file' => ['file', 'mimes:png,jpg,jpeg,gif,svg,zip,rar,7zip,pdf', 'max:20000']
                 ],
+                'updateByTeacher' => [
+                    'title' => ['string', 'max:20'],
+                    'description' => ['nullable', 'string', 'max:5000'],
+                    'file' => ['file', 'mimes:png,jpg,jpeg,gif,svg,zip,rar,7zip,pdf', 'max:20000']
+                ],
                 'getQuery' => [
                     'class_id' => ['string', 'max:20'],
                     'class_course_id' => ['string', 'max:20'],

@@ -183,4 +183,23 @@ class ClassFileController extends Controller
                 ->storeByTeacherByRequest()
         ]);
     }
+
+    /**
+     * @param string $id
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function updateByIdByTeacher (string $id, Request $request): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new ClassFileAction())
+                ->setRequest($request)
+                ->setValidationRule('updateByTeacher')
+                ->mergeQueryWith(['teacher_id' => $request->user()->id])
+                ->makeEloquent()
+                ->updateByIdAndRequest($id)
+        ]);
+    }
 }
