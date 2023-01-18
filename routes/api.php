@@ -317,6 +317,7 @@ Route::group([
     Route::get('/teacher/class_file', [ClassFileController::class, 'getByTeacher']);
     Route::get('/teacher/class_file/{id}', [ClassFileController::class, 'getByIdByTeacher']);
     Route::put('/teacher/class_file/{id}', [ClassFileController::class, 'updateByIdByTeacher']);
+    Route::delete('/teacher/class_file/{id}', [ClassFileController::class, 'deleteByIdByTeacher']);
 
     Route::get('/teacher/attendance', [AttendanceController::class, 'getByTeacher']);
     Route::get('/teacher/attendance/{id}', [AttendanceController::class, 'getByIdByTeacher']);

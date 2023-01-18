@@ -202,4 +202,20 @@ class ClassFileController extends Controller
                 ->updateByIdAndRequest($id)
         ]);
     }
+
+    /**
+     * @param string $id
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function deleteByIdByTeacher (string $id, Request $request): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new ClassFileAction())
+                ->mergeQueryWith(['teacher_id' => $request->user()->id])
+                ->makeEloquent()
+                ->deleteById($id)
+        ]);
+    }
 }
