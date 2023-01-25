@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ClassController;
+use App\Http\Controllers\OtherController;
 use App\Http\Controllers\AdviceController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\SurveyController;
@@ -78,6 +79,8 @@ Route::get('/news', [NewsController::class, 'get']);
 Route::get('/news/{id}', [NewsController::class, 'getById']);
 
 Route::post('/teacher/login', [TeacherController::class, 'login']);
+
+Route::get('/user_type', [OtherController::class, 'getUserType'])->middleware(['auth:sanctum']);
 
 Route::group([
     'middleware' => ['auth:admin']
