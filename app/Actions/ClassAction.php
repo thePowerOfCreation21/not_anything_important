@@ -73,8 +73,8 @@ class ClassAction extends ActionService
                 },
                 'teacher_id' => function (&$eloquent, $query)
                 {
-                    $eloquent = $eloquent->whereHas('course', function($q) use($query){
-                        $q->where('teacher_id', $query['teacher_id']);
+                    $eloquent = $eloquent->whereHas('classCourse', function($q) use($query){
+                        $q->where('class_courses.teacher_id', $query['teacher_id']);
                     });
                 }
             ]);
