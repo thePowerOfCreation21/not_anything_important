@@ -316,6 +316,12 @@ Route::group([
 Route::group([
     'middleware' => ['auth:teacher']
 ], function (){
+    Route::post('/teacher/class_score', [ClassScoreController::class, 'storeByTeacher']);
+    Route::put('/teacher/class_score/{id}', [ClassScoreController::class, 'updateByIdByTeacher']);
+    Route::delete('/teacher/class_score/{id}', [ClassScoreController::class, 'deleteByIdByTeacher']);
+    Route::get('/teacher/class_score', [ClassScoreController::class, 'getByTeacher']);
+    Route::get('/teacher/class_score/{id}', [ClassScoreController::class, 'getByIdByTeacher']);
+
     Route::post('/teacher/class_file', [ClassFileController::class, 'storeByTeacher']);
     Route::get('/teacher/class_file', [ClassFileController::class, 'getByTeacher']);
     Route::get('/teacher/class_file/{id}', [ClassFileController::class, 'getByIdByTeacher']);

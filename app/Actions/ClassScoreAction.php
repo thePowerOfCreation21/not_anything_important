@@ -4,12 +4,15 @@ namespace App\Actions;
 
 use App\Helpers\PardisanHelper;
 use App\Http\Resources\ClassScoreResource;
+use App\Models\ClassCourseModel;
 use App\Models\ClassScoreModel;
 use App\Models\ClassScoreStudentModel;
 use App\Models\StudentModel;
+use App\Models\TeacherModel;
 use Genocide\Radiocrud\Exceptions\CustomException;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
 use JetBrains\PhpStorm\ArrayShape;
+use Throwable;
 
 class ClassScoreAction extends ActionService
 {
@@ -28,7 +31,25 @@ class ClassScoreAction extends ActionService
                     'students.*.student_id' => ['required', 'string', 'max:20'],
                     'students.*.score' => ['required', 'numeric', 'between:1,999.99'],
                 ],
+                'storeByTeacher' => [
+                    'class_course_id' => ['required', 'string', 'max:20'],
+                    'date' => ['required', 'date_format:Y-m-d H:i'],
+                    'educational_year' => ['nullable', 'string', 'min:2', 'max:50'],
+                    'max_score' => ['numeric', 'between:1,999.99'],
+                    // 'students' => ['required', 'array', 'max:100'],
+                    'students.*.student_id' => ['required', 'string', 'max:20'],
+                    'students.*.score' => ['required', 'numeric', 'between:1,999.99'],
+                ],
                 'updateByAdmin' => [
+                    // 'class_course_id' => ['string', 'max:20'],
+                    'date' => ['date_format:Y-m-d H:i'],
+                    'educational_year' => ['string', 'min:2', 'max:50'],
+                    'max_score' => ['numeric', 'between:1,999.99'],
+                    // 'students' => ['array', 'max:100'],
+                    'students.*.student_id' => ['required', 'string', 'max:20'],
+                    'students.*.score' => ['numeric', 'between:1,999.99'],
+                ],
+                'updateByTeacher' => [
                     // 'class_course_id' => ['string', 'max:20'],
                     'date' => ['date_format:Y-m-d H:i'],
                     'educational_year' => ['string', 'min:2', 'max:50'],
@@ -58,6 +79,12 @@ class ClassScoreAction extends ActionService
                 'class_course_id' => function (&$eloquent, $query)
                 {
                     $eloquent = $eloquent->where('class_course_id', $query['class_course_id']);
+                },
+                'teacher_id' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereHas('classCourse', function ($q) use ($query){
+                        $q->where('class_courses.teacher_id', $query['teacher_id']);
+                    });
                 },
                 'from_date' => function (&$eloquent, $query)
                 {
@@ -107,10 +134,19 @@ class ClassScoreAction extends ActionService
      * @param array $data
      * @param callable|null $storing
      * @return mixed
+     * @throws Throwable
      */
     public function store(array $data, callable $storing = null): mixed
     {
         $data['educational_year'] = $data['educational_year'] ?? PardisanHelper::getCurrentEducationalYear();
+
+        throw_if(
+            is_a($data['submitter_type'], TeacherModel::class) && ! ClassCourseModel::query()
+                ->where('id', $data['class_course_id'])
+                ->where('teacher_id', $data['submitter_id'])
+                ->exists(),
+            CustomException::class, 'class_course_id is wrong', '47562', '400'
+        );
 
         $classScore = parent::store($data, $storing);
 

@@ -94,4 +94,96 @@ class ClassScoreController extends Controller
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function storeByTeacher (Request $request): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new ClassScoreAction())
+                ->setRequest($request)
+                ->setValidationRule('storeByTeacher')
+                ->storeByRequest()
+        ]);
+    }
+
+    /**
+     * @param string $id
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function updateByIdByTeacher (string $id, Request $request): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new ClassScoreAction())
+                ->setRequest($request)
+                ->setValidationRule('updateByAdmin')
+                ->mergeQueryWith(['teacher_id' => $request->user()->id])
+                ->makeEloquent()
+                ->updateByIdAndRequest($id)
+        ]);
+    }
+
+    /**
+     * @param string $id
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function deleteByIdByTeacher (string $id, Request $request): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new ClassScoreAction())
+                ->mergeQueryWith(['teacher_id' => $request->user()->id])
+                ->makeEloquent()
+                ->deleteById($id)
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByTeacher (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new ClassScoreAction())
+                ->setRequest($request)
+                ->setValidationRule('getQuery')
+                ->setRelations([
+                    'classCourse' => ['course', 'teacher', 'classModel'],
+                    'submitter'
+                ])
+                ->mergeQueryWith(['teacher_id' => $request->user()->id])
+                ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
+    }
+
+    /**
+     * @param string $id
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByIdByTeacher (string $id, Request $request): JsonResponse
+    {
+        return response()->json(
+            (new ClassScoreAction())
+                ->setRelations([
+                    'classCourse' => ['course', 'teacher', 'classModel'],
+                    'classScoreStudents' => ['student'],
+                    'submitter'
+                ])
+                ->mergeQueryWith(['teacher_id' => $request->user()->id])
+                ->makeEloquent()
+                ->getById($id)
+        );
+    }
 }
