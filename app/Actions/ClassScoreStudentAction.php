@@ -69,8 +69,7 @@ class ClassScoreStudentAction extends ActionService
         $result = [];
 
         foreach ($this->startEloquentIfIsNull()->eloquent->get() AS $classScoreStudent)
-            if (isset($classScoreStudent?->classScore?->classCourse?->course))
-                $result[$classScoreStudent->classScore->classCourse->course->title][] = $this->applyResourceToEntity($classScoreStudent);
+            $result[isset($classScoreStudent?->classScore?->classCourse?->course) ? $classScoreStudent->classScore->classCourse->course->title : 'unknown'][] = $this->applyResourceToEntity($classScoreStudent);
 
         return $result;
     }

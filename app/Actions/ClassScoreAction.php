@@ -117,7 +117,7 @@ class ClassScoreAction extends ActionService
     /**
      * @param callable|null $storing
      * @return mixed
-     * @throws CustomException
+     * @throws CustomException|Throwable
      */
     public function storeByRequest(callable $storing = null): mixed
     {
