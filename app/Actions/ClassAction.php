@@ -28,6 +28,11 @@ class ClassAction extends ActionService
                 ],
                 'getQuery' => [
                     'search' => ['string', 'max:150'],
+                    'student_id' => ['integer'],
+                    'educational_year' => ['string', 'max:50']
+                ],
+                'getByStudent' => [
+                    'search' => ['string', 'max:150'],
                     'educational_year' => ['string', 'max:50']
                 ],
                 'addCourseToClass' => [

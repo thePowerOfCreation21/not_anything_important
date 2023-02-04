@@ -138,7 +138,7 @@ class ClassController extends Controller
         return response()->json(
             (new ClassAction())
                 ->setRequest($request)
-                ->setValidationRule('getQuery')
+                ->setValidationRule('getByStudent')
                 ->mergeQueryWith([
                     'student_id' => $request->user()->id,
                     'educational_year' => PardisanHelper::getCurrentEducationalYear()
