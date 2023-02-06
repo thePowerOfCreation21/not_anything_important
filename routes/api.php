@@ -9,6 +9,7 @@ use App\Http\Controllers\OtherController;
 use App\Http\Controllers\AdviceController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\SurveyController;
+use App\Http\Controllers\HeaderController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\TeacherController;
@@ -75,6 +76,8 @@ Route::get('/gallery_image/{id}', [GalleryImageController::class, 'getById']);
 
 Route::get('/about_us', [AboutUsController::class, 'get']);
 
+Route::get('/header', [HeaderController::class, 'get']);
+
 Route::get('/news', [NewsController::class, 'get']);
 Route::get('/news/{id}', [NewsController::class, 'getById']);
 
@@ -90,6 +93,8 @@ Route::group([
     Route::delete('/admin/news/{id}', [NewsController::class, 'deleteById']);
 
     Route::put('/admin/about_us', [AboutUsController::class, 'update']);
+
+    Route::put('/admin/header', [HeaderController::class, 'update']);
 
     Route::post('/admin/food_date', [FoodDateController::class, 'store']);
 
