@@ -48,12 +48,24 @@ class NewsAction extends ActionService
     }
 
     /**
+     * @param array $data
+     * @param callable|null $storing
+     * @return mixed
+     */
+    public function store(array $data, callable $storing = null): mixed
+    {
+        cache()->forget('homePage');
+
+        return parent::store($data, $storing);
+    }
+
+    /**
      * @return void
      */
     protected function deleteImagesByEloquent ()
     {
-        foreach ($this->startEloquentIfIsNull()->eloquent->get() AS $product)
-            if (is_file($product->image)) unlink($product->image);
+        foreach ($this->startEloquentIfIsNull()->eloquent->get() AS $news)
+            if (is_file($news->image)) unlink($news->image);
     }
 
     /**
@@ -63,14 +75,22 @@ class NewsAction extends ActionService
      */
     public function update(array $updateData, callable $updating = null): bool|int
     {
+        cache()->forget('homePage');
+
         // deleting old image file, if "image" field is present at $updateData
         if (array_key_exists('image', $updateData)) $this->deleteImagesByEloquent();
 
         return parent::update($updateData, $updating);
     }
 
+    /**
+     * @param callable|null $deleting
+     * @return mixed
+     */
     public function delete(callable $deleting = null): mixed
     {
+        cache()->forget('homePage');
+
         $this->deleteImagesByEloquent();
 
         return parent::delete($deleting);

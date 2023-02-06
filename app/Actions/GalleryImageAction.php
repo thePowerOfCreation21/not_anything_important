@@ -23,4 +23,39 @@ class GalleryImageAction extends ActionService
             ]);
         parent::__construct();
     }
+
+    /**
+     * @param array $data
+     * @param callable|null $storing
+     * @return mixed
+     */
+    public function store(array $data, callable $storing = null): mixed
+    {
+        cache()->forget('homePage');
+
+        return parent::store($data, $storing);
+    }
+
+    /**
+     * @param array $updateData
+     * @param callable|null $updating
+     * @return bool|int
+     */
+    public function update(array $updateData, callable $updating = null): bool|int
+    {
+        cache()->forget('homePage');
+
+        return parent::update($updateData, $updating);
+    }
+
+    /**
+     * @param callable|null $deleting
+     * @return mixed
+     */
+    public function delete(callable $deleting = null): mixed
+    {
+        cache()->forget('homePage');
+
+        return parent::delete($deleting);
+    }
 }

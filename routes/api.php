@@ -17,6 +17,7 @@ use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\FoodDateController;
 use App\Http\Controllers\FinancialController;
 use App\Http\Controllers\ClassFileController;
+use App\Http\Controllers\GuestPageController;
 use App\Http\Controllers\AdviceHourController;
 use App\Http\Controllers\AdviceDateController;
 use App\Http\Controllers\ClassScoreController;
@@ -84,6 +85,8 @@ Route::get('/news/{id}', [NewsController::class, 'getById']);
 Route::post('/teacher/login', [TeacherController::class, 'login']);
 
 Route::get('/user_type', [OtherController::class, 'getUserType'])->middleware(['auth:sanctum']);
+
+Route::get('/page/home', [GuestPageController::class, 'getHomePage']);
 
 Route::group([
     'middleware' => ['auth:admin']
