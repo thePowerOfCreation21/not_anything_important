@@ -39,7 +39,7 @@ class AttendanceStudentController extends Controller
                 ->mergeQueryWith(['student_id' => $request->user()->id])
                 ->setRelations([
                     'attendance' => [
-                        'classCourse' => ['teacher', 'course', 'class']
+                        'classCourse' => ['teacher', 'course', 'classModel']
                     ],
                     'student'
                 ])

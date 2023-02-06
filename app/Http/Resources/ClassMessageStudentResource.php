@@ -14,6 +14,12 @@ class ClassMessageStudentResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'is_seen' => (bool) $this->is_seen,
+            'class_message_id' => $this->class_message_id,
+            'class_message' => new ClassMessagesResource($this->whenLoaded('classMessage')),
+            'student_id' => $this->student_id,
+            'student' => new StudentCollectionResource($this->whenLoaded('student'))
+        ];
     }
 }
