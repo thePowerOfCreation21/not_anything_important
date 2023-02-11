@@ -28,6 +28,7 @@ class ClassScoreStudentController extends Controller
     {
         return response()->json(
             (new ClassScoreStudentAction())
+                ->setRequest($request)
                 ->mergeQueryWith(['student_id' => $request->user()->id])
                 ->setRelations([
                     'classScore' => [
@@ -37,7 +38,7 @@ class ClassScoreStudentController extends Controller
                     'student'
                 ])
                 ->makeEloquent()
-                ->groupByScoreByEloquent()
+                ->getByRequestAndEloquent()
         );
     }
 }
