@@ -93,7 +93,7 @@ class StudentAction extends ActionService
                     'non_contagious_illness' => ['nullable', 'string', 'max:2500'],
                     'mental_illness' => ['nullable', 'string', 'max:2500'],
                     'level' => ['nullable', 'string', 'max:100'],
-                    'file' => ['nullable', 'file', 'mimes:zip,rar,pdf', 'max:5000'],
+                    'file' => ['nullable', 'file', 'mimes:zip,rar,pdf,png,jpg,jpeg,svg', 'max:5000'],
                     'report_card_pdf' => ['nullable', 'file', 'mimes:pdf', 'max:2000'],
                     'educational_year' => ['string', 'max:25'],
                     'password' => ['required', 'string', 'max:100'],
