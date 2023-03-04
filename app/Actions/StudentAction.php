@@ -70,7 +70,7 @@ class StudentAction extends ActionService
                     'father_health_status' => ['nullable', 'string', 'max:1500'],
                     'father_mobile_number' => ['nullable', 'string', 'max:50'],
                     'father_work_address' => ['nullable', 'string', 'max:1500'],
-                    'father_file' => ['nullable', 'file', 'mimes:zip,rar,pdf', 'max:5000'],
+                    'father_file' => ['nullable', 'file', 'mimes:zip,rar,pdf,jpg,jpeg,png,svg', 'max:5000'],
                     'mother_first_name' => ['nullable', 'string', 'max:150'],
                     'mother_last_name' => ['nullable', 'string', 'max:150'],
                     'mother_father_name' => ['nullable', 'string', 'max:150'],
@@ -89,7 +89,7 @@ class StudentAction extends ActionService
                     'mother_health_status' => ['nullable', 'string', 'max:1500'],
                     'mother_mobile_number' => ['nullable', 'string', 'max:50'],
                     'mother_work_address' => ['nullable', 'string', 'max:1500'],
-                    'mother_file' => ['nullable', 'file', 'mimes:zip,rar,pdf', 'max:5000'],
+                    'mother_file' => ['nullable', 'file', 'mimes:zip,rar,pdf,jpg,jpeg,png,svg', 'max:5000'],
                     'non_contagious_illness' => ['nullable', 'string', 'max:2500'],
                     'mental_illness' => ['nullable', 'string', 'max:2500'],
                     'level' => ['nullable', 'string', 'max:100'],
@@ -142,7 +142,7 @@ class StudentAction extends ActionService
                     'father_health_status' => ['nullable', 'string', 'max:1500'],
                     'father_mobile_number' => ['nullable', 'string', 'max:50'],
                     'father_work_address' => ['nullable', 'string', 'max:1500'],
-                    'father_file' => ['nullable', 'file', 'mimes:zip,rar,pdf', 'max:5000'],
+                    'father_file' => ['nullable', 'file', 'mimes:zip,rar,pdf,jpg,jpeg,png,svg', 'max:5000'],
                     'mother_first_name' => ['nullable', 'string', 'max:150'],
                     'mother_last_name' => ['nullable', 'string', 'max:150'],
                     'mother_father_name' => ['nullable', 'string', 'max:150'],
@@ -161,11 +161,11 @@ class StudentAction extends ActionService
                     'mother_health_status' => ['nullable', 'string', 'max:1500'],
                     'mother_mobile_number' => ['nullable', 'string', 'max:50'],
                     'mother_work_address' => ['nullable', 'string', 'max:1500'],
-                    'mother_file' => ['nullable', 'file', 'mimes:zip,rar,pdf', 'max:5000'],
+                    'mother_file' => ['nullable', 'file', 'mimes:zip,rar,pdf,jpg,jpeg,png,svg', 'max:5000'],
                     'non_contagious_illness' => ['nullable', 'string', 'max:2500'],
                     'mental_illness' => ['nullable', 'string', 'max:2500'],
                     'level' => ['nullable', 'string', 'max:100'],
-                    'file' => ['nullable', 'file', 'mimes:zip,rar,pdf', 'max:5000'],
+                    'file' => ['nullable', 'file', 'mimes:zip,rar,pdf,jpg,jpeg,png,svg', 'max:5000'],
                     'report_card_pdf' => ['nullable', 'file', 'mimes:pdf', 'max:2000'],
                     'educational_year' => ['string', 'max:25'],
                     'password' => ['string', 'max:100'],
@@ -214,7 +214,7 @@ class StudentAction extends ActionService
                     'father_health_status' => ['nullable', 'string', 'max:1500'],
                     'father_mobile_number' => ['required', 'string', 'max:50'],
                     'father_work_address' => ['nullable', 'string', 'max:1500'],
-                    'father_file' => ['nullable', 'file', 'mimes:zip,rar,pdf', 'max:5000'],
+                    'father_file' => ['nullable', 'file', 'mimes:zip,rar,pdf,jpg,jpeg,png,svg', 'max:5000'],
                     'mother_first_name' => ['nullable', 'string', 'max:150'],
                     'mother_last_name' => ['nullable', 'string', 'max:150'],
                     'mother_father_name' => ['nullable', 'string', 'max:150'],
@@ -233,11 +233,11 @@ class StudentAction extends ActionService
                     'mother_health_status' => ['nullable', 'string', 'max:1500'],
                     'mother_mobile_number' => ['required', 'string', 'max:50'],
                     'mother_work_address' => ['nullable', 'string', 'max:1500'],
-                    'mother_file' => ['nullable', 'file', 'mimes:zip,rar,pdf', 'max:5000'],
+                    'mother_file' => ['nullable', 'file', 'mimes:zip,rar,pdf,jpg,jpeg,png,svg', 'max:5000'],
                     'non_contagious_illness' => ['nullable', 'string', 'max:2500'],
                     'mental_illness' => ['nullable', 'string', 'max:2500'],
                     'level' => ['required', 'string', 'max:100'],
-                    'file' => ['nullable', 'file', 'mimes:zip,rar,pdf', 'max:5000'],
+                    'file' => ['nullable', 'file', 'mimes:zip,rar,pdf,png,jpg,jpeg,svg', 'max:5000'],
                     'report_card_pdf' => ['nullable', 'file', 'mimes:pdf', 'max:2000'],
                     // 'educational_year' => ['string', 'max:25'],
                     'password' => ['required', 'string', 'max:100'],
@@ -361,6 +361,7 @@ class StudentAction extends ActionService
         }
 
         $path = "$path/" . base64_encode(Str::random(32));
+        $path = '/uploads/rfrf';
 
         return $file->storeAs($path, $file->getClientOriginalName());
     }
