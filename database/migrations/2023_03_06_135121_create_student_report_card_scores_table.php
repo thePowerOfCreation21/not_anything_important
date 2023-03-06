@@ -13,18 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('student_report_cards', function (Blueprint $table) {
+        Schema::create('student_report_card_scores', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 250);
-            $table->string('month', 100)->nullable();
-            $table->string('educational_year', 100);
-            $table->integer('total_score')->unsigned();
-            $table->integer('total_ratio')->unsigned();
+            $table->tinyInteger('score')->unsigned();
+            $table->tinyInteger('highest_score_in_class')->unsigned()->default(0);
             $table->integer('rank_in_class')->unsigned()->default(0);
             $table->integer('rank_in_level')->unsigned()->default(0);
-            $table->string('report_card_id', 20);
-            $table->string('class_id', 20);
-            $table->string('student_id', 20);
+            $table->boolean('has_star')->default(false);
+            $table->string('student_report_card_id', 20);
+            $table->string('course_id', 20);
             $table->timestamps();
         });
     }
@@ -36,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('student_report_cards');
+        Schema::dropIfExists('student_report_card_scores');
     }
 };

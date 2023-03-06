@@ -20,6 +20,7 @@ class StudentReportCardModel extends Model
         'total_ratio',
         'rank_in_class',
         'rank_in_level',
+        'report_card_id',
         'class_id',
         'student_id'
     ];
@@ -30,6 +31,11 @@ class StudentReportCardModel extends Model
         'rank_in_class' => 'integer',
         'rank_in_level' => 'integer',
     ];
+
+    public function reportCard (): BelongsTo
+    {
+        return $this->belongsTo(ReportCardModel::class, 'report_card_id', 'id');
+    }
 
     public function classModel (): BelongsTo
     {
