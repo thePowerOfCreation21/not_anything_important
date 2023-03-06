@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('title', 250);
             $table->string('month', 100)->nullable();
+            $table->string('educational_year', 100);
             $table->string('class_id', 20);
             $table->timestamps();
         });

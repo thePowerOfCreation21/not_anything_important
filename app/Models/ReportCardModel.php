@@ -16,12 +16,8 @@ class ReportCardModel extends Model
     protected $fillable = [
         'title',
         'month',
+        'educational_year',
         'class_id',
-        'ratio_count'
-    ];
-
-    protected $casts = [
-        'ratio_count' => 'integer'
     ];
 
     public function classModel (): BelongsTo
