@@ -10,6 +10,8 @@ use App\Models\ClassFileModel;
 use Genocide\Radiocrud\Exceptions\CustomException;
 use Genocide\Radiocrud\Helpers;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
 use JetBrains\PhpStorm\ArrayShape;
 use Throwable;
 
@@ -110,6 +112,24 @@ class ClassFileAction extends ActionService
             ]);
 
         parent::__construct();
+    }
+
+    /**
+     * @param UploadedFile $file
+     * @param string $path
+     * @param string|null $fieldName
+     * @return string
+     */
+    protected function uploadFile(UploadedFile $file, string $path = '/uploads', string $fieldName = null): string
+    {
+        if (empty($path))
+        {
+            $path = '/uploads';
+        }
+
+        $path = "$path/" . base64_encode(Str::random(32));
+
+        return $file->storeAs($path, $file->getClientOriginalName());
     }
 
     /**

@@ -37,12 +37,17 @@ class TeacherWorkExperienceAction extends ActionService
                 ],
                 'get_query' => [
                     'search' => ['string', 'max:255'],
+                    'teacher_id' => ['integer']
                 ]
             ])
             ->setQueryToEloquentClosures([
                 'search' => function (&$eloquent, $query)
                 {
                     $eloquent = $eloquent->where('title', 'LIKE', "%{$query['search']}%");
+                },
+                'teacher_id' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('teacher_id', $query['teacher_id']);
                 }
             ]);
 

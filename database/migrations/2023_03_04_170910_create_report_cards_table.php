@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('title', 250);
             $table->string('month', 100)->nullable();
             $table->string('educational_year', 100);
+            $table->boolean('was_issued')->default(false);
             $table->string('class_id', 20);
             $table->timestamps();
         });

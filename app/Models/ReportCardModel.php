@@ -17,7 +17,12 @@ class ReportCardModel extends Model
         'title',
         'month',
         'educational_year',
+        'was_issued',
         'class_id',
+    ];
+
+    protected $casts = [
+        'was_issued' => 'boolean'
     ];
 
     public function classModel (): BelongsTo
