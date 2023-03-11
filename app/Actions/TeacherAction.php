@@ -103,6 +103,7 @@ class TeacherAction extends ActionService
                     'from_created_at' => ['date_format:Y-m-d'],
                     'to_created_at' => ['date_format:Y-m-d'],
                     'search' => ['string', 'max:150'],
+                    'week_day' => ['between:1,7']
                 ],
                 'login' => [
                     'national_id' => ['required', 'string', 'max:50'],
@@ -148,7 +149,13 @@ class TeacherAction extends ActionService
                 'to_created_at' => function (&$eloquent, $query)
                 {
                     $eloquent = $eloquent->whereDate('created_at', '<=', $query['to_created_at']);
-                }
+                },
+                'week_day' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereHas('entrances', function ($q) use($query){
+                        $q->where('week_day', $query['week_day']);
+                    });
+                },
             ])
             ->setResource(TeacherResource::class);
 

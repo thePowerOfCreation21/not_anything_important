@@ -4,6 +4,7 @@ namespace App\Actions;
 
 use App\Helpers\PardisanHelper;
 use App\Models\TeacherEntranceModel;
+use App\Models\TeacherModel;
 use Genocide\Radiocrud\Helpers;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
 use App\Models\TeacherEntranceHistoryModel;
@@ -20,6 +21,7 @@ class TeacherEntranceHistoryAction extends ActionService
                 'store' => [
                     'teacher_id' => ['required', 'integer', 'exists:teachers,id'],
                     'date' => ['date_format:Y-m-d'],
+                    'week_day' => ['required', 'between:1,7'],
                     'entrance' => ['required', 'date_format:H:i'],
                     'exit' => ['date_format:H:i'],
                 ],
@@ -68,7 +70,7 @@ class TeacherEntranceHistoryAction extends ActionService
     public function store(array $data, callable $storing = null): mixed
     {
         $data['date'] = $data['date'] ?? date('Y-m-d');
-        $data['week_day'] = PardisanHelper::getWeekDayByGregorianDate($data['date']);
+        // $data['week_day'] = PardisanHelper::getWeekDayByGregorianDate($data['date']);
 
         $teacherEntrance = TeacherEntranceModel::query()->where('week_day', $data['week_day'])->firstOrFail();
 
@@ -76,6 +78,12 @@ class TeacherEntranceHistoryAction extends ActionService
         {
             $data['late_string'] = Helpers::persianTimeElapsedString($data['entrance'], $teacherEntrance->entrance, full: true);
         }
+
+        TeacherModel::query()
+            ->where('id', $data['teacher_id'])
+            ->update([
+                'last_entrance_date' => date('Y-m-d')
+            ]);
 
         // TODO: send sms
 

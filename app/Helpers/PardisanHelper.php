@@ -11,7 +11,7 @@ class PardisanHelper
     /**
      * @return int
      */
-    public static function getCurrentEducationalYear (): int
+    public static function getCurrentEducationalYear(): int
     {
         return self::getEducationalYearByTime(time());
     }
@@ -20,7 +20,7 @@ class PardisanHelper
      * @param string $date
      * @return int
      */
-    public static function getEducationalYearByGregorianDate (string $date): int
+    public static function getEducationalYearByGregorianDate(string $date): int
     {
         return self::getEducationalYearByTime(strtotime($date));
     }
@@ -30,7 +30,7 @@ class PardisanHelper
      * @param string $format
      * @return int
      */
-    public static function jalaliDateToTime (string $date, string $format = 'Y-m-d H:i:s'): int
+    public static function jalaliDateToTime(string $date, string $format = 'Y-m-d H:i:s'): int
     {
         return CalendarUtils::createCarbonFromFormat($format, $date)->timestamp;
     }
@@ -40,7 +40,7 @@ class PardisanHelper
      * @param string $format
      * @return int
      */
-    public static function getEducationalYearByJalaliDate (string $date, string $format = 'Y-m-d H:i:s'): int
+    public static function getEducationalYearByJalaliDate(string $date, string $format = 'Y-m-d H:i:s'): int
     {
         return self::getEducationalYearByTime(
             self::jalaliDateToTime($date, $format)
@@ -51,7 +51,7 @@ class PardisanHelper
      * @param int $time
      * @return int
      */
-    public static function getEducationalYearByTime (int $time): int
+    public static function getEducationalYearByTime(int $time): int
     {
         return CalendarUtils::strftime('n', $time) < 4 ? CalendarUtils::strftime('Y', $time) - 1 : CalendarUtils::strftime('Y', $time);
     }
@@ -70,7 +70,7 @@ class PardisanHelper
      * @param string $format
      * @return int
      */
-    public static function getWeekDayByJalaliDate (string $date, string $format = 'Y-m-d H:i:s'): int
+    public static function getWeekDayByJalaliDate(string $date, string $format = 'Y-m-d H:i:s'): int
     {
         return self::getWeekDayByTime(
             self::jalaliDateToTime($date, $format)
@@ -81,7 +81,7 @@ class PardisanHelper
      * @param string $date
      * @return int
      */
-    public static function getWeekDayByGregorianDate (string $date): int
+    public static function getWeekDayByGregorianDate(string $date): int
     {
         return self::getWeekDayByTime(strtotime($date));
     }
@@ -90,9 +90,9 @@ class PardisanHelper
      * @param string $userClass
      * @return string
      */
-    public static function getUserTypeByUserClass (string $userClass): string
+    public static function getUserTypeByUserClass(string $userClass): string
     {
-        return match ($userClass){
+        return match ($userClass) {
             'App\\Models\\AdminModel' => 'admin',
             'App\\Models\\StudentModel' => 'student',
             'App\\Models\\TeacherModel' => 'teacher',
@@ -104,25 +104,31 @@ class PardisanHelper
      * @param $studentFinancial
      * @return string
      */
-    public static function getStudentFinancialPaymentStatus ($studentFinancial): string
+    public static function getStudentFinancialPaymentStatus($studentFinancial): string
     {
-        if ($studentFinancial->paid)
-        {
+        if ($studentFinancial->paid) {
             return 'paid';
         }
 
         $due_time = strtotime($studentFinancial->date);
         $current_time = time();
 
-        if ($due_time < $current_time)
-        {
+        if ($due_time < $current_time) {
             return 'passed';
         }
-        if ($due_time <= ($current_time + (86400 * 7)))
-        {
+        if ($due_time <= ($current_time + (86400 * 7))) {
             return 'near-due';
         }
 
         return 'not_paid';
+    }
+
+    /**
+     * @param string $date
+     * @return bool
+     */
+    public static function isDateToday(string $date): bool
+    {
+        return date('Y-m-d') == date('Y-m-d', strtotime($date));
     }
 }

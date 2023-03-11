@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Helpers\PardisanHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class TeacherResource extends JsonResource
@@ -14,6 +15,11 @@ class TeacherResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return array_merge(
+            parent::toArray($request),
+            [
+                'is_entrance_disabled' => !empty($this->last_entrance_date) && PardisanHelper::isDateToday($this->last_entrance_date)
+            ]
+        );
     }
 }

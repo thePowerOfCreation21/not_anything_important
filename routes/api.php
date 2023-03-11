@@ -22,6 +22,7 @@ use App\Http\Controllers\AdviceHourController;
 use App\Http\Controllers\AdviceDateController;
 use App\Http\Controllers\ClassScoreController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\ReportCardController;
 use App\Http\Controllers\ClassCourseController;
 use App\Http\Controllers\ClassReportsController;
 use App\Http\Controllers\TeacherSkillController;
@@ -91,6 +92,8 @@ Route::get('/page/home', [GuestPageController::class, 'getHomePage']);
 Route::group([
     'middleware' => ['auth:admin']
 ], function(){
+    Route::post('/admin/report_card', [ReportCardController::class, 'store']);
+
     Route::post('/admin/news', [NewsController::class, 'store']);
     Route::put('/admin/news/{id}', [NewsController::class, 'updateById']);
     Route::delete('/admin/news/{id}', [NewsController::class, 'deleteById']);

@@ -41,6 +41,7 @@ class TeacherModel extends Model
         'password',
         'register_status',
         'educational_year',
+        'last_entrance_date'
     ];
 
     public function workExperiences (): HasMany

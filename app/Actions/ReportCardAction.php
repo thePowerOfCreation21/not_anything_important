@@ -2,7 +2,10 @@
 
 namespace App\Actions;
 
+use App\Helpers\PardisanHelper;
 use App\Models\ClassModel;
+use App\Models\ReportCardExamModel;
+use App\Models\ReportCardExamScoreModel;
 use Genocide\Radiocrud\Exceptions\CustomException;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
 use App\Models\ReportCardModel;
@@ -15,10 +18,10 @@ class ReportCardAction extends ActionService
         $this
             ->setValidationRules([
                 'store' => [
-                    'title' => ['string', 'max:150'],
-                    'month' => ['string', 'max:100'],
+                    'title' => ['required', 'string', 'max:150'],
+                    'month' => ['required', 'string', 'max:100'],
                     'educational_year' => ['string', 'max:100'],
-                    'class_id' => ['integer']
+                    'class_id' => ['required', 'integer']
                 ],
             ])
             ->setModel(ReportCardModel::class)
@@ -26,6 +29,12 @@ class ReportCardAction extends ActionService
         parent::__construct();
     }
 
+    /**
+     * @param array $data
+     * @param callable|null $storing
+     * @return mixed
+     * @throws \Throwable
+     */
     protected function store(array $data, callable $storing = null): mixed
     {
         throw_if(
@@ -34,11 +43,37 @@ class ReportCardAction extends ActionService
         );
 
         $class = ClassModel::query()
+            ->whereHas('courses.course')
+            ->whereHas('students')
             ->with([
                 'courses.course',
                 'students'
-            ]);
+            ])
+            ->firstOrFail();
 
-        return parent::store($data, $storing);
+        $data['educational_year'] = $data['educational_year'] ?? PardisanHelper::getCurrentEducationalYear();
+
+        $reportCard = parent::store($data, $storing);
+
+        $class->courses->map(function($classCourse) use ($reportCard, $class){
+            if (!empty($classCourse->course))
+            {
+                $reportCardExam = ReportCardExamModel::query()->create([
+                    'report_card_id' => $reportCard->id,
+                    'course_id' => $classCourse->course_id
+                ]);
+
+                $reportCardExamScores = [];
+                $class->students->map(function($student) use($reportCardExam, $reportCardExamScores){
+                    $reportCardExamScores[] = [
+                        'report_card_exam_id' => $reportCardExam->id,
+                        'student_id' => $student->id
+                    ];
+                });
+                ReportCardExamScoreModel::query()->insert($reportCardExamScores);
+            }
+        });
+
+        return $reportCard;
     }
 }

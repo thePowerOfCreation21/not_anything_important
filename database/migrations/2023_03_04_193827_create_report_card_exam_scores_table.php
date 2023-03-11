@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('report_card_exam_id', 20);
             $table->string('student_id', 20);
-            $table->tinyInteger('score')->unsigned();
+            $table->tinyInteger('score')->unsigned()->default(0);
+            $table->boolean('is_present')->default(true);
             $table->timestamps();
         });
     }

@@ -15,11 +15,13 @@ class ReportCardExamScoreModel extends Model
     protected $fillable = [
         'report_card_exam_id',
         'student_id',
-        'score'
+        'score',
+        'is_present'
     ];
 
     protected $casts = [
-        'score' => 'integer'
+        'score' => 'integer',
+        'is_present' => 'boolean'
     ];
 
     public function reportCardExamModel (): BelongsTo
