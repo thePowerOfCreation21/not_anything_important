@@ -13,6 +13,7 @@ class InventoryProductHistoryModel extends Model
     protected $table = 'inventory_product_histories';
 
     protected $fillable = [
+        'description',
         'action',
         'amount',
         'date',

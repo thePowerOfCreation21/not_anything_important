@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('inventory_product_histories', function (Blueprint $table) {
             $table->id();
+            $table->string('description', 5000)->nullable();
             $table->string('action', 25);
             $table->integer('amount');
             $table->timestamp('date');

@@ -16,6 +16,8 @@ class ReportCardAction extends ActionService
     public function __construct()
     {
         $this
+            ->setModel(ReportCardModel::class)
+            ->setResource(ReportCardResource::class)
             ->setValidationRules([
                 'store' => [
                     'title' => ['required', 'string', 'max:150'],
@@ -23,9 +25,17 @@ class ReportCardAction extends ActionService
                     'educational_year' => ['string', 'max:100'],
                     'class_id' => ['required', 'integer']
                 ],
+                'get' => [
+                    'class_id' => ['integer'],
+                    'search' => ['string', 'max:150'],
+                ]
             ])
-            ->setModel(ReportCardModel::class)
-            ->setResource(ReportCardResource::class);
+            ->setQueryToEloquentClosures([
+                'class_id' => function(&$eloquent, $query)
+                {
+                    $eloquent
+                }
+            ]);
         parent::__construct();
     }
 

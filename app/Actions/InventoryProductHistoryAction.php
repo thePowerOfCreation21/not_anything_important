@@ -19,6 +19,7 @@ class InventoryProductHistoryAction extends ActionService
             ->setResource(InventoryProductHistoryResource::class)
             ->setValidationRules([
                 'store' => [
+                    'description' => ['string', 'max:5000'],
                     'inventory_product_id' => ['required', 'integer'],
                     'action' => ['required', 'in:' . $allowedActionsString],
                     'amount' => ['required', 'integer', 'between:1,100000000'],
