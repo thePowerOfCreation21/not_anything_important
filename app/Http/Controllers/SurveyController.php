@@ -73,4 +73,39 @@ class SurveyController extends Controller
                 ->getById($id)
         );
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByTeacher (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new SurveyAction())
+                ->setRequest($request)
+                ->setValidationRule('getQuery')
+                ->setRelations(['surveyOptions'])
+                ->mergeQueryWith(['teacher_id' => $request->user()->id])
+                ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
+    }
+
+    /**
+     * @param string $id
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByIdByTeacher (string $id, Request $request): JsonResponse
+    {
+        return response()->json(
+            (new SurveyAction())
+                ->setRelations(['surveyOptions'])
+                ->mergeQueryWith(['teacher_id' => $request->user()->id])
+                ->makeEloquent()
+                ->getById($id)
+        );
+    }
 }

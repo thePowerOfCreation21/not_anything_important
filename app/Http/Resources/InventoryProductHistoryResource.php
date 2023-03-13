@@ -17,6 +17,7 @@ class InventoryProductHistoryResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'description' => $this->description,
             'action' => $this->action,
             'amount' => $this->amount,
             'date' => Helpers::getCustomDateCast($this->date),

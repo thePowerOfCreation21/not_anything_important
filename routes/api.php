@@ -354,4 +354,7 @@ Route::group([
 
     Route::get('/teacher/class', [ClassController::class, 'getByTeacher']);
     Route::get('/teacher/class/{id}', [ClassController::class, 'getByIdByTeacher']);
+
+    Route::get('/teacher/survey', [SurveyController::class, 'getByIdByTeacher']);
+    Route::get('/teacher/survey/{id}', [SurveyController::class, 'getByIdByTeacher']);
 });
