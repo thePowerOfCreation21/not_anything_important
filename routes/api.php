@@ -28,6 +28,7 @@ use App\Http\Controllers\ClassReportsController;
 use App\Http\Controllers\TeacherSkillController;
 use App\Http\Controllers\GalleryImageController;
 use App\Http\Controllers\SurveyOptionController;
+use App\Http\Controllers\SurveyAnswerController;
 use App\Http\Controllers\ClassMessagesController;
 use App\Http\Controllers\WalletHistoryController;
 use App\Http\Controllers\FinancialTypeController;
@@ -293,6 +294,8 @@ Route::group([
     Route::group([
         'middleware' => ['CheckIfStudentShouldChangePassword']
     ], function(){
+        Route::post('/student/survey_answer', [SurveyAnswerController::class, 'store']);
+
         Route::get('/student/advice_hour', [AdviceHourController::class, 'get']);
         Route::get('/student/advice_date', [AdviceDateController::class, 'getByStudent']);
         Route::post('/student/advice', [AdviceController::class, 'storeByStudent']);

@@ -18,7 +18,8 @@ class TeacherResource extends JsonResource
         return array_merge(
             parent::toArray($request),
             [
-                'is_entrance_disabled' => !empty($this->last_entrance_date) && PardisanHelper::isDateToday($this->last_entrance_date)
+                'is_entrance_disabled' => !empty($this->last_entrance_date) && PardisanHelper::isDateToday($this->last_entrance_date),
+                'is_exit_disabled' => !empty($this->last_exit_date) && PardisanHelper::isDateToday($this->last_exit_date),
             ]
         );
     }

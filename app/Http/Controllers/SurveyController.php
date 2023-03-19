@@ -68,7 +68,7 @@ class SurveyController extends Controller
     {
         return response()->json(
             (new SurveyAction())
-                ->setRelations(['surveyOptions'])
+                ->setRelations(['surveyOptions.surveyAnswers.student'])
                 ->makeEloquent()
                 ->getById($id)
         );
@@ -84,7 +84,7 @@ class SurveyController extends Controller
         return response()->json(
             (new SurveyAction())
                 ->setRequest($request)
-                ->setValidationRule('getQuery')
+                ->setValidationRule('getByTeacher')
                 ->setRelations(['surveyOptions'])
                 ->mergeQueryWith(['teacher_id' => $request->user()->id])
                 ->makeEloquentViaRequest()
@@ -102,7 +102,7 @@ class SurveyController extends Controller
     {
         return response()->json(
             (new SurveyAction())
-                ->setRelations(['surveyOptions'])
+                ->setRelations(['surveyOptions.surveyAnswers.student'])
                 ->mergeQueryWith(['teacher_id' => $request->user()->id])
                 ->makeEloquent()
                 ->getById($id)
