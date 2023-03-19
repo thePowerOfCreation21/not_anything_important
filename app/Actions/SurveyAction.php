@@ -39,6 +39,10 @@ class SurveyAction extends ActionService
                     'student_id' => ['integer'],
                     'is_active' => ['boolean']
                 ],
+                'getByStudent' => [
+                    'teacher_id' => ['integer'],
+                    'is_active' => ['boolean']
+                ],
             ])
             ->setQueryToEloquentClosures([
                 'student_id' => function (&$eloquent, $query)

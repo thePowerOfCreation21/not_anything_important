@@ -32,7 +32,9 @@ class SurveyAnswerAction extends ActionService
 
         $surveyOption = SurveyOptionModel::query()
             ->with('survey')
-            ->whereHas('survey')
+            ->whereHas('survey', function($q) {
+                $q->where('is_active', true);
+            })
             ->whereDoesntHave('surveyAnswers', function($q) use($data){
                 $q->where('student_id', $data['student_id']);
             })
