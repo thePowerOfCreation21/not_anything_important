@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
             $table->timestamp('date');
+            $table->string('description', 2500)->nullable();
             $table->string('educational_year', 50)->nullable();
             $table->string('class_course_id', 20);
             $table->timestamps();

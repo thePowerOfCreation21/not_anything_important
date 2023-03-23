@@ -2,11 +2,14 @@
 
 namespace App\Actions;
 
+use App\Helpers\PardisanHelper;
 use App\Http\Resources\AttendanceResource;
 use App\Models\AttendanceModel;
 use App\Models\AttendanceStudentModel;
 use App\Models\StudentModel;
+use App\Models\TeacherModel;
 use Genocide\Radiocrud\Exceptions\CustomException;
+use Genocide\Radiocrud\Helpers;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
 use Genocide\Radiocrud\Services\SendSMSService;
 use Illuminate\Support\Facades\DB;
@@ -25,6 +28,7 @@ class AttendanceAction extends ActionService
                 'storeByAdmin' => [
                     'class_course_id' => ['required', 'string', 'max:20'],
                     'date' => ['required', 'date_format:Y-m-d'],
+                    'description' => ['required', 'string', 'max:2500'],
                     'students' => ['required', 'array', 'max:100'],
                     'students.*.student_id' => ['required', 'string', 'max:20'],
                     'students.*.status' => ['required', "in:$allowedAttendanceStudentStatusesString"],
@@ -32,7 +36,8 @@ class AttendanceAction extends ActionService
                 ],
                 'updateByAdmin' => [
                     'class_course_id' => ['string', 'max:20'],
-                    'date' => ['date_format:Y-m-d'],
+                    'date' => ['string', 'max:2500'],
+                    'description' => ['date_format:Y-m-d'],
                     'students' => ['array', 'max:100'],
                     'students.*.student_id' => ['required', 'string', 'max:20'],
                     'students.*.status' => ["in:$allowedAttendanceStudentStatusesString"],
@@ -51,6 +56,13 @@ class AttendanceAction extends ActionService
                 'to_date' => ['jalali_to_gregorian:Y-m-d'],
             ])
             ->setQueryToEloquentClosures([
+                'educational_year' => function (&$eloquent, $query)
+                {
+                    if ($query['educational_year']  != '*')
+                    {
+                        $eloquent = $eloquent->where('educational_year', $query['educational_year']);
+                    }
+                },
                 'class_id' => function (&$eloquent, $query)
                 {
                     $eloquent = $eloquent->whereHas('classCourse', function($q) use($query){
@@ -96,6 +108,8 @@ class AttendanceAction extends ActionService
      */
     public function store(array $data, callable $storing = null): mixed
     {
+        $data['educational_year'] = isset($data['date']) ? PardisanHelper::getWeekDayByGregorianDate($data['date']) : PardisanHelper::getCurrentEducationalYear();
+
         $attendance = parent::store($data, $storing);
 
         $currentDate = date('Y-m-d');
@@ -115,6 +129,17 @@ class AttendanceAction extends ActionService
             {
                 $smsStudentIds[] = $attendanceStudent['student_id'];
             }
+        }
+
+        $classStudents = DB::table('class_student')->where('class_id', $data['class_id'])->get();
+
+        foreach ($classStudents AS $classStudent)
+        {
+            $attendanceStudentsHashMap[$classStudent->student_id] ??= [
+                'attendance_id' => $attendance->id,
+                'student_id' => $classStudent->student_id,
+                'status' => 'present'
+            ];
         }
 
         $smsStudents = StudentModel::query()
@@ -170,5 +195,24 @@ class AttendanceAction extends ActionService
         };
 
         return parent::updateByIdAndRequest($id, $updating);
+    }
+
+    /**
+     * @return array
+     */
+    public function getAndCastForTeacher (): array
+    {
+        $attendances = $this->eloquent->get();
+
+        $result = [];
+
+        foreach ($attendances AS $attendance)
+        {
+            $date = explode(' ', $attendance->date)[0];
+            $result['date'] = Helpers::getCustomDateCast($date);
+            $result[$date]['attendances'] = $attendance;
+        }
+
+        return array_values($result);
     }
 }

@@ -34,6 +34,15 @@ class AttendanceStudentAction extends ActionService
                 'to_date' => ['jalali_to_gregorian:Y-m-d'],
             ])
             ->setQueryToEloquentClosures([
+                'educational_year' => function (&$eloquent, $query)
+                {
+                    if ($query['educational_year']  != '*')
+                    {
+                        $eloquent = $eloquent->whereHas('attendance', function($q) use($query){
+                            $q->where('educational_year', $query['educational_year']);
+                        });
+                    }
+                },
                 'attendance_id' => function (&$eloquent, $query)
                 {
                     $eloquent = $eloquent->where('attendance_id', $query['attendance_id']);

@@ -364,3 +364,8 @@ Route::group([
     Route::get('/teacher/survey', [SurveyController::class, 'getByIdByTeacher']);
     Route::get('/teacher/survey/{id}', [SurveyController::class, 'getByIdByTeacher']);
 });
+
+Route::get('test', function(){
+    $array[] = 'a';
+    dd($array);
+});

@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('advices', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('advice_date_id')->constrained('advice_dates')->onDelete('cascade');
-            $table->foreignId('advice_hour_id')->constrained('advice_hours')->onDelete('cascade');
-            $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
+            $table->string('advice_date_id', 20);
+            $table->string('advice_hour_id', 20);
+            $table->string('student_id', 20);
             $table->string('status', 255)->default('pending');
             $table->string('educational_year', 50);
             $table->timestamps();

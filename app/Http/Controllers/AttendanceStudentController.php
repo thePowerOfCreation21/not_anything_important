@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\AttendanceStudentAction;
+use App\Helpers\PardisanHelper;
 use Genocide\Radiocrud\Exceptions\CustomException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -21,6 +22,7 @@ class AttendanceStudentController extends Controller
                 ->setRequest($request)
                 ->setValidationRule('getQuery')
                 ->setRelations(['attendance.classCourse.classModel'])
+                ->mergeQueryWith(['educational_year' => PardisanHelper::getCurrentEducationalYear()])
                 ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()
         );
@@ -37,6 +39,7 @@ class AttendanceStudentController extends Controller
             (new AttendanceStudentAction())
                 ->setRequest($request)
                 ->mergeQueryWith(['student_id' => $request->user()->id])
+                ->mergeQueryWith(['educational_year' => PardisanHelper::getCurrentEducationalYear()])
                 ->setRelations([
                     'attendance' => [
                         'classCourse' => ['teacher', 'course', 'classModel']
