@@ -3,6 +3,8 @@
 namespace App\Http\Resources;
 
 use App\Helpers\PardisanHelper;
+use App\Models\AdminModel;
+use App\Models\TeacherModel;
 use Genocide\Radiocrud\Helpers;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -16,6 +18,15 @@ class ClassFileResource extends JsonResource
      */
     public function toArray($request)
     {
+        $can_be_deleted = false;
+        $user = $request->user();
+
+        if (! empty($user))
+        {
+            if ($user instanceof AdminModel || ($user instanceof TeacherModel && $this->author_type == "App\\Models\\TeacherModel" && $this->author_id == $user->id))
+                $can_be_deleted = true;
+        }
+
         return [
             'id' => $this->id,
             'title' => $this->title,
@@ -35,7 +46,8 @@ class ClassFileResource extends JsonResource
                 'App\\Models\\StudentModel' => new StudentCollectionResource($this->whenLoaded('author')),
                 'App\\Models\\TeacherModel' => new TeacherResource($this->whenLoaded('author')),
                 default => 'unknown'
-            }
+            },
+            'can_be_deleted' => $can_be_deleted
         ];
     }
 }
