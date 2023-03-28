@@ -59,7 +59,6 @@ use App\Http\Controllers\InventoryProductHistoryController;
 |
 */
 
-
 Route::post('/admin/login', [AdminController::class, 'login']);
 
 Route::post('/student/login', [StudentController::class, 'login']);
@@ -94,6 +93,7 @@ Route::group([
     'middleware' => ['auth:admin']
 ], function(){
     Route::post('/admin/report_card', [ReportCardController::class, 'store']);
+    Route::get('/admin/report_card', [ReportCardController::class, 'get']);
 
     Route::post('/admin/news', [NewsController::class, 'store']);
     Route::put('/admin/news/{id}', [NewsController::class, 'updateById']);
@@ -363,9 +363,4 @@ Route::group([
 
     Route::get('/teacher/survey', [SurveyController::class, 'getByIdByTeacher']);
     Route::get('/teacher/survey/{id}', [SurveyController::class, 'getByIdByTeacher']);
-});
-
-Route::get('test', function(){
-    $array[] = 'a';
-    dd($array);
 });

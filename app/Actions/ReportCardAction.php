@@ -27,13 +27,29 @@ class ReportCardAction extends ActionService
                 ],
                 'get' => [
                     'class_id' => ['integer'],
+                    'month' => ['string', 'max:100'],
+                    'educational_year' => ['string', 'max:50'],
+                    'was_issued' => ['boolean'],
                     'search' => ['string', 'max:150'],
                 ]
             ])
             ->setQueryToEloquentClosures([
                 'class_id' => function(&$eloquent, $query)
                 {
-                    $eloquent
+                    $eloquent = $eloquent->where('class_id', $query['class_id']);
+                },
+                'month' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('month', $query['month']);
+                },
+                'educational_year' => function (&$eloquent, $query)
+                {
+                    if ($query['educational_year'] != '*')
+                        $eloquent = $eloquent->where('educational_year', $query['educational_year']);
+                },
+                'search' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('title', 'LIKE', "%{$query['search']}%");
                 }
             ]);
         parent::__construct();
