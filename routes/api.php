@@ -32,6 +32,7 @@ use App\Http\Controllers\SurveyAnswerController;
 use App\Http\Controllers\ClassMessagesController;
 use App\Http\Controllers\WalletHistoryController;
 use App\Http\Controllers\FinancialTypeController;
+use App\Http\Controllers\ReportCardExamController;
 use App\Http\Controllers\MessageTemplateController;
 use App\Http\Controllers\EducationalYearController;
 use App\Http\Controllers\TeacherEntranceController;
@@ -95,6 +96,8 @@ Route::group([
     Route::post('/admin/report_card', [ReportCardController::class, 'store']);
     Route::get('/admin/report_card', [ReportCardController::class, 'get']);
     Route::get('/admin/report_card/{id}', [ReportCardController::class, 'getById']);
+
+    Route::get('/admin/report_card_exam', [ReportCardExamController::class, 'get']);
 
     Route::post('/admin/news', [NewsController::class, 'store']);
     Route::put('/admin/news/{id}', [NewsController::class, 'updateById']);
