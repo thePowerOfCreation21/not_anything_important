@@ -43,4 +43,22 @@ class ReportCardController extends Controller
                 ->getByRequestAndEloquent()
         );
     }
+
+    /**
+     * @param string $id
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getById (string $id): JsonResponse
+    {
+        return response()->json(
+            (new ReportCardAction())
+                ->setRelations([
+                    'classModel',
+                    'reportCardExams' => ['course', 'reportCardExamScores.studentModel']
+                ])
+                ->makeEloquent()
+                ->getById($id)
+        );
+    }
 }
