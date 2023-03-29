@@ -74,6 +74,23 @@ class ClassReportsController extends Controller
     }
 
     /**
+     * @param string $id
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByIdByStudent (string $id, Request $request): JsonResponse
+    {
+        return response()->json(
+            (new ClassReportsAction())
+                ->setRelations(['classCourse.classModel'])
+                ->mergeQueryWith(['student_id' => $request->user()->id])
+                ->makeEloquent()
+                ->getById($id)
+        );
+    }
+
+    /**
      * @param Request $request
      * @return JsonResponse
      * @throws CustomException
