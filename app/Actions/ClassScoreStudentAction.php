@@ -17,8 +17,17 @@ class ClassScoreStudentAction extends ActionService
                 'getQuery' => [
                     'class_score_id' => ['string', 'max:20'],
                     'class_course_id' => ['string', 'max:20'],
+                    'course_id' => ['integer'],
                     'class_id' => ['string', 'max:20'],
                     'student_id' => ['string', 'max:20'],
+                    'from_date' => ['date_format:Y-m-d'],
+                    'to_date' => ['date_format:Y-m-d'],
+                ],
+                'getByStudent' => [
+                    'class_score_id' => ['string', 'max:20'],
+                    'class_course_id' => ['string', 'max:20'],
+                    'course_id' => ['integer'],
+                    'class_id' => ['string', 'max:20'],
                     'from_date' => ['date_format:Y-m-d'],
                     'to_date' => ['date_format:Y-m-d'],
                 ]
@@ -38,22 +47,36 @@ class ClassScoreStudentAction extends ActionService
                 },
                 'class_id' => function (&$eloquent, $query)
                 {
-                    $eloquent = $eloquent->whereHas('attendance', function($q) use($query){
+                    $eloquent = $eloquent->whereHas('classScore', function($q) use($query){
                         $q->whereHas('classCourse', function ($q) use($query){
-                            $q->where('class_id', $query['class_id']);
+                            $q->where('class_courses.class_id', $query['class_id']);
                         });
                     });
                 },
                 'class_course_id' => function (&$eloquent, $query)
                 {
-                    $eloquent = $eloquent->whereHas('attendance', function($q) use($query){
-                        $q->where('class_course_id', $query['class_course_id']);
+                    $eloquent = $eloquent->whereHas('classScore', function($q) use($query){
+                        $q->where('class_scores.class_course_id', $query['class_course_id']);
+                    });
+                },
+                'course_id' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereHas('classScore', function($q) use($query){
+                        $q->whereHas('classCourse', function ($q) use($query){
+                            $q->where('class_courses.course_id', $query['course_id']);
+                        });
                     });
                 },
                 'from_date' => function (&$eloquent, $query)
                 {
-                    $eloquent = $eloquent->whereHas('attendance', function($q) use($query){
+                    $eloquent = $eloquent->whereHas('classScore', function($q) use($query){
                         $q->whereDate('date', '>=', $query['from_date']);
+                    });
+                },
+                'to_date' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereHas('classScore', function($q) use($query){
+                        $q->whereDate('date', '<=', $query['to_date']);
                     });
                 },
             ]);

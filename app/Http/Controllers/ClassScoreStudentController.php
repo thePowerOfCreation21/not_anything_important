@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\ClassScoreStudentAction;
+use Genocide\Radiocrud\Exceptions\CustomException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -23,12 +24,14 @@ class ClassScoreStudentController extends Controller
     /**
      * @param Request $request
      * @return JsonResponse
+     * @throws CustomException
      */
     public function getByStudent (Request $request): JsonResponse
     {
         return response()->json(
             (new ClassScoreStudentAction())
                 ->setRequest($request)
+                ->setValidationRule('getByStudent')
                 ->mergeQueryWith(['student_id' => $request->user()->id])
                 ->setRelations([
                     'classScore' => [
