@@ -44,4 +44,27 @@ class ClassScoreStudentController extends Controller
                 ->getByRequestAndEloquent()
         );
     }
+
+    /**
+     * @param string $id
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByIdByStudent (string $id, Request $request): JsonResponse
+    {
+        return response()->json(
+            (new ClassScoreStudentAction())
+                ->mergeQueryWith(['student_id' => $request->user()->id])
+                ->setRelations([
+                    'classScore' => [
+                        'classCourse' => ['course', 'teacher', 'classModel'],
+                        'submitter',
+                    ],
+                    'student'
+                ])
+                ->makeEloquent()
+                ->getById($id)
+        );
+    }
 }
