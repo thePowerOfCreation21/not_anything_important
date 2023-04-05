@@ -6,6 +6,8 @@ use App\Helpers\PardisanHelper;
 use App\Http\Resources\AttendanceResource;
 use App\Models\AttendanceModel;
 use App\Models\AttendanceStudentModel;
+use App\Models\ClassCourseModel;
+use App\Models\ClassModel;
 use App\Models\StudentModel;
 use App\Models\TeacherModel;
 use Genocide\Radiocrud\Exceptions\CustomException;
@@ -110,6 +112,9 @@ class AttendanceAction extends ActionService
     {
         $data['educational_year'] = isset($data['date']) ? PardisanHelper::getWeekDayByGregorianDate($data['date']) : PardisanHelper::getCurrentEducationalYear();
 
+        $classCourse = ClassCourseModel::query()->where('id', $data['class_course_id'])->firstOrFail();
+        $class = ClassModel::query()->where('id', $classCourse->class_id)->firstOrFail();
+
         $attendance = parent::store($data, $storing);
 
         $currentDate = date('Y-m-d');
@@ -131,7 +136,7 @@ class AttendanceAction extends ActionService
             }
         }
 
-        $classStudents = DB::table('class_student')->where('class_id', $data['class_id'])->get();
+        $classStudents = DB::table('class_student')->where('class_id', $class->id)->get();
 
         foreach ($classStudents AS $classStudent)
         {
