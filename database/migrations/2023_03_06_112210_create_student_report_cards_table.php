@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('title', 250);
             $table->string('month', 100)->nullable();
             $table->string('educational_year', 100);
+            $table->float('average_score')->unsigned();
             $table->float('total_score')->unsigned();
             $table->integer('total_ratio')->unsigned();
             $table->integer('rank_in_class')->unsigned()->default(0);

@@ -15,7 +15,7 @@ class ReportCardExamModel extends Model
 
     protected $fillable = [
         'report_card_id',
-        'course_id'
+        'course_id',
     ];
 
     public function reportCard (): BelongsTo
