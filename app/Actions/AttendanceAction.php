@@ -127,8 +127,12 @@ class AttendanceAction extends ActionService
 
         foreach ($data['students'] AS $attendanceStudent)
         {
-            $attendanceStudentsHashMap[$attendanceStudent['student_id']] = $attendanceStudent;
-            $attendanceStudentsHashMap[$attendanceStudent['student_id']]['attendance_id'] = $attendance->id;
+            $attendanceStudentsHashMap[$attendanceStudent['student_id']] = [
+                'student_id' => $attendanceStudent['student_id'],
+                'status' => $attendanceStudent['status'],
+                'late' => @$attendanceStudent['late'],
+                'attendance_id' => $attendance->id
+            ];
 
             if ($attendanceStudent['status'] != 'present')
             {
@@ -143,7 +147,8 @@ class AttendanceAction extends ActionService
             $attendanceStudentsHashMap[$classStudent->student_id] ??= [
                 'attendance_id' => $attendance->id,
                 'student_id' => $classStudent->student_id,
-                'status' => 'present'
+                'status' => 'present',
+                'late' => null
             ];
         }
 
