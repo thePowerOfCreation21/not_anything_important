@@ -56,7 +56,7 @@ class ClassScoreStudentAction extends ActionService
                 'class_course_id' => function (&$eloquent, $query)
                 {
                     $eloquent = $eloquent->whereHas('classScore', function($q) use($query){
-                        $q->where('class_scores.class_course_id', $query['class_course_id']);
+                        $q->where('class_score.class_course_id', $query['class_course_id']);
                     });
                 },
                 'course_id' => function (&$eloquent, $query)
