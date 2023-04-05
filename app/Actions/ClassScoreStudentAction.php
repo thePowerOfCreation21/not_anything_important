@@ -49,7 +49,7 @@ class ClassScoreStudentAction extends ActionService
                 {
                     $eloquent = $eloquent->whereHas('classScore', function($q) use($query){
                         $q->whereHas('classCourse', function ($q) use($query){
-                            $q->where('class_courses.class_id', $query['class_id']);
+                            $q->where('class_course.class_id', $query['class_id']);
                         });
                     });
                 },
@@ -63,7 +63,7 @@ class ClassScoreStudentAction extends ActionService
                 {
                     $eloquent = $eloquent->whereHas('classScore', function($q) use($query){
                         $q->whereHas('classCourse', function ($q) use($query){
-                            $q->where('class_courses.course_id', $query['course_id']);
+                            $q->where('class_course.course_id', $query['course_id']);
                         });
                     });
                 },
