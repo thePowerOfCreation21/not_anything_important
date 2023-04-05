@@ -130,7 +130,7 @@ class AttendanceAction extends ActionService
             $attendanceStudentsHashMap[$attendanceStudent['student_id']] = [
                 'student_id' => $attendanceStudent['student_id'],
                 'status' => $attendanceStudent['status'],
-                'late' => @$attendanceStudent['late'],
+                'late' => $attendanceStudent['late'] ?? 0,
                 'attendance_id' => $attendance->id
             ];
 
@@ -148,7 +148,7 @@ class AttendanceAction extends ActionService
                 'attendance_id' => $attendance->id,
                 'student_id' => $classStudent->student_id,
                 'status' => 'present',
-                'late' => null
+                'late' => 0
             ];
         }
 
