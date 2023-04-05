@@ -156,11 +156,11 @@ class AttendanceAction extends ActionService
         {
             if ($attendanceStudentsHashMap[$smsStudent->id]['status'] == 'absent')
             {
-                (new SendSMSService())->sendOTP([$smsStudent->father_mobile_number, $smsStudent->father_mobile_number], 'studentAbsent', $smsStudent->full_name ?? 'unknown', $data['jalali_date']);
+                // (new SendSMSService())->sendOTP([$smsStudent->father_mobile_number, $smsStudent->father_mobile_number], 'studentAbsent', $smsStudent->full_name ?? 'unknown', $data['jalali_date']);
             }
             else
             {
-                (new SendSMSService())->sendOTP([$smsStudent->father_mobile_number, $smsStudent->father_mobile_number], 'studentLate', $smsStudent->full_name ?? 'unknown', $data['jalali_date']);
+                // (new SendSMSService())->sendOTP([$smsStudent->father_mobile_number, $smsStudent->father_mobile_number], 'studentLate', $smsStudent->full_name ?? 'unknown', $data['jalali_date']);
             }
         }
 
