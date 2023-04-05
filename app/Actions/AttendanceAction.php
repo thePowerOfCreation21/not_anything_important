@@ -110,7 +110,7 @@ class AttendanceAction extends ActionService
      */
     public function store(array $data, callable $storing = null): mixed
     {
-        $data['educational_year'] = isset($data['date']) ? PardisanHelper::getWeekDayByGregorianDate($data['date']) : PardisanHelper::getCurrentEducationalYear();
+        $data['educational_year'] = isset($data['date']) ? PardisanHelper::getEducationalYearByGregorianDate($data['date']) : PardisanHelper::getCurrentEducationalYear();
 
         $classCourse = ClassCourseModel::query()->where('id', $data['class_course_id'])->firstOrFail();
         $class = ClassModel::query()->where('id', $classCourse->class_id)->firstOrFail();
