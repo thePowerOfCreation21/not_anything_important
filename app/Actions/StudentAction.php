@@ -273,6 +273,8 @@ class StudentAction extends ActionService
             ])
             ->setCasts([
                 'file' => ['nullable', 'file'],
+                'father_file' => ['nullable', 'file'],
+                'mother_file' => ['nullable', 'file'],
                 'report_card_pdf' => ['nullable', 'file'],
                 'from_created_at' => ['jalali_to_gregorian:Y-m-d'],
                 'to_created_at' => ['jalali_to_gregorian:Y-m-d'],
