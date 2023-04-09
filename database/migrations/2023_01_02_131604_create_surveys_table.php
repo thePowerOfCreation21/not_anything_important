@@ -18,9 +18,9 @@ return new class extends Migration
             $table->bigInteger('teacher_id')->unsigned()->nullable();
             $table->foreign('teacher_id')->references('id')->on('teachers')->onDelete('cascade');
             $table->string('text', 5000);
-            $table->boolean('is_active')->default(false);
             // $table->boolean('is_template')->default(false);
             $table->integer('participants_count')->unsigned()->default(0);
+            $table->string('survey_category_id', 20);
             $table->timestamps();
         });
     }

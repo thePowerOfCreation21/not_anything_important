@@ -16,8 +16,8 @@ class SurveyModel extends Model
     protected $fillable = [
         'teacher_id',
         'text',
-        'is_active',
         'participants_count',
+        'survey_category_id'
     ];
 
     public function scopeForStudent($q, string $studentId)

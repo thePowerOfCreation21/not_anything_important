@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('survey_categories', function (Blueprint $table) {
             $table->id();
+            $table->string('text');
+            $table->integer('participants_count')->unsigned()->default(0);
+            $table->boolean('is_active')->default(false);
             $table->timestamps();
         });
     }

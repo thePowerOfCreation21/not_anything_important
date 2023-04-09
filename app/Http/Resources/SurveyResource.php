@@ -17,7 +17,6 @@ class SurveyResource extends JsonResource
         return [
             'id' => $this->id,
             'text' => $this->text,
-            'is_active' => (bool)$this->is_active,
             'participants_count' => (int)$this->participants_count,
             'teacher_id' => $this->teacher_id,
             'teacher' => $this->whenLoaded('teacher'),
