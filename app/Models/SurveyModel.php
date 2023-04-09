@@ -37,6 +37,11 @@ class SurveyModel extends Model
             });
     }
 
+    public function surveyCategory (): BelongsTo
+    {
+        return $this->belongsTo(SurveyCategoryModel::class, 'survey_category_id', 'id');
+    }
+
     public function teacher (): BelongsTo
     {
         return $this->belongsTo(TeacherModel::class, 'teacher_id', 'id');
