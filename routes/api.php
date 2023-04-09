@@ -121,6 +121,7 @@ Route::group([
     Route::put('/admin/survey_option/{id}', [SurveyOptionController::class, 'updateById']);
 
     Route::post('/admin/survey_category', [SurveyCategoryController::class, 'store']);
+    Route::put('/admin/survey_category/{id}', [SurveyCategoryController::class, 'updateById']);
 
     Route::post('/admin/teacher_entrance', [TeacherEntranceController::class, 'store']);
     Route::get('/admin/teacher_entrance', [TeacherEntranceController::class, 'get']);

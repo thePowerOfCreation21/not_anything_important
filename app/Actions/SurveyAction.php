@@ -19,14 +19,13 @@ class SurveyAction extends ActionService
                 'store' => [
                     'teacher_id' => ['nullable', 'integer', 'exists:teachers,id'],
                     'text' => ['required', 'string', 'max:5000'],
-                    'is_active' => ['boolean'],
+                    'survey_category_id' => ['required', 'integer', 'exists:survey_categories,id'],
                     'options' => ['required', 'array', 'max:4'],
                     'options.*' => ['required', 'string', 'max:250'],
                 ],
                 'update' => [
                     'teacher_id' => ['nullable', 'integer', 'exists:teachers,id'],
                     'text' => ['string', 'max:5000'],
-                    'is_active' => ['boolean'],
                     'options' => ['array', 'max:4'],
                     'options.*' => ['required', 'string', 'max:250'],
                 ],

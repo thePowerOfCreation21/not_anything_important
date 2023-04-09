@@ -24,4 +24,21 @@ class SurveyCategoryController extends Controller
                 ->storeByRequest()
         ]);
     }
+
+    /**
+     * @param string $id
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function updateById (string $id, Request $request): JsonResponse
+    {
+        return response()->json([
+            'message' => 'success',
+            'data' => (new SurveyCategoryAction())
+                ->setRequest($request)
+                ->setValidationRule($request)
+                ->updateByIdAndRequest($id)
+        ]);
+    }
 }

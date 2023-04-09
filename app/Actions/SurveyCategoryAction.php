@@ -17,6 +17,10 @@ class SurveyCategoryAction extends ActionService
                 'store' => [
                     'text' => ['required', 'string', 'max:20000'],
                     'is_active' => ['boolean']
+                ],
+                'update' => [
+                    'text' => ['string', 'max:20000'],
+                    'is_active' => ['boolean']
                 ]
             ]);
         parent::__construct();
