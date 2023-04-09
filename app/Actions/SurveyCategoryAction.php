@@ -12,7 +12,13 @@ class SurveyCategoryAction extends ActionService
     {
         $this
             ->setModel(SurveyCategoryModel::class)
-            ->setResource(SurveyCategoryResource::class);
+            ->setResource(SurveyCategoryResource::class)
+            ->setValidationRules([
+                'store' => [
+                    'text' => ['required', 'string', 'max:20000'],
+                    'is_active' => ['boolean']
+                ]
+            ]);
         parent::__construct();
     }
 }

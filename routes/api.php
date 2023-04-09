@@ -33,6 +33,7 @@ use App\Http\Controllers\ClassMessagesController;
 use App\Http\Controllers\WalletHistoryController;
 use App\Http\Controllers\FinancialTypeController;
 use App\Http\Controllers\ReportCardExamController;
+use App\Http\Controllers\SurveyCategoryController;
 use App\Http\Controllers\MessageTemplateController;
 use App\Http\Controllers\EducationalYearController;
 use App\Http\Controllers\TeacherEntranceController;
@@ -118,6 +119,8 @@ Route::group([
     Route::put('/admin/survey/{id}', [SurveyController::class, 'updateById']);
 
     Route::put('/admin/survey_option/{id}', [SurveyOptionController::class, 'updateById']);
+
+    Route::post('/admin/survey_category', [SurveyCategoryController::class, 'store']);
 
     Route::post('/admin/teacher_entrance', [TeacherEntranceController::class, 'store']);
     Route::get('/admin/teacher_entrance', [TeacherEntranceController::class, 'get']);
