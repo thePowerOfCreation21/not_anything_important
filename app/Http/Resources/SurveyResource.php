@@ -21,7 +21,7 @@ class SurveyResource extends JsonResource
             'teacher_id' => $this->teacher_id,
             'teacher' => $this->whenLoaded('teacher'),
             'survey_category_id' => $this->survey_category_id,
-            'survey_category' => $this->surveyCategory,
+            'survey_category' => new SurveyCategoryResource($this->surveyCategory),
             'options' => SurveyOptionResource::collection($this->whenLoaded('surveyOptions')),
         ];
     }
