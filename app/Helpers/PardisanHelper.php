@@ -131,4 +131,47 @@ class PardisanHelper
     {
         return date('Y-m-d') == date('Y-m-d', strtotime($date));
     }
+
+    // ooooooooooooooooooooooooo :o
+    public static function makeItNumber ($string, $options = ['decimal'=>true, 'negative'=>true])
+    {
+
+        $options = [
+            'decimal' => $options['decimal'] ?? true,
+            'negative' => $options['negative'] ?? true
+        ];
+
+        //echo "input: ".$string."\n";
+
+        // removing all non digits ecxept . , -
+        $string = preg_replace('/[^-.\d]/', '', $string);
+
+        if ($options['decimal'])
+        {
+            // replacing the first . with d so we can remove the other dots then replace the d with .
+            $string = preg_replace('/[.]/', 'd', $string, 1);
+        }
+
+        if ($options['negative'])
+        {
+            // replacing the - in first character with m so we can remove the other mineses then replace the m with -
+            $string = preg_replace('/^[-]/', 'm', $string, 1);
+        }
+
+        // removing dots from string
+        $string = preg_replace('/[.]/', '', $string);
+
+        // removing mineses from string
+        $string = preg_replace('/[-]/', '', $string);
+
+        // replacing the d with . (wich was the first . in the string)
+        $string = preg_replace('/[d]/', '.', $string);
+
+        // replacing the m with -
+        $string = preg_replace('/[m]/', '-', $string);
+
+        //echo "output: ".$string."\n";
+
+        return floatval($string);
+    }
 }
