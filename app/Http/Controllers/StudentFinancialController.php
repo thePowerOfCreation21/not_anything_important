@@ -125,4 +125,19 @@ class StudentFinancialController extends Controller
                 ->getByRequestAndEloquent()
         );
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function setPaidByList (Request $request): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new StudentFinancialAction())
+                ->setRequest($request)
+                ->setPaidByListByRequest()
+        ]);
+    }
 }

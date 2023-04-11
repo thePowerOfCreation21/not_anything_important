@@ -16,6 +16,10 @@ class StudentFinancialAction extends ActionService
             ->setModel(StudentFinancialModel::class)
             ->setResource(StudentFinancialResource::class)
             ->setValidationRules([
+                'setPaidByList' => [
+                    'list' => ['array', 'max:1000'],
+                    'list.*' => ['integer']
+                ],
                 'store' => [
                     'payment_type' => ['required', 'string', 'max:50'],
                     'check_number' => ['nullable', 'string', 'max:50'],
@@ -258,5 +262,22 @@ class StudentFinancialAction extends ActionService
         }
 
         return true;
+    }
+
+    /**
+     * @return int
+     * @throws CustomException
+     */
+    public function setPaidByListByRequest ()
+    {
+        $list = $this
+            ->setValidationRule('setPaidByList')
+            ->getDataFromRequest();
+
+        return StudentFinancialModel::query()
+            ->whereIn('id', $list)
+            ->update([
+                'paid' => true
+            ]);
     }
 }

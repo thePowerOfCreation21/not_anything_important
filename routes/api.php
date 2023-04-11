@@ -153,6 +153,7 @@ Route::group([
     Route::post('/admin/student/wallet', [WalletHistoryController::class, 'store']);
     Route::get('/admin/student/wallet', [WalletHistoryController::class, 'get']);
 
+    Route::post('/admin/student/financial/set_paid_by_list', [StudentFinancialController::class, 'setPaidByList']);
     Route::post('/admin/student/financial/send_sms', [StudentFinancialController::class, 'sendSms']);
     Route::post('/admin/student/financial', [StudentFinancialController::class, 'store']);
     Route::put('/admin/student/financial/{id}', [StudentFinancialController::class, 'updateById']);
