@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('attendance_id', 20);
             $table->string('student_id', 20);
             $table->string('status', 50);
-            $table->integer('late')->default(0);
+            $table->integer('late')->default(0)->nullable();
         });
     }
 

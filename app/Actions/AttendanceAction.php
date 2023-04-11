@@ -34,7 +34,7 @@ class AttendanceAction extends ActionService
                     'students' => ['required', 'array', 'max:100'],
                     'students.*.student_id' => ['required', 'string', 'max:20'],
                     'students.*.status' => ['required', "in:$allowedAttendanceStudentStatusesString"],
-                    'students.*.late' => ['integer', 'min:0', 'max:100']
+                    'students.*.late' => ['nullable', 'integer', 'min:0', 'max:100']
                 ],
                 'updateByAdmin' => [
                     'class_course_id' => ['string', 'max:20'],
