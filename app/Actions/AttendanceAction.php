@@ -28,7 +28,7 @@ class AttendanceAction extends ActionService
             ->setResource(AttendanceResource::class)
             ->setValidationRules([
                 'storeByAdmin' => [
-                    'class_course_id' => ['required', 'string', 'max:20'],
+                    'class_course_id' => ['required', 'integer',],
                     'date' => ['required', 'date_format:Y-m-d'],
                     'description' => ['required', 'string', 'max:2500'],
                     'students' => ['required', 'array', 'max:100'],
