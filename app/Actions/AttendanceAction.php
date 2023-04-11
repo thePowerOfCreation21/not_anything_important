@@ -32,7 +32,7 @@ class AttendanceAction extends ActionService
                     'date' => ['required', 'date_format:Y-m-d'],
                     'description' => ['required', 'string', 'max:2500'],
                     'students' => ['required', 'array', 'max:100'],
-                    'students.*.student_id' => ['required', 'string', 'max:20'],
+                    'students.*.student_id' => ['required', 'integer'],
                     'students.*.status' => ['required', "in:$allowedAttendanceStudentStatusesString"],
                     'students.*.late' => ['nullable', 'integer', 'min:0', 'max:100']
                 ],
