@@ -15,8 +15,6 @@ return new class extends Migration
     {
         Schema::create('surveys', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('teacher_id')->unsigned()->nullable();
-            $table->foreign('teacher_id')->references('id')->on('teachers')->onDelete('cascade');
             $table->string('text', 5000);
             // $table->boolean('is_template')->default(false);
             $table->integer('participants_count')->unsigned()->default(0);

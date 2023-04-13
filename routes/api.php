@@ -113,6 +113,8 @@ Route::group([
 
     Route::post('/admin/food_date', [FoodDateController::class, 'store']);
 
+    Route::get('/admin/survey_category', [SurveyCategoryController::class, 'get']);
+
     Route::post('/admin/survey', [SurveyController::class, 'store']);
     Route::get('/admin/survey', [SurveyController::class, 'get']);
     Route::get('/admin/survey/{id}', [SurveyController::class, 'getById']);
@@ -308,9 +310,6 @@ Route::group([
     ], function(){
         Route::post('/student/survey_answer', [SurveyAnswerController::class, 'store']);
 
-        Route::get('/student/survey', [SurveyController::class, 'getByStudent']);
-        Route::get('/student/survey/{id}', [SurveyController::class, 'getByIdByStudent']);
-
         Route::get('/student/advice_hour', [AdviceHourController::class, 'get']);
         Route::get('/student/advice_date', [AdviceDateController::class, 'getByStudent']);
         Route::post('/student/advice', [AdviceController::class, 'storeByStudent']);
@@ -376,7 +375,4 @@ Route::group([
 
     Route::get('/teacher/class', [ClassController::class, 'getByTeacher']);
     Route::get('/teacher/class/{id}', [ClassController::class, 'getByIdByTeacher']);
-
-    Route::get('/teacher/survey', [SurveyController::class, 'getByIdByTeacher']);
-    Route::get('/teacher/survey/{id}', [SurveyController::class, 'getByIdByTeacher']);
 });

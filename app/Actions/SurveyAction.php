@@ -17,44 +17,24 @@ class SurveyAction extends ActionService
             ->setResource(SurveyResource::class)
             ->setValidationRules([
                 'store' => [
-                    'teacher_id' => ['nullable', 'integer', 'exists:teachers,id'],
                     'text' => ['required', 'string', 'max:5000'],
                     'survey_category_id' => ['required', 'integer', 'exists:survey_categories,id'],
                     'options' => ['required', 'array', 'max:4'],
                     'options.*' => ['required', 'string', 'max:250'],
                 ],
                 'update' => [
-                    'teacher_id' => ['nullable', 'integer', 'exists:teachers,id'],
                     'text' => ['string', 'max:5000'],
                     'options' => ['array', 'max:4'],
                     'options.*' => ['required', 'string', 'max:250'],
                 ],
                 'getQuery' => [
-                    'student_id' => ['integer'],
-                    'teacher_id' => ['integer'],
-                    'is_active' => ['boolean']
-                ],
-                'getByTeacher' => [
-                    'student_id' => ['integer'],
-                    'is_active' => ['boolean']
-                ],
-                'getByStudent' => [
-                    'teacher_id' => ['integer'],
-                    'is_active' => ['boolean']
-                ],
+                    'survey_category_id' => ['integer']
+                ]
             ])
             ->setQueryToEloquentClosures([
-                'student_id' => function (&$eloquent, $query)
+                'survey_category_id' => function (&$eloquent, $query)
                 {
-                    $eloquent = $eloquent->forStudent($query['student_id']);
-                },
-                'teacher_id' => function (&$eloquent, $query)
-                {
-                    $eloquent = $eloquent->where('teacher_id', $query['teacher_id']);
-                },
-                'is_active' => function (&$eloquent, $query)
-                {
-                    $eloquent = $eloquent->where('is_active', $query['is_active']);
+                    $eloquent = $eloquent->where('survey_category_id', $query['survey_category_id']);
                 }
             ]);
         parent::__construct();

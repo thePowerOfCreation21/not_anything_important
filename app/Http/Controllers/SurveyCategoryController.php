@@ -41,4 +41,21 @@ class SurveyCategoryController extends Controller
                 ->updateByIdAndRequest($id)
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function get (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new SurveyCategoryAction())
+                ->setRequest($request)
+                ->setValidationRule('get')
+                ->setRelations(['surveys'])
+                ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
+    }
 }
