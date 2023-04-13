@@ -16,9 +16,11 @@ class StudentFinancialAction extends ActionService
             ->setModel(StudentFinancialModel::class)
             ->setResource(StudentFinancialResource::class)
             ->setValidationRules([
-                'setPaidByList' => [
+                'updatePaidByList' => [
                     'list' => ['array', 'max:1000'],
-                    'list.*' => ['integer']
+                    'list.*' => ['array'],
+                    'list.*.student_financial_id' => ['required', 'integer'],
+                    'list.*.paid' => ['required', 'boolean']
                 ],
                 'store' => [
                     'payment_type' => ['required', 'string', 'max:50'],
@@ -268,16 +270,37 @@ class StudentFinancialAction extends ActionService
      * @return int
      * @throws CustomException
      */
-    public function setPaidByListByRequest ()
+    public function updatePaidByListByRequest ()
     {
         $list = $this
-            ->setValidationRule('setPaidByList')
+            ->setValidationRule('updatePaidByList')
             ->getDataFromRequest();
 
-        return StudentFinancialModel::query()
-            ->whereIn('id', $list)
-            ->update([
-                'paid' => true
-            ]);
+        $paidList = [];
+        $notPaidList = [];
+
+        foreach ($list AS $item)
+        {
+            if ($item['paid'])
+                $paidList[] = $item['student_financial_id'];
+            else
+                $notPaidList[] = $item['student_financial_id'];
+        }
+
+        if(! empty($paidList))
+            StudentFinancialModel::query()
+                ->whereIn('id', $paidList)
+                ->update([
+                    'paid' => true
+                ]);
+
+        if(! empty($notPaidList))
+            StudentFinancialModel::query()
+                ->whereIn('id', $notPaidList)
+                ->update([
+                    'paid' => false
+                ]);
+
+        return true;
     }
 }

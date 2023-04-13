@@ -131,13 +131,13 @@ class StudentFinancialController extends Controller
      * @return JsonResponse
      * @throws CustomException
      */
-    public function setPaidByList (Request $request): JsonResponse
+    public function updatePaidByList (Request $request): JsonResponse
     {
         return response()->json([
             'message' => 'ok',
             'data' => (new StudentFinancialAction())
                 ->setRequest($request)
-                ->setPaidByListByRequest()
+                ->updatePaidByListByRequest()
         ]);
     }
 }
