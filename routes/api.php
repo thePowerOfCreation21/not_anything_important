@@ -114,6 +114,7 @@ Route::group([
     Route::post('/admin/food_date', [FoodDateController::class, 'store']);
 
     Route::get('/admin/survey_category', [SurveyCategoryController::class, 'get']);
+    Route::get('/admin/survey_category/{id}', [SurveyCategoryController::class, 'getById']);
 
     Route::post('/admin/survey', [SurveyController::class, 'store']);
     Route::get('/admin/survey', [SurveyController::class, 'get']);
