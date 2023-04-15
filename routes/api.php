@@ -311,6 +311,8 @@ Route::group([
     ], function(){
         Route::post('/student/survey_answer', [SurveyAnswerController::class, 'store']);
 
+        Route::get('/student/survey_category', [SurveyCategoryController::class, 'getByStudent']);
+
         Route::get('/student/advice_hour', [AdviceHourController::class, 'get']);
         Route::get('/student/advice_date', [AdviceDateController::class, 'getByStudent']);
         Route::post('/student/advice', [AdviceController::class, 'storeByStudent']);

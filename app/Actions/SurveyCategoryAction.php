@@ -27,6 +27,10 @@ class SurveyCategoryAction extends ActionService
                     'student_id' => ['integer'],
                     'teacher_id' => ['integer'],
                     'is_active' => ['boolean']
+                ],
+                'getByStudent' => [
+                    'teacher_id' => ['integer'],
+                    'is_active' => ['boolean']
                 ]
             ])
             ->setQueryToEloquentClosures([
