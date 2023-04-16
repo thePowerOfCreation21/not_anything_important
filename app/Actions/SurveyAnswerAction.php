@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Models\SurveyCategoryModel;
 use App\Models\SurveyModel;
 use App\Models\SurveyOptionModel;
 use Genocide\Radiocrud\Exceptions\CustomException;
@@ -24,36 +25,57 @@ class SurveyAnswerAction extends ActionService
         parent::__construct();
     }
 
-    public function storeByRequest(callable $storing = null): mixed
+    /**
+     * @throws \Throwable
+     * @throws CustomException
+     */
+    public function storeAnswerByRequest (): bool
     {
-        $data = $this->getDataFromRequest();
+        $data = $this
+            ->setValidationRule('store')
+            ->getDataFromRequest();
 
-        $data['student_id'] = $this->request->user()->id;
+        $student = $this->request->user();
 
-        $surveyOption = SurveyOptionModel::query()
-            ->with('survey')
-            ->whereHas('survey', function($q) {
-                $q->where('is_active', true);
-            })
-            ->whereDoesntHave('surveyAnswers', function($q) use($data){
-                $q->where('student_id', $data['student_id']);
-            })
-            ->where('id', $data['survey_option_id'])
-            ->firstOrFail();
+        throw_if(
+            ! SurveyCategoryModel::query()
+                ->where('id', $data['survey_category_id'])
+                ->where('is_active', true)
+                ->exists(),
+            CustomException::class, 'survey_category_id is wrong (maybe survey category is not active)'
+        );
 
-        SurveyOptionModel::query()
-            ->where('id', $data['survey_option_id'])
-            ->update([
-                'participants_count' => $surveyOption->participants_count + 1
-            ]);
+        throw_if(
+            SurveyAnswerModel::query()
+                ->where('student_id', $student->id)
+                ->where('survey_category_id', $data['survey_category_id'])
+                ->exists(),
+            CustomException::class, 'student already answered this survey category', '92477', 400
+        );
 
-        SurveyModel::query()
-            ->where('id', $surveyOption->survey->id)
-            ->update([
-                'participants_count' => $surveyOption->survey->participants_count + 1
-            ]);
+        $hashMapSurveyId = [];
+        $surveyAnswers = [];
 
+        $surveyOptions = SurveyOptionModel::query()
+            ->where('survey_category_id', $data['survey_category_id'])
+            ->whereIn('id', $data['options'])
+            ->get();
 
-        return parent::store($data, $storing);
+        foreach ($surveyOptions AS $surveyOption)
+        {
+            if (! isset($hashMapSurveyId[$surveyOption->survey_id]))
+            {
+                $hashMapSurveyId[$surveyOption->survey_id] = 1;
+
+                $surveyAnswers[] = [
+                    'student_id' => $student->id,
+                    'survey_category_id' => $data['survey_category_id'],
+                    'survey_id' => $surveyOption->survey_id,
+                    'survey_option_id' => $surveyOption->id
+                ];
+            }
+        }
+
+        return SurveyAnswerModel::query()->insert($surveyAnswers);
     }
 }

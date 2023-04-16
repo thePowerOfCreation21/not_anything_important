@@ -14,7 +14,9 @@ class SurveyAnswerModel extends Model
 
     protected $fillable = [
         'student_id',
-        'survey_option_id'
+        'survey_option_id',
+        'survey_category_id',
+        'survey_id'
     ];
 
     public $timestamps = false;

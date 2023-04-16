@@ -7,6 +7,7 @@ use Genocide\Radiocrud\Exceptions\CustomException;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
 use App\Models\SurveyModel;
 use App\Http\Resources\SurveyResource;
+use Throwable;
 
 class SurveyAction extends ActionService
 {
@@ -45,15 +46,24 @@ class SurveyAction extends ActionService
      * @param string $surveyId
      * @param bool $deleteOldOptions
      * @return mixed
+     * @throws Throwable
      */
     public function storeSurveyOptionsFromRequest (array $surveyOptions, string $surveyId, bool $deleteOldOptions = false): mixed
     {
         if ($deleteOldOptions) SurveyOptionModel::query()->where('survey_id', $surveyId)->delete();
 
+        $survey = SurveyModel::query()
+            ->with('surveyCategory')
+            ->where('id', $surveyId)
+            ->firstOrFail();
+
+        throw_if(empty($survey->surveyCategory), CustomException::class, 'survey_id is wrong (survey does not have any category)', '77910', 400);
+
         foreach ($surveyOptions AS $key => $surveyOption)
         {
             $surveyOptions[$key] = [
                 'survey_id' => $surveyId,
+                'survey_category_id' => $survey->surveyCategory->id,
                 'title' => $surveyOption
             ];
         }
@@ -65,6 +75,7 @@ class SurveyAction extends ActionService
      * @param array $data
      * @param callable|null $storing
      * @return mixed
+     * @throws Throwable
      */
     public function store(array $data, callable $storing = null): mixed
     {
@@ -79,6 +90,7 @@ class SurveyAction extends ActionService
      * @param array $updateData
      * @param callable|null $updating
      * @return bool|int
+     * @throws Throwable
      */
     public function update(array $updateData, callable $updating = null): bool|int
     {

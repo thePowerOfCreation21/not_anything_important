@@ -2,6 +2,9 @@
 
 namespace App\Actions;
 
+use App\Models\SurveyAnswerModel;
+use App\Models\SurveyOptionModel;
+use Genocide\Radiocrud\Exceptions\CustomException;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
 use App\Models\SurveyCategoryModel;
 use App\Http\Resources\SurveyCategoryResource;
@@ -14,6 +17,11 @@ class SurveyCategoryAction extends ActionService
             ->setModel(SurveyCategoryModel::class)
             ->setResource(SurveyCategoryResource::class)
             ->setValidationRules([
+                'answer' => [
+                    'survey_category_id' => ['required', 'integer'],
+                    'options' => ['required', 'array', 'max:100'],
+                    'options.*' => ['integer']
+                ],
                 'store' => [
                     'text' => ['required', 'string', 'max:20000'],
                     'is_active' => ['boolean'],
