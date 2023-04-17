@@ -21,7 +21,7 @@ class TeacherEntranceHistoryAction extends ActionService
                 'store' => [
                     'teacher_id' => ['required', 'integer', 'exists:teachers,id'],
                     'date' => ['date_format:Y-m-d'],
-                    'week_day' => ['required', 'between:1,7'],
+                    // 'week_day' => ['required', 'between:1,7'],
                     'entrance' => ['required', 'date_format:H:i'],
                     'exit' => ['date_format:H:i'],
                 ],
@@ -70,6 +70,7 @@ class TeacherEntranceHistoryAction extends ActionService
     public function store(array $data, callable $storing = null): mixed
     {
         $data['date'] = $data['date'] ?? date('Y-m-d');
+        $data['week_day'] = PardisanHelper::getWeekDayByGregorianDate($data['date']);
         // $data['week_day'] = PardisanHelper::getWeekDayByGregorianDate($data['date']);
 
         $teacherEntrance = TeacherEntranceModel::query()->where('week_day', $data['week_day'])->firstOrFail();
