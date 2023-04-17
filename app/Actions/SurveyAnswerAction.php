@@ -19,8 +19,10 @@ class SurveyAnswerAction extends ActionService
             ->setResource(SurveyAnswerResource::class)
             ->setValidationRules([
                 'store' => [
-                    'survey_option_id' => ['required', 'integer'],
-                ]
+                    'survey_category_id' => ['required', 'integer'],
+                    'options' => ['required', 'array', 'max:100'],
+                    'options.*' => ['integer']
+                ],
             ]);
         parent::__construct();
     }

@@ -272,14 +272,14 @@ class StudentFinancialAction extends ActionService
      */
     public function updatePaidByListByRequest ()
     {
-        $list = $this
+        $data = $this
             ->setValidationRule('updatePaidByList')
             ->getDataFromRequest();
 
         $paidList = [];
         $notPaidList = [];
 
-        foreach ($list AS $item)
+        foreach ($data['list'] AS $item)
         {
             if ($item['paid'])
                 $paidList[] = $item['student_financial_id'];
