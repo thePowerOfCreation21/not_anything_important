@@ -22,6 +22,7 @@ class StudentModel extends Model
         'meli_code',
         'birth_certificate_number',
         'birth_certificate_serie_number',
+        'birth_certificate_serial_number',
         'birth_certificate_issued_location',
         'birth_location',
         'birth_date',

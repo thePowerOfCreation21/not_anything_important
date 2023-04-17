@@ -114,4 +114,19 @@ class WalletHistoryAction extends ActionService
             $storing
         );
     }
+
+    public function getByRequestAndEloquent(): array
+    {
+        if (isset($this->query['student_id']))
+            return array_merge(
+                [
+                    'student_wallet_amount' => StudentModel::query()
+                        ->where('id', $this->query['student_id'])
+                        ->first()
+                        ->wallet_amount ?? 0
+                ],
+                parent::getByRequestAndEloquent()
+            );
+        return parent::getByRequestAndEloquent();
+    }
 }
