@@ -107,6 +107,7 @@ class StudentCollectionResource extends JsonResource
             'father_last_name' => $this->father_last_name,
             'father_father_name' => $this->father_father_name,
             'phone_number' => $this->phone_number,
+            'mobile_number' => $this->mobile_number,
             'father_mobile_number' => $this->father_mobile_number,
             'mother_mobile_number' => $this->father_mobile_number,
             'level' => $this->level,
