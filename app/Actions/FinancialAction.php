@@ -20,13 +20,13 @@ class FinancialAction extends ActionService
                     'title' => ['required', 'string', 'max:255'],
                     'description' => ['required', 'string', 'max:500'],
                     'financial_type_id' => ['required','string', 'max:20'],
-                    'amount' => ['required', 'string'],
+                    'amount' => ['required', 'integer', 'max:10000000000'],
                     'date' => ['required', 'date_format:Y-m-d']
                 ],
                 'update' => [
                     'title' => [ 'string', 'max:255'],
                     'description' => ['string', 'max:500'],
-                    'amount' => ['int', 'min:0','max:100000000'],
+                    'amount' => ['int', 'min:0','max:10000000000'],
                     'date' => ['date_format:Y-m-d']
                 ],
                 'getQuery' => [
