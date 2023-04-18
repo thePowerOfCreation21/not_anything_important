@@ -46,6 +46,7 @@ use App\Http\Controllers\StudentDisciplineController;
 use App\Http\Controllers\AttendanceStudentController;
 use App\Http\Controllers\ClassScoreStudentController;
 use App\Http\Controllers\ClassMessageStudentController;
+use App\Http\Controllers\MessageReceiverPivotController;
 use App\Http\Controllers\TeacherWorkExperienceController;
 use App\Http\Controllers\TeacherEntranceHistoryController;
 use App\Http\Controllers\InventoryProductHistoryController;
@@ -345,6 +346,8 @@ Route::group([
 
         Route::get('/student/class_course', [ClassCourseController::class, 'getByStudent']);
         Route::get('/student/class_course/{id}', [ClassCourseController::class, 'getByIdByStudent']);
+
+        Route::get('/student/message', [MessageReceiverPivotController::class, 'getByStudent']);
     });
 });
 
