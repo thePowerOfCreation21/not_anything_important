@@ -382,4 +382,6 @@ Route::group([
 
     Route::get('/teacher/class', [ClassController::class, 'getByTeacher']);
     Route::get('/teacher/class/{id}', [ClassController::class, 'getByIdByTeacher']);
+
+    Route::get('/teacher/message', [MessageReceiverPivotController::class, 'getByTeacher']);
 });

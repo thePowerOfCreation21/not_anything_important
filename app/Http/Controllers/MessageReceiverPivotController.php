@@ -47,4 +47,24 @@ class MessageReceiverPivotController extends Controller
                 ->getById($id)
         );
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByTeacher (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new MessageReceiverPivotAction())
+                ->setRequest($request)
+                ->setValidationRule('get')
+                ->mergeQueryWith([
+                    'teacher_id' => $request->user()->id
+                ])
+                ->setRelations(['message'])
+                ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
+    }
 }
