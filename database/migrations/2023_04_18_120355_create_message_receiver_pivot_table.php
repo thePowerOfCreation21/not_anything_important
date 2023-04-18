@@ -13,14 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('class_message_student', function (Blueprint $table) {
+        Schema::create('message_receiver_pivot', function (Blueprint $table) {
             $table->id();
-            $table->string('student_id', 20);
-            $table->bigInteger('class_message_id')->unsigned();
-            $table->foreign('class_message_id')
-                ->references('id')
-                ->on('class_messages')
-                ->onDelete('cascade');
+            $table->unsignedBigInteger('message_id');
+            $table->foreign('message_id')->references('id')->on('messages')->onDelete('cascade');
+            $table->string('receiver_type', 50);
+            $table->unsignedBigInteger('receiver_id');
             $table->boolean('is_seen')->default(false);
         });
     }
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('class_message_student');
+        Schema::dropIfExists('message_receiver_pivot');
     }
 };
