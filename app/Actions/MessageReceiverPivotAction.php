@@ -45,4 +45,11 @@ class MessageReceiverPivotAction extends ActionService
             ]);
         parent::__construct();
     }
+
+    public function getById(string $id): object
+    {
+        if (isset($this->eloquent))
+            $this->eloquent->update(['is_seen' => true]);
+        return parent::getById($id);
+    }
 }

@@ -348,6 +348,7 @@ Route::group([
         Route::get('/student/class_course/{id}', [ClassCourseController::class, 'getByIdByStudent']);
 
         Route::get('/student/message', [MessageReceiverPivotController::class, 'getByStudent']);
+        Route::get('/student/message/{id}', [MessageReceiverPivotController::class, 'getByIdByStudent']);
     });
 });
 
