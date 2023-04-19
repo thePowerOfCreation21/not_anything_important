@@ -49,6 +49,8 @@ class TeacherAction extends ActionService
                     'partner_emergency_call_number' => ['nullable', 'string', 'max:50'],
                     'partner_file' => ['nullable', 'file', 'mimes:rar,zip,7zip,pdf', 'max:5000'],
                     'is_married' => ['nullable', 'string', 'max:50'],
+                    'educational_level' => ['nullable', 'string', 'max:150'],
+                    'partner_educational_level' => ['nullable', 'string', 'max:150'],
                     'password' => ['required', 'string', 'max:100'],
                     'educational_year' => ['string', 'max:50'],
 
@@ -93,6 +95,8 @@ class TeacherAction extends ActionService
                     'partner_emergency_call_number' => ['nullable', 'string', 'max:50'],
                     'partner_file' => ['nullable', 'file', 'mimes:rar,zip,7zip,pdf', 'max:5000'],
                     'is_married' => ['nullable', 'string', 'max:50'],
+                    'educational_level' => ['nullable', 'string', 'max:150'],
+                    'partner_educational_level' => ['nullable', 'string', 'max:150'],
                     'password' => ['string', 'max:100'],
                     'educational_year' => ['string', 'max:50'],
                 ],
