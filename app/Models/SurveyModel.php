@@ -14,32 +14,14 @@ class SurveyModel extends Model
     protected $table = 'surveys';
 
     protected $fillable = [
-        'teacher_id',
         'text',
-        'is_active',
         'participants_count',
+        'survey_category_id'
     ];
 
-    public function scopeForStudent($q, string $studentId)
+    public function surveyCategory (): BelongsTo
     {
-        $q
-            ->whereNull('teacher_id')
-            ->orWhere(function ($q) use($studentId){
-                $q->whereHas('teacher', function($q) use($studentId){
-                    $q->whereHas('classCourses', function($q) use($studentId){
-                        $q->whereHas('classModel', function($q) use($studentId){
-                            $q->whereHas('students', function($q) use($studentId){
-                                $q->where('id', $studentId);
-                            });
-                        });
-                    });
-                });
-            });
-    }
-
-    public function teacher (): BelongsTo
-    {
-        return $this->belongsTo(TeacherModel::class, 'teacher_id', 'id');
+        return $this->belongsTo(SurveyCategoryModel::class, 'survey_category_id', 'id');
     }
 
     public function surveyOptions (): HasMany

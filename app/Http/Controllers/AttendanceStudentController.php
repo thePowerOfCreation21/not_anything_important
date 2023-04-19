@@ -38,6 +38,7 @@ class AttendanceStudentController extends Controller
         return response()->json(
             (new AttendanceStudentAction())
                 ->setRequest($request)
+                ->setValidationRule('getByStudent')
                 ->mergeQueryWith(['student_id' => $request->user()->id])
                 ->mergeQueryWith(['educational_year' => PardisanHelper::getCurrentEducationalYear()])
                 ->setRelations([

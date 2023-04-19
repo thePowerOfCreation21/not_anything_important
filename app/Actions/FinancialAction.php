@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use Genocide\Radiocrud\Helpers;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
 use App\Models\FinancialModel;
 use App\Http\Resources\FinancialResource;
@@ -19,13 +20,15 @@ class FinancialAction extends ActionService
                     'title' => ['required', 'string', 'max:255'],
                     'description' => ['required', 'string', 'max:500'],
                     'financial_type_id' => ['required','string', 'max:20'],
-                    'amount' => ['required', 'int', 'min:0','max:100000000'],
+                    'amount' => ['required', 'integer', 'max:10000000000'],
+                    'educational_year' => ['string', 'max:25'],
                     'date' => ['required', 'date_format:Y-m-d']
                 ],
                 'update' => [
                     'title' => [ 'string', 'max:255'],
                     'description' => ['string', 'max:500'],
-                    'amount' => ['int', 'min:0','max:100000000'],
+                    'amount' => ['int', 'min:0','max:10000000000'],
+                    'educational_year' => ['string', 'max:25'],
                     'date' => ['date_format:Y-m-d']
                 ],
                 'getQuery' => [
@@ -72,18 +75,14 @@ class FinancialAction extends ActionService
 
     public function store(array $data, callable $storing = null): mixed
     {
-        $data['educational_year'] = PardisanHelper::getEducationalYearByGregorianDate($data['date']);
+        $data['amount'] = PardisanHelper::makeItNumber($data['amount'], ['decimal' => false, 'negative' => false]);
+        $data['educational_year'] = $data['educational_year'] ?? PardisanHelper::getEducationalYearByGregorianDate($data['date']);
 
         return parent::store($data, $storing);
     }
 
     public function update(array $updateData, callable $updating = null): bool|int
     {
-        if(isset($updateData['date']))
-        {
-            $updateData['educational_year'] = PardisanHelper::getEducationalYearByGregorianDate($updateData['date']);
-        }
-
         return parent::update($updateData, $updating);
     }
 }

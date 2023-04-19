@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class StudentReportCardModel extends Model
 {
@@ -16,6 +17,7 @@ class StudentReportCardModel extends Model
         'title',
         'month',
         'educational_year',
+        'average_score',
         'total_score',
         'total_ratio',
         'rank_in_class',
@@ -45,5 +47,10 @@ class StudentReportCardModel extends Model
     public function student (): BelongsTo
     {
         return $this->belongsTo(StudentModel::class, 'student_id', 'id');
+    }
+
+    public function studentReportCardScores (): HasMany
+    {
+        return $this->hasMany(StudentReportCardScoreModel::class, 'student_report_card_id', 'id');
     }
 }

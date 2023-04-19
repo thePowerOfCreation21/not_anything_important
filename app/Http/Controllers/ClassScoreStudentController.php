@@ -40,7 +40,7 @@ class ClassScoreStudentController extends Controller
                     ],
                     'student'
                 ])
-                ->makeEloquent()
+                ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()
         );
     }

@@ -33,6 +33,7 @@ use App\Http\Controllers\ClassMessagesController;
 use App\Http\Controllers\WalletHistoryController;
 use App\Http\Controllers\FinancialTypeController;
 use App\Http\Controllers\ReportCardExamController;
+use App\Http\Controllers\SurveyCategoryController;
 use App\Http\Controllers\MessageTemplateController;
 use App\Http\Controllers\EducationalYearController;
 use App\Http\Controllers\TeacherEntranceController;
@@ -45,6 +46,7 @@ use App\Http\Controllers\StudentDisciplineController;
 use App\Http\Controllers\AttendanceStudentController;
 use App\Http\Controllers\ClassScoreStudentController;
 use App\Http\Controllers\ClassMessageStudentController;
+use App\Http\Controllers\MessageReceiverPivotController;
 use App\Http\Controllers\TeacherWorkExperienceController;
 use App\Http\Controllers\TeacherEntranceHistoryController;
 use App\Http\Controllers\InventoryProductHistoryController;
@@ -96,8 +98,11 @@ Route::group([
     Route::post('/admin/report_card', [ReportCardController::class, 'store']);
     Route::get('/admin/report_card', [ReportCardController::class, 'get']);
     Route::get('/admin/report_card/{id}', [ReportCardController::class, 'getById']);
+    Route::get('/admin/report_card/issue', [ReportCardController::class, 'issueReportCards']);
 
     Route::get('/admin/report_card_exam', [ReportCardExamController::class, 'get']);
+    Route::get('/admin/report_card_exam/{id}', [ReportCardExamController::class, 'getById']);
+    Route::put('/admin/report_card_exam/{id}', [ReportCardExamController::class, 'updateById']);
 
     Route::post('/admin/news', [NewsController::class, 'store']);
     Route::put('/admin/news/{id}', [NewsController::class, 'updateById']);
@@ -109,12 +114,18 @@ Route::group([
 
     Route::post('/admin/food_date', [FoodDateController::class, 'store']);
 
+    Route::get('/admin/survey_category', [SurveyCategoryController::class, 'get']);
+    Route::get('/admin/survey_category/{id}', [SurveyCategoryController::class, 'getById']);
+
     Route::post('/admin/survey', [SurveyController::class, 'store']);
     Route::get('/admin/survey', [SurveyController::class, 'get']);
     Route::get('/admin/survey/{id}', [SurveyController::class, 'getById']);
     Route::put('/admin/survey/{id}', [SurveyController::class, 'updateById']);
 
     Route::put('/admin/survey_option/{id}', [SurveyOptionController::class, 'updateById']);
+
+    Route::post('/admin/survey_category', [SurveyCategoryController::class, 'store']);
+    Route::put('/admin/survey_category/{id}', [SurveyCategoryController::class, 'updateById']);
 
     Route::post('/admin/teacher_entrance', [TeacherEntranceController::class, 'store']);
     Route::get('/admin/teacher_entrance', [TeacherEntranceController::class, 'get']);
@@ -146,6 +157,7 @@ Route::group([
     Route::post('/admin/student/wallet', [WalletHistoryController::class, 'store']);
     Route::get('/admin/student/wallet', [WalletHistoryController::class, 'get']);
 
+    Route::post('/admin/student/financial/update_paid_by_list', [StudentFinancialController::class, 'updatePaidByList']);
     Route::post('/admin/student/financial/send_sms', [StudentFinancialController::class, 'sendSms']);
     Route::post('/admin/student/financial', [StudentFinancialController::class, 'store']);
     Route::put('/admin/student/financial/{id}', [StudentFinancialController::class, 'updateById']);
@@ -300,8 +312,7 @@ Route::group([
     ], function(){
         Route::post('/student/survey_answer', [SurveyAnswerController::class, 'store']);
 
-        Route::get('/student/survey', [SurveyController::class, 'getByStudent']);
-        Route::get('/student/survey/{id}', [SurveyController::class, 'getByIdByStudent']);
+        Route::get('/student/survey_category', [SurveyCategoryController::class, 'getByStudent']);
 
         Route::get('/student/advice_hour', [AdviceHourController::class, 'get']);
         Route::get('/student/advice_date', [AdviceDateController::class, 'getByStudent']);
@@ -335,6 +346,9 @@ Route::group([
 
         Route::get('/student/class_course', [ClassCourseController::class, 'getByStudent']);
         Route::get('/student/class_course/{id}', [ClassCourseController::class, 'getByIdByStudent']);
+
+        Route::get('/student/message', [MessageReceiverPivotController::class, 'getByStudent']);
+        Route::get('/student/message/{id}', [MessageReceiverPivotController::class, 'getByIdByStudent']);
     });
 });
 
@@ -369,8 +383,8 @@ Route::group([
     Route::get('/teacher/class', [ClassController::class, 'getByTeacher']);
     Route::get('/teacher/class/{id}', [ClassController::class, 'getByIdByTeacher']);
 
-    Route::get('/teacher/survey', [SurveyController::class, 'getByIdByTeacher']);
-    Route::get('/teacher/survey/{id}', [SurveyController::class, 'getByIdByTeacher']);
+    Route::get('/teacher/message', [MessageReceiverPivotController::class, 'getByTeacher']);
+    Route::get('/teacher/message/{id}', [MessageReceiverPivotController::class, 'getByIdByTeacher']);
 });
 
 // Route::get('/admin2/create', function(){

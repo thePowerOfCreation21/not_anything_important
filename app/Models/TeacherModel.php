@@ -38,6 +38,8 @@ class TeacherModel extends Model
         'partner_emergency_call_number',
         'partner_file',
         'is_married',
+        'educational_level',
+        'partner_educational_level',
         'password',
         'register_status',
         'educational_year',

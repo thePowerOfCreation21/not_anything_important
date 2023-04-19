@@ -25,6 +25,7 @@ return new class extends Migration
             $table->text('birth_certificate_issued_location')->nullable();
             $table->text('birth_location')->nullable();
             $table->string('birth_date', 50)->nullable();
+            $table->string('birth_place', 250)->nullable();
             $table->string('nationality', 150)->nullable();
             $table->string('religion', 150)->nullable();
             $table->string('religion_orientation', 150)->nullable();
@@ -59,6 +60,7 @@ return new class extends Migration
             $table->string('father_mobile_number', 50)->nullable();
             $table->text('father_work_address')->nullable();
             $table->string('father_file', 500)->nullable();
+            $table->string('father_educational_level', 150)->nullable();
             $table->string('mother_first_name', 150)->nullable();
             $table->string('mother_last_name', 150)->nullable();
             $table->string('mother_father_name', 150)->nullable();
@@ -78,6 +80,7 @@ return new class extends Migration
             $table->string('mother_mobile_number', 25)->nullable();
             $table->text('mother_work_address')->nullable();
             $table->string('mother_file', 500)->nullable();
+            $table->string('mother_educational_level', 150)->nullable();
             $table->text('non_contagious_illness')->nullable();
             $table->text('mental_illness')->nullable();
             $table->string('level', 100)->nullable();

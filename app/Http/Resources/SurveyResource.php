@@ -17,11 +17,12 @@ class SurveyResource extends JsonResource
         return [
             'id' => $this->id,
             'text' => $this->text,
-            'is_active' => (bool)$this->is_active,
             'participants_count' => (int)$this->participants_count,
             'teacher_id' => $this->teacher_id,
             'teacher' => $this->whenLoaded('teacher'),
-            'options' => SurveyOptionResource::collection($this->whenLoaded('surveyOptions'))
+            'survey_category_id' => $this->survey_category_id,
+            'survey_category' => new SurveyCategoryResource($this->surveyCategory),
+            'options' => SurveyOptionResource::collection($this->whenLoaded('surveyOptions')),
         ];
     }
 }

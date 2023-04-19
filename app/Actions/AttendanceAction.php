@@ -6,6 +6,8 @@ use App\Helpers\PardisanHelper;
 use App\Http\Resources\AttendanceResource;
 use App\Models\AttendanceModel;
 use App\Models\AttendanceStudentModel;
+use App\Models\ClassCourseModel;
+use App\Models\ClassModel;
 use App\Models\StudentModel;
 use App\Models\TeacherModel;
 use Genocide\Radiocrud\Exceptions\CustomException;
@@ -26,13 +28,13 @@ class AttendanceAction extends ActionService
             ->setResource(AttendanceResource::class)
             ->setValidationRules([
                 'storeByAdmin' => [
-                    'class_course_id' => ['required', 'string', 'max:20'],
+                    'class_course_id' => ['required', 'integer',],
                     'date' => ['required', 'date_format:Y-m-d'],
                     'description' => ['required', 'string', 'max:2500'],
                     'students' => ['required', 'array', 'max:100'],
-                    'students.*.student_id' => ['required', 'string', 'max:20'],
+                    'students.*.student_id' => ['required', 'integer'],
                     'students.*.status' => ['required', "in:$allowedAttendanceStudentStatusesString"],
-                    'students.*.late' => ['integer', 'min:0', 'max:100']
+                    'students.*.late' => ['nullable', 'integer', 'min:0', 'max:100']
                 ],
                 'updateByAdmin' => [
                     'class_course_id' => ['string', 'max:20'],
@@ -108,7 +110,10 @@ class AttendanceAction extends ActionService
      */
     public function store(array $data, callable $storing = null): mixed
     {
-        $data['educational_year'] = isset($data['date']) ? PardisanHelper::getWeekDayByGregorianDate($data['date']) : PardisanHelper::getCurrentEducationalYear();
+        $data['educational_year'] = isset($data['date']) ? PardisanHelper::getEducationalYearByGregorianDate($data['date']) : PardisanHelper::getCurrentEducationalYear();
+
+        $classCourse = ClassCourseModel::query()->where('id', $data['class_course_id'])->firstOrFail();
+        $class = ClassModel::query()->where('id', $classCourse->class_id)->firstOrFail();
 
         $attendance = parent::store($data, $storing);
 
@@ -122,8 +127,12 @@ class AttendanceAction extends ActionService
 
         foreach ($data['students'] AS $attendanceStudent)
         {
-            $attendanceStudentsHashMap[$attendanceStudent['student_id']] = $attendanceStudent;
-            $attendanceStudentsHashMap[$attendanceStudent['student_id']]['attendance_id'] = $attendance->id;
+            $attendanceStudentsHashMap[$attendanceStudent['student_id']] = [
+                'student_id' => $attendanceStudent['student_id'],
+                'status' => $attendanceStudent['status'],
+                'late' => $attendanceStudent['late'] ?? 0,
+                'attendance_id' => $attendance->id
+            ];
 
             if ($attendanceStudent['status'] != 'present')
             {
@@ -131,14 +140,15 @@ class AttendanceAction extends ActionService
             }
         }
 
-        $classStudents = DB::table('class_student')->where('class_id', $data['class_id'])->get();
+        $classStudents = DB::table('class_student')->where('class_id', $class->id)->get();
 
         foreach ($classStudents AS $classStudent)
         {
             $attendanceStudentsHashMap[$classStudent->student_id] ??= [
                 'attendance_id' => $attendance->id,
                 'student_id' => $classStudent->student_id,
-                'status' => 'present'
+                'status' => 'present',
+                'late' => 0
             ];
         }
 
@@ -151,11 +161,11 @@ class AttendanceAction extends ActionService
         {
             if ($attendanceStudentsHashMap[$smsStudent->id]['status'] == 'absent')
             {
-                (new SendSMSService())->sendOTP([$smsStudent->father_mobile_number, $smsStudent->father_mobile_number], 'studentAbsent', $smsStudent->full_name ?? 'unknown', $data['jalali_date']);
+                // (new SendSMSService())->sendOTP([$smsStudent->father_mobile_number, $smsStudent->father_mobile_number], 'studentAbsent', $smsStudent->full_name ?? 'unknown', $data['jalali_date']);
             }
             else
             {
-                (new SendSMSService())->sendOTP([$smsStudent->father_mobile_number, $smsStudent->father_mobile_number], 'studentLate', $smsStudent->full_name ?? 'unknown', $data['jalali_date']);
+                // (new SendSMSService())->sendOTP([$smsStudent->father_mobile_number, $smsStudent->father_mobile_number], 'studentLate', $smsStudent->full_name ?? 'unknown', $data['jalali_date']);
             }
         }
 

@@ -7,6 +7,7 @@ use Genocide\Radiocrud\Exceptions\CustomException;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
 use App\Models\SurveyModel;
 use App\Http\Resources\SurveyResource;
+use Throwable;
 
 class SurveyAction extends ActionService
 {
@@ -17,45 +18,24 @@ class SurveyAction extends ActionService
             ->setResource(SurveyResource::class)
             ->setValidationRules([
                 'store' => [
-                    'teacher_id' => ['nullable', 'integer', 'exists:teachers,id'],
                     'text' => ['required', 'string', 'max:5000'],
-                    'is_active' => ['boolean'],
+                    'survey_category_id' => ['required', 'integer', 'exists:survey_categories,id'],
                     'options' => ['required', 'array', 'max:4'],
                     'options.*' => ['required', 'string', 'max:250'],
                 ],
                 'update' => [
-                    'teacher_id' => ['nullable', 'integer', 'exists:teachers,id'],
                     'text' => ['string', 'max:5000'],
-                    'is_active' => ['boolean'],
                     'options' => ['array', 'max:4'],
                     'options.*' => ['required', 'string', 'max:250'],
                 ],
                 'getQuery' => [
-                    'student_id' => ['integer'],
-                    'teacher_id' => ['integer'],
-                    'is_active' => ['boolean']
-                ],
-                'getByTeacher' => [
-                    'student_id' => ['integer'],
-                    'is_active' => ['boolean']
-                ],
-                'getByStudent' => [
-                    'teacher_id' => ['integer'],
-                    'is_active' => ['boolean']
-                ],
+                    'survey_category_id' => ['integer']
+                ]
             ])
             ->setQueryToEloquentClosures([
-                'student_id' => function (&$eloquent, $query)
+                'survey_category_id' => function (&$eloquent, $query)
                 {
-                    $eloquent = $eloquent->forStudent($query['student_id']);
-                },
-                'teacher_id' => function (&$eloquent, $query)
-                {
-                    $eloquent = $eloquent->where('teacher_id', $query['teacher_id']);
-                },
-                'is_active' => function (&$eloquent, $query)
-                {
-                    $eloquent = $eloquent->where('is_active', $query['is_active']);
+                    $eloquent = $eloquent->where('survey_category_id', $query['survey_category_id']);
                 }
             ]);
         parent::__construct();
@@ -66,15 +46,24 @@ class SurveyAction extends ActionService
      * @param string $surveyId
      * @param bool $deleteOldOptions
      * @return mixed
+     * @throws Throwable
      */
     public function storeSurveyOptionsFromRequest (array $surveyOptions, string $surveyId, bool $deleteOldOptions = false): mixed
     {
         if ($deleteOldOptions) SurveyOptionModel::query()->where('survey_id', $surveyId)->delete();
 
+        $survey = SurveyModel::query()
+            ->with('surveyCategory')
+            ->where('id', $surveyId)
+            ->firstOrFail();
+
+        throw_if(empty($survey->surveyCategory), CustomException::class, 'survey_id is wrong (survey does not have any category)', '77910', 400);
+
         foreach ($surveyOptions AS $key => $surveyOption)
         {
             $surveyOptions[$key] = [
                 'survey_id' => $surveyId,
+                'survey_category_id' => $survey->surveyCategory->id,
                 'title' => $surveyOption
             ];
         }
@@ -86,6 +75,7 @@ class SurveyAction extends ActionService
      * @param array $data
      * @param callable|null $storing
      * @return mixed
+     * @throws Throwable
      */
     public function store(array $data, callable $storing = null): mixed
     {
@@ -100,6 +90,7 @@ class SurveyAction extends ActionService
      * @param array $updateData
      * @param callable|null $updating
      * @return bool|int
+     * @throws Throwable
      */
     public function update(array $updateData, callable $updating = null): bool|int
     {

@@ -61,4 +61,25 @@ class ReportCardController extends Controller
                 ->getById($id)
         );
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function issueReportCards (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new ReportCardAction())
+                ->setRequest($request)
+                ->setValidationRule('issueReportCards')
+                ->setRelations([
+                    'classModel',
+                    'reportCardExams' => ['course', 'reportCardExamScores']
+                ])
+                ->mergeQueryWith(['was_issued' => true])
+                ->makeEloquentViaRequest()
+                ->issueReportCardsByEloquent()
+        );
+    }
 }

@@ -22,6 +22,7 @@ class FinancialResource extends JsonResource
             'financial_type_id' => $this->financial_type_id,
             'financial_type' => new FinancialTypeResource($this->whenLoaded('financialType')),
             'amount' => $this->amount,
+            'educational_year' => $this->educational_year,
             'date' => Helpers::getCustomDateCast($this->date)
         ];
     }

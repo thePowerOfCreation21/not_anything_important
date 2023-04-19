@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('student_report_card_scores', function (Blueprint $table) {
             $table->id();
-            $table->tinyInteger('score')->unsigned();
+            $table->float('score', 6, 2)->unsigned();
             $table->tinyInteger('highest_score_in_class')->unsigned()->default(0);
             $table->integer('rank_in_class')->unsigned()->default(0);
             $table->integer('rank_in_level')->unsigned()->default(0);

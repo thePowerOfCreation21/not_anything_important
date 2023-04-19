@@ -16,8 +16,14 @@ class StudentFinancialAction extends ActionService
             ->setModel(StudentFinancialModel::class)
             ->setResource(StudentFinancialResource::class)
             ->setValidationRules([
+                'updatePaidByList' => [
+                    'list' => ['array', 'max:1000'],
+                    'list.*' => ['array'],
+                    'list.*.student_financial_id' => ['required', 'integer'],
+                    'list.*.paid' => ['required', 'boolean']
+                ],
                 'store' => [
-                    'payment_type' => ['required', 'string', 'max:50'],
+                    'payment_type' => ['required', 'in:check,cash'],
                     'check_number' => ['nullable', 'string', 'max:50'],
                     'receipt_number' => ['nullable', 'string', 'max:50'],
                     'student_id' => ['required', 'string', 'max:20'],
@@ -28,7 +34,7 @@ class StudentFinancialAction extends ActionService
                     'check_image' => ['nullable', 'file', 'mimes:png,jpg,jpeg,svg', 'max:3000']
                 ],
                 'update' => [
-                    'payment_type' => ['string', 'max:50'],
+                    'payment_type' => ['in:check,cash'],
                     'check_number' => ['nullable', 'string', 'max:50'],
                     'receipt_number' => ['nullable', 'string', 'max:50'],
                     'amount' => ['int', 'min:0', 'max:100000000'],
@@ -42,6 +48,7 @@ class StudentFinancialAction extends ActionService
                     'student_financials.*' => ['integer', 'between:1,999999999999999999']
                 ],
                 'getQuery' => [
+                    'payment_type' => ['in:check,cash'],
                     'student_id' => ['string', 'max:20'],
                     'from_date' => ['date_format:Y-m-d'],
                     'to_date' => ['date_format:Y-m-d'],
@@ -49,6 +56,7 @@ class StudentFinancialAction extends ActionService
                     'educational_year' => ['string', 'max:50']
                 ],
                 'getByStudent' => [
+                    'payment_type' => ['in:check,cash'],
                     'from_date' => ['date_format:Y-m-d'],
                     'to_date' => ['date_format:Y-m-d'],
                     'can_send_sms' => ['boolean'],
@@ -63,6 +71,10 @@ class StudentFinancialAction extends ActionService
                 'check_image' => ['file', 'nullable']
             ])
             ->setQueryToEloquentClosures([
+                'payment_type' => function(&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('payment_type', $query['payment_type']);
+                },
                 'student_id' => function (&$eloquent, $query)
                 {
                     $eloquent = $eloquent->where('student_id', $query['student_id']);
@@ -256,6 +268,44 @@ class StudentFinancialAction extends ActionService
                 // TODO: send near-due payment sms
             }
         }
+
+        return true;
+    }
+
+    /**
+     * @return int
+     * @throws CustomException
+     */
+    public function updatePaidByListByRequest ()
+    {
+        $data = $this
+            ->setValidationRule('updatePaidByList')
+            ->getDataFromRequest();
+
+        $paidList = [];
+        $notPaidList = [];
+
+        foreach ($data['list'] AS $item)
+        {
+            if ($item['paid'])
+                $paidList[] = $item['student_financial_id'];
+            else
+                $notPaidList[] = $item['student_financial_id'];
+        }
+
+        if(! empty($paidList))
+            StudentFinancialModel::query()
+                ->whereIn('id', $paidList)
+                ->update([
+                    'paid' => true
+                ]);
+
+        if(! empty($notPaidList))
+            StudentFinancialModel::query()
+                ->whereIn('id', $notPaidList)
+                ->update([
+                    'paid' => false
+                ]);
 
         return true;
     }

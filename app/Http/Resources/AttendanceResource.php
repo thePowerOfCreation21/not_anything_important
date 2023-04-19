@@ -17,7 +17,9 @@ class AttendanceResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'description' => $this->description,
             'date' => Helpers::getCustomDateCast($this->date),
+            'educational_year' => $this->educational_year,
             'class_course_id' => $this->class_course_id,
             'class_course' => new ClassCourseResource($this->whenLoaded('classCourse')),
             'attendance_students' => AttendanceStudentResource::collection($this->whenLoaded('attendanceStudents'))

@@ -20,9 +20,41 @@ class ReportCardExamController extends Controller
             (new ReportCardExamAction())
                 ->setRequest($request)
                 ->setValidationRule('get')
-                ->setRelations(['reportCard.classModel'])
+                ->setRelations(['reportCard.classModel', 'course'])
                 ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()
         );
+    }
+
+    /**
+     * @param string $id
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getById (string $id): JsonResponse
+    {
+        return response()->json(
+            (new ReportCardExamAction())
+                ->setRelations(['reportCard.classModel', 'course', 'reportCardExamScores.studentModel'])
+                ->makeEloquent()
+                ->getById($id)
+        );
+    }
+
+    /**
+     * @param string $id
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function updateById (string $id, Request $request): JsonResponse
+    {
+        return response()->json([
+            'message' => 'ok',
+            'data' => (new ReportCardExamAction())
+                ->setRequest($request)
+                ->setValidationRule('update')
+                ->updateByIdAndRequest($id)
+        ]);
     }
 }
