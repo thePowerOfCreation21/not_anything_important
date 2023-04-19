@@ -19,7 +19,7 @@ return new class extends Migration
             // $table->boolean('is_template')->default(false);
             $table->integer('participants_count')->unsigned()->default(0);
             $table->bigInteger('survey_category_id')->unsigned();
-            $table->foreign('survey_category_id')->references('id')->on('survey_categories')->onDelete('cascade');
+            // $table->foreign('survey_category_id')->references('id')->on('survey_categories')->onDelete('cascade');
             $table->timestamps();
         });
     }

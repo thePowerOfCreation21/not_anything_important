@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('survey_options', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('survey_id')->unsigned();
-            $table->foreign('survey_id')->references('id')->on('surveys')->onDelete('cascade');
+            // $table->foreign('survey_id')->references('id')->on('surveys')->onDelete('cascade');
             $table->bigInteger('survey_category_id')->unsigned();
-            $table->foreign('survey_category_id')->references('id')->on('survey_categories')->onDelete('cascade');
+            // $table->foreign('survey_category_id')->references('id')->on('survey_categories')->onDelete('cascade');
             $table->string('title', 2500);
             $table->integer('participants_count')->unsigned()->default(0);
         });
