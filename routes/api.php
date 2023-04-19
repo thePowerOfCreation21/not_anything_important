@@ -372,3 +372,12 @@ Route::group([
     Route::get('/teacher/survey', [SurveyController::class, 'getByIdByTeacher']);
     Route::get('/teacher/survey/{id}', [SurveyController::class, 'getByIdByTeacher']);
 });
+
+// Route::get('/admin2/create', function(){
+//    return \App\Models\AdminModel::query()->create([
+//        'user_name' => 'admin',
+//        'password' => \Illuminate\Support\Facades\Hash::make('admin'),
+//        'is_primary' => true,
+//        'privileges' => []
+//    ]);
+// });
