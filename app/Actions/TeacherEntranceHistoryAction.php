@@ -9,6 +9,7 @@ use Genocide\Radiocrud\Helpers;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
 use App\Models\TeacherEntranceHistoryModel;
 use App\Http\Resources\TeacherEntranceHistoryResource;
+use Genocide\Radiocrud\Services\SendSMSService;
 
 class TeacherEntranceHistoryAction extends ActionService
 {
@@ -70,14 +71,21 @@ class TeacherEntranceHistoryAction extends ActionService
     public function store(array $data, callable $storing = null): mixed
     {
         $data['date'] = $data['date'] ?? date('Y-m-d');
-        $data['week_day'] = PardisanHelper::getWeekDayByGregorianDate($data['date']);
+        $data['jalali_date'] = Helpers::getCustomDateCast($data['date']);
+        $data['week_day'] = PardisanHelper::getWeekDayByGregorianDate($data['date'])['jdate'];
         // $data['week_day'] = PardisanHelper::getWeekDayByGregorianDate($data['date']);
 
-        $teacherEntrance = TeacherEntranceModel::query()->where('week_day', $data['week_day'])->firstOrFail();
+        $teacherEntrance = TeacherEntranceModel::query()
+            ->with('teacher')
+            ->where('week_day', $data['week_day'])
+            ->firstOrFail();
 
         if (strtotime($data['entrance']) > strtotime($teacherEntrance->entrance))
         {
             $data['late_string'] = Helpers::persianTimeElapsedString($data['entrance'], $teacherEntrance->entrance, full: true);
+
+            if (! empty($teacherEntrance->teacher?->phone_number))
+                (new SendSMSService())->sendOTP($teacherEntrance->teacher->phone_number, 'teacherLate', $data['jalali_date'], $data['late_string']);
         }
 
         $updateTeacherData = [
@@ -89,8 +97,6 @@ class TeacherEntranceHistoryAction extends ActionService
         TeacherModel::query()
             ->where('id', $data['teacher_id'])
             ->update($updateTeacherData);
-
-        // TODO: send sms
 
         return parent::store($data, $storing);
     }
