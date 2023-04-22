@@ -51,6 +51,8 @@ class TeacherAction extends ActionService
                     'is_married' => ['nullable', 'string', 'max:50'],
                     'educational_level' => ['nullable', 'string', 'max:150'],
                     'partner_educational_level' => ['nullable', 'string', 'max:150'],
+                    'birth_place' => ['nullable', 'string', 'max:250'],
+                    'partner_birth_place' => ['nullable', 'string', 'max:250'],
                     'password' => ['required', 'string', 'max:100'],
                     'educational_year' => ['string', 'max:50'],
 
@@ -97,6 +99,8 @@ class TeacherAction extends ActionService
                     'is_married' => ['nullable', 'string', 'max:50'],
                     'educational_level' => ['nullable', 'string', 'max:150'],
                     'partner_educational_level' => ['nullable', 'string', 'max:150'],
+                    'birth_place' => ['nullable', 'string', 'max:250'],
+                    'partner_birth_place' => ['nullable', 'string', 'max:250'],
                     'password' => ['string', 'max:100'],
                     'educational_year' => ['string', 'max:50'],
                 ],

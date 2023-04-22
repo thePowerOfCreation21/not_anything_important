@@ -40,6 +40,8 @@ class TeacherModel extends Model
         'is_married',
         'educational_level',
         'partner_educational_level',
+        'birth_place',
+        'partner_birth_place',
         'password',
         'register_status',
         'educational_year',
