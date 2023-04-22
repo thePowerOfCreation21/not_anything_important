@@ -86,6 +86,8 @@ return new class extends Migration
             $table->string('level', 100)->nullable();
             $table->string('file', 500)->nullable();
             $table->string('report_card_pdf', 500)->nullable();
+            $table->string('father_birth_place', 250)->nullable();
+            $table->string('mother_birth_place', 250)->nullable();
             $table->string('educational_year', 25);
             $table->integer('wallet_amount')->default(0);
             $table->boolean('is_block')->default(false);

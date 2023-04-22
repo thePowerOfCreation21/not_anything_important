@@ -85,6 +85,8 @@ class StudentModel extends Model
         'level',
         'file',
         'report_card_pdf',
+        'father_birth_place',
+        'mother_birth_place',
         'educational_year',
         'wallet_amount',
         'is_block',
