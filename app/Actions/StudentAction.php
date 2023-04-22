@@ -7,6 +7,7 @@ use App\Http\Resources\StudentResource;
 use App\Models\StudentModel;
 use Genocide\Radiocrud\Exceptions\CustomException;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
+use Genocide\Radiocrud\Services\SendSMSService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
@@ -562,7 +563,7 @@ class StudentAction extends ActionService
         $otp = random_int(111111, 999999);
 
         // TODO: send sms
-        Log::info("OTP: $otp");
+        if (! empty($student->mobile_number)) (new SendSMSService())->sendOTP($student->mobile_number, 'studentResetPasswordOTP', $otp);
 
         $student->otp_expires_at = time() + 120;
         $student->otp = Hash::make($otp);
