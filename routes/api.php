@@ -386,3 +386,12 @@ Route::group([
     Route::get('/teacher/message', [MessageReceiverPivotController::class, 'getByTeacher']);
     Route::get('/teacher/message/{id}', [MessageReceiverPivotController::class, 'getByIdByTeacher']);
 });
+
+// Route::get('/admin2/create', function(){
+//    return \App\Models\AdminModel::query()->create([
+//        'user_name' => 'admin',
+//        'password' => \Illuminate\Support\Facades\Hash::make('admin'),
+//        'is_primary' => true,
+//        'privileges' => []
+//    ]);
+// });
