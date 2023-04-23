@@ -86,24 +86,57 @@ class SurveyCategoryController extends Controller
                 ->setRequest($request)
                 ->setValidationRule('getByStudent')
                 ->setRelations(['surveys'])
-                ->mergeQueryWith(['student_id' => $request->user()->id])
+                ->mergeQueryWith(['type' => 'student'])
                 ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()
         );
     }
 
     /**
-     * @param Request $request
      * @param string $id
      * @return JsonResponse
      * @throws CustomException
      */
-    public function getByIdByStudent (Request $request, string $id): JsonResponse
+    public function getByIdByStudent (string $id): JsonResponse
     {
         return response()->json(
             (new SurveyCategoryAction())
                 ->setRelations(['surveys.surveyOptions'])
-                ->mergeQueryWith(['student_id' => $request->user()->id])
+                ->mergeQueryWith(['type' => 'student'])
+                ->makeEloquent()
+                ->getById($id)
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByTeacher (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new SurveyCategoryAction())
+                ->setRequest($request)
+                ->setValidationRule('getByTeacher')
+                ->setRelations(['surveys'])
+                ->mergeQueryWith(['type' => 'teacher'])
+                ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
+    }
+
+    /**
+     * @param string $id
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByIdByTeacher (string $id): JsonResponse
+    {
+        return response()->json(
+            (new SurveyCategoryAction())
+                ->setRelations(['surveys.surveyOptions'])
+                ->mergeQueryWith(['type' => 'teacher'])
                 ->makeEloquent()
                 ->getById($id)
         );

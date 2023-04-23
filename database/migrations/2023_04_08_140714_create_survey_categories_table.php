@@ -18,8 +18,7 @@ return new class extends Migration
             $table->text('text');
             $table->integer('participants_count')->unsigned()->default(0);
             $table->boolean('is_active')->default(false);
-            $table->bigInteger('teacher_id')->unsigned()->nullable();
-            $table->foreign('teacher_id')->references('id')->on('teachers')->onDelete('cascade');
+            $table->enum('type', ['teacher', 'student']);
             $table->timestamps();
         });
     }

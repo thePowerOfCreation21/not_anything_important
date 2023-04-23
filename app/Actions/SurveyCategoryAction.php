@@ -17,15 +17,10 @@ class SurveyCategoryAction extends ActionService
             ->setModel(SurveyCategoryModel::class)
             ->setResource(SurveyCategoryResource::class)
             ->setValidationRules([
-                'answer' => [
-                    'survey_category_id' => ['required', 'integer'],
-                    'options' => ['required', 'array', 'max:100'],
-                    'options.*' => ['integer']
-                ],
                 'store' => [
                     'text' => ['required', 'string', 'max:20000'],
                     'is_active' => ['boolean'],
-                    'teacher_id' => ['integer']
+                    'type' => ['required', 'in:teacher,student']
                 ],
                 'update' => [
                     'text' => ['string', 'max:20000'],
@@ -33,22 +28,20 @@ class SurveyCategoryAction extends ActionService
                 ],
                 'get' => [
                     'student_id' => ['integer'],
-                    'teacher_id' => ['integer'],
+                    'type' => ['in:student,teacher'],
                     'is_active' => ['boolean']
                 ],
                 'getByStudent' => [
-                    'teacher_id' => ['integer'],
                     'is_active' => ['boolean']
-                ]
+                ],
+                'getByTeacher' => [
+                    'is_active' => ['boolean']
+                ],
             ])
             ->setQueryToEloquentClosures([
-                'student_id' => function (&$eloquent, $query)
+                'type' => function (&$eloquent, $query)
                 {
-                    $eloquent = $eloquent->forStudent($query['student_id']);
-                },
-                'teacher_id' => function (&$eloquent, $query)
-                {
-                    $eloquent = $eloquent->where('teacher_id', $query['teacher_id']);
+                    $eloquent = $eloquent->where('type', $query['type']);
                 },
                 'is_active' => function (&$eloquent, $query)
                 {

@@ -313,6 +313,7 @@ Route::group([
         Route::post('/student/survey_answer', [SurveyAnswerController::class, 'store']);
 
         Route::get('/student/survey_category', [SurveyCategoryController::class, 'getByStudent']);
+        Route::get('/student/survey_category/{id}', [SurveyCategoryController::class, 'getByIdByStudent']);
 
         Route::get('/student/advice_hour', [AdviceHourController::class, 'get']);
         Route::get('/student/advice_date', [AdviceDateController::class, 'getByStudent']);
@@ -355,6 +356,9 @@ Route::group([
 Route::group([
     'middleware' => ['auth:teacher']
 ], function (){
+    Route::get('/teacher/survey_category', [SurveyCategoryController::class, 'getByTeacher']);
+    Route::get('/teacher/survey_category/{id}', [SurveyCategoryController::class, 'getByIdByTeacher']);
+
     Route::post('/teacher/class_score', [ClassScoreController::class, 'storeByTeacher']);
     Route::put('/teacher/class_score/{id}', [ClassScoreController::class, 'updateByIdByTeacher']);
     Route::delete('/teacher/class_score/{id}', [ClassScoreController::class, 'deleteByIdByTeacher']);
