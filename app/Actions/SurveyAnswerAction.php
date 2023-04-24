@@ -37,7 +37,8 @@ class SurveyAnswerAction extends ActionService
             ->setValidationRule('store')
             ->getDataFromRequest();
 
-        $student = $this->request->user();
+        $participant = $this->request->user();
+        $participantClass = get_class($participant);
 
         throw_if(
             ! SurveyCategoryModel::query()
@@ -49,10 +50,11 @@ class SurveyAnswerAction extends ActionService
 
         throw_if(
             SurveyAnswerModel::query()
-                ->where('student_id', $student->id)
+                ->where('participant_id', $participant->id)
+                ->where('participant_type', $participantClass)
                 ->where('survey_category_id', $data['survey_category_id'])
                 ->exists(),
-            CustomException::class, 'student already answered this survey category', '92477', 400
+            CustomException::class, 'participant already answered this survey category', '92477', 400
         );
 
         $hashMapSurveyId = [];
@@ -70,7 +72,8 @@ class SurveyAnswerAction extends ActionService
                 $hashMapSurveyId[$surveyOption->survey_id] = 1;
 
                 $surveyAnswers[] = [
-                    'student_id' => $student->id,
+                    'participant_id' => $participant->id,
+                    'participant_type' => $participantClass,
                     'survey_category_id' => $data['survey_category_id'],
                     'survey_id' => $surveyOption->survey_id,
                     'survey_option_id' => $surveyOption->id

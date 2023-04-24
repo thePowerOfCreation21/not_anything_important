@@ -68,7 +68,7 @@ class SurveyCategoryController extends Controller
     {
         return response()->json(
             (new SurveyCategoryAction())
-                ->setRelations(['surveys.surveyOptions.surveyAnswers.student'])
+                ->setRelations(['surveys.surveyOptions.surveyAnswers.participant'])
                 ->makeEloquent()
                 ->getById($id)
         );

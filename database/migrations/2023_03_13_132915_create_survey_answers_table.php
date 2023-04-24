@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('survey_answers', function (Blueprint $table) {
             $table->id();
-            $table->string('student_id', 20);
+            $table->string('participant_type', 50);
+            $table->unsignedBigInteger('participant_id');
             $table->bigInteger('survey_option_id')->unsigned();
             // $table->foreign('survey_option_id')->references('id')->on('survey_options')->onDelete('cascade');
             $table->bigInteger('survey_id')->unsigned();

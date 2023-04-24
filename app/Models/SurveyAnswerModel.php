@@ -13,7 +13,8 @@ class SurveyAnswerModel extends Model
     protected $table = 'survey_answers';
 
     protected $fillable = [
-        'student_id',
+        'participant_type',
+        'participant_id',
         'survey_option_id',
         'survey_category_id',
         'survey_id'
@@ -21,9 +22,9 @@ class SurveyAnswerModel extends Model
 
     public $timestamps = false;
 
-    public function student (): BelongsTo
+    public function participant (): BelongsTo
     {
-        return $this->belongsTo(StudentModel::class, 'student_id', 'id');
+        return $this->morphTo();
     }
 
     public function surveyOption (): BelongsTo
