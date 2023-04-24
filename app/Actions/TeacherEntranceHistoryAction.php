@@ -71,8 +71,8 @@ class TeacherEntranceHistoryAction extends ActionService
     public function store(array $data, callable $storing = null): mixed
     {
         $data['date'] = $data['date'] ?? date('Y-m-d');
-        $data['jalali_date'] = Helpers::getCustomDateCast($data['date']);
-        $data['week_day'] = PardisanHelper::getWeekDayByGregorianDate($data['date'])['jdate'];
+        $data['jalali_date'] = Helpers::getCustomDateCast($data['date'])['jdate'];
+        $data['week_day'] = PardisanHelper::getWeekDayByGregorianDate($data['date']);
         // $data['week_day'] = PardisanHelper::getWeekDayByGregorianDate($data['date']);
 
         $teacherEntrance = TeacherEntranceModel::query()
