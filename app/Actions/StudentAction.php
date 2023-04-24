@@ -192,7 +192,7 @@ class StudentAction extends ActionService
                     'birth_certificate_issued_location' => ['nullable', 'string', 'max:1500'],
                     'birth_location' => ['nullable', 'string', 'max:1500'],
                     'birth_date' => ['required', 'string', 'max:150'],
-                    'birth_place' => ['required', 'string', 'max:250'],
+                    'birth_place' => ['nullable', 'string', 'max:250'],
                     'nationality' => ['nullable', 'string', 'max:150'],
                     'religion' => ['nullable', 'string', 'max:150'],
                     'religion_orientation' => ['nullable', 'string', 'max:150'],
