@@ -97,6 +97,7 @@ Route::group([
     'middleware' => ['auth:admin']
 ], function(){
     Route::get('/admin/student_report_card', [StudentReportCardController::class, 'get']);
+    Route::get('/admin/student_report_card/{id}', [StudentReportCardController::class, 'getById']);
 
     Route::post('/admin/report_card', [ReportCardController::class, 'store']);
     Route::get('/admin/report_card', [ReportCardController::class, 'get']);
