@@ -45,6 +45,7 @@ use App\Http\Controllers\InventoryProductController;
 use App\Http\Controllers\StudentDisciplineController;
 use App\Http\Controllers\AttendanceStudentController;
 use App\Http\Controllers\ClassScoreStudentController;
+use App\Http\Controllers\StudentReportCardController;
 use App\Http\Controllers\ClassMessageStudentController;
 use App\Http\Controllers\MessageReceiverPivotController;
 use App\Http\Controllers\TeacherWorkExperienceController;
@@ -95,6 +96,8 @@ Route::get('/page/home', [GuestPageController::class, 'getHomePage']);
 Route::group([
     'middleware' => ['auth:admin']
 ], function(){
+    Route::get('/admin/student_report_card', [StudentReportCardController::class, 'get']);
+
     Route::post('/admin/report_card', [ReportCardController::class, 'store']);
     Route::get('/admin/report_card', [ReportCardController::class, 'get']);
     Route::get('/admin/report_card/{id}', [ReportCardController::class, 'getById']);
