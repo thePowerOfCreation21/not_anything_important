@@ -314,6 +314,9 @@ Route::group([
     Route::group([
         'middleware' => ['CheckIfStudentShouldChangePassword']
     ], function(){
+        Route::get('/student/student_report_card', [StudentReportCardController::class, 'getByStudent']);
+        Route::get('/student/student_report_card/{id}', [StudentReportCardController::class, 'getByIdByStudent']);
+
         Route::post('/student/survey_answer', [SurveyAnswerController::class, 'store']);
 
         Route::get('/student/survey_category', [SurveyCategoryController::class, 'getByStudent']);

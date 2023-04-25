@@ -20,7 +20,13 @@ class StudentReportCardAction extends ActionService
                     'educational_year' => ['string', 'max:50'],
                     'class_id' => ['integer'],
                     'student_id' => ['integer']
-                ]
+                ],
+                'getByStudent' => [
+                    'search' => ['string', 'max:250'],
+                    'month' => ['string', 'max:50'],
+                    'educational_year' => ['string', 'max:50'],
+                    'class_id' => ['integer'],
+                ],
             ])
             ->setQueryToEloquentClosures([
                 'search' => function ($eloquent, $query)
