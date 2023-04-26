@@ -106,11 +106,12 @@ class ReportCardAction extends ActionService
                 ]);
 
                 $reportCardExamScores = [];
-                $class->students->map(function($student) use($reportCardExam, $reportCardExamScores){
+                $class->students->map(function($student) use($reportCardExam, &$reportCardExamScores){
                     $reportCardExamScores[] = [
                         'report_card_exam_id' => $reportCardExam->id,
                         'student_id' => $student->id,
-                        'is_present' => false,
+                        'is_present' => true,
+                        'score' => 0
                     ];
                 });
                 ReportCardExamScoreModel::query()->insert($reportCardExamScores);
