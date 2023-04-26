@@ -393,6 +393,7 @@ Route::group([
     Route::get('/teacher/teacher_financial', [TeacherFinancialController::class, 'getByTeacher']);
 
     Route::get('/teacher/class_report', [ClassReportsController::class, 'getByTeacher']);
+    Route::get('/teacher/class_report/custom_format', [ClassReportsController::class, 'getByTeacher']);
     Route::get('/teacher/class_report/{id}', [ClassReportsController::class, 'getByIdByTeacher']);
 
     Route::get('/teacher/class', [ClassController::class, 'getByTeacher']);
