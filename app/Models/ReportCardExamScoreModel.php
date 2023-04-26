@@ -20,7 +20,6 @@ class ReportCardExamScoreModel extends Model
     ];
 
     protected $casts = [
-        'score' => 'integer',
         'is_present' => 'boolean'
     ];
 
