@@ -35,6 +35,23 @@ class ClassReportsController extends Controller
         );
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getInCustomFormat(Request $request) : JsonResponse
+    {
+        return response()->json(
+            (new ClassReportsAction())
+                ->setRequest($request)
+                ->setValidationRule('getQuery')
+                ->setRelations(['classCourse.classModel'])
+                ->makeEloquentViaRequest()
+                ->getInCustomFormat()
+        );
+    }
+
     public function getById(string $id): JsonResponse
     {
         return response()->json(

@@ -174,6 +174,7 @@ Route::group([
 
     Route::post('/admin/class/reports', [ClassReportsController::class, 'store']);
     Route::get('/admin/class/reports', [ClassReportsController::class, 'get']);
+    Route::get('/admin/class/reports/custom_format', [ClassReportsController::class, 'getInCustomFormat']);
     Route::get('/admin/class/reports/{id}', [ClassReportsController::class, 'getById']);
     Route::put('/admin/class/reports/{id}', [ClassReportsController::class, 'updateById']);
 

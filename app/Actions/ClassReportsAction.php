@@ -5,6 +5,7 @@ namespace App\Actions;
 
 use App\Http\Resources\ClassReportsResource;
 use App\Models\ClassReportsModel;
+use Genocide\Radiocrud\Helpers;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
 
 class ClassReportsAction extends ActionService
@@ -82,5 +83,21 @@ class ClassReportsAction extends ActionService
                 }
             ]);
         parent::__construct();
+    }
+
+    /**
+     * @return array
+     */
+    public function getInCustomFormat (): array
+    {
+        $hashMapDateToClassReport = [];
+        foreach ($this->eloquent->get() AS $classReport)
+        {
+            $jdate = explode(' ', Helpers::getCustomDateCast($classReport->date)['jdate'])[0];
+            $hashMapDateToClassReport[$jdate]['date'] = $jdate;
+            $hashMapDateToClassReport[$jdate]['class_reports'][] = $classReport;
+        }
+
+        return array_values($hashMapDateToClassReport);
     }
 }
