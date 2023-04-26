@@ -340,6 +340,7 @@ Route::group([
         Route::get('/student/class_score_student/{id}', [ClassScoreStudentController::class, 'getByIdByStudent']);
 
         Route::get('/student/class_report', [ClassReportsController::class, 'getByStudent']);
+        Route::get('/student/class_report/custom_format', [ClassReportsController::class, 'getInCustomFormatByStudent']);
         Route::get('/student/class_report/{id}', [ClassReportsController::class, 'getByIdByStudent']);
 
         Route::get('/student/class_file', [ClassFileController::class, 'getByStudent']);

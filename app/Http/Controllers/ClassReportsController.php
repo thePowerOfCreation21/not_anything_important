@@ -91,6 +91,24 @@ class ClassReportsController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getInCustomFormatByStudent (Request $request) : JsonResponse
+    {
+        return response()->json(
+            (new ClassReportsAction())
+                ->setRequest($request)
+                ->setValidationRule('getByStudent')
+                ->setRelations(['classCourse.classModel'])
+                ->mergeQueryWith(['student_id' => $request->user()->id])
+                ->makeEloquentViaRequest()
+                ->getInCustomFormat()
+        );
+    }
+
+    /**
      * @param string $id
      * @param Request $request
      * @return JsonResponse
