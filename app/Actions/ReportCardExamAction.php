@@ -25,7 +25,7 @@ class ReportCardExamAction extends ActionService
                     'reportCardExamScores' => ['array', 'max:100'],
                     'reportCardExamScores.*' => ['array'],
                     'reportCardExamScores.*.student_id' => ['required', 'integer'],
-                    'reportCardExamScores.*.score' => ['float', 'between:0.00,100.00'],
+                    'reportCardExamScores.*.score' => ['numeric', 'between:0.00,100.00'],
                     'reportCardExamScores.*.is_present' => ['boolean']
                 ]
             ])
@@ -59,7 +59,7 @@ class ReportCardExamAction extends ActionService
         $updateData = $this->getDataFromRequest();
         $updateData['reportCardExamId'] = $id;
 
-        return parent::update($updateData, $updating);
+        return $this->update($updateData, $updating);
     }
 
     /**

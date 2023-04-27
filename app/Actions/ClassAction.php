@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Models\AdminModel;
 use App\Models\ClassModel;
 use App\Http\Resources\ClassResource;
 use Genocide\Radiocrud\Exceptions\CustomException;
