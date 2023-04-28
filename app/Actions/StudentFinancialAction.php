@@ -27,7 +27,7 @@ class StudentFinancialAction extends ActionService
                     'check_number' => ['nullable', 'string', 'max:50'],
                     'receipt_number' => ['nullable', 'string', 'max:50'],
                     'student_id' => ['required', 'string', 'max:20'],
-                    'amount' => ['required', 'int', 'min:0', 'max:100000000'],
+                    'amount' => ['required', 'string', 'max:25'],
                     'date' => ['required', 'date_format:Y-m-d'],
                     'payment_date' => ['nullable', 'date_format:Y-m-d'],
                     'paid' => ['bool'],
@@ -113,6 +113,8 @@ class StudentFinancialAction extends ActionService
         $data['educational_year'] = PardisanHelper::getEducationalYearByGregorianDate($data['date']);
 
         $data['paid'] = $data['paid'] ?? false;
+
+        $data['amount'] = PardisanHelper::makeItNumber($data['amount']);
 
         /*
         $generalStatistic = (new GeneralStatisticAction())->getFirstByLabelAndEducationalYearOrCreate('student_financial', $data['educational_year']);
