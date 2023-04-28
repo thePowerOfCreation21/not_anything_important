@@ -538,7 +538,7 @@ class StudentAction extends ActionService
             return $this->getLoginInfoByStudent($student);
         }
 
-        throw new CustomException('login info was wrong', '513540', 400);
+        throw new CustomException('login info was wrong', '513540', 401);
     }
 
     /**

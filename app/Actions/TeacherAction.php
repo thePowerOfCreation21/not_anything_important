@@ -293,7 +293,7 @@ class TeacherAction extends ActionService
 
                 if (isset($updateData['national_id']) && TeacherModel::query()->where('id', '!=', $entity->id)->where('national_id', $updateData['national_id'])->exists())
                 {
-                    throw new CustomException('national id already taken', 2100, 400);
+                    throw new CustomException('national id already taken', 2100, 401);
                 }
             }
             if (is_callable($updating))

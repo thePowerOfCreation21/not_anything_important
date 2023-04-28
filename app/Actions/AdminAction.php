@@ -116,7 +116,7 @@ class AdminAction extends ActionService
             }
         }
 
-        throw new CustomException('name or password is wrong', 2, 400);
+        throw new CustomException('name or password is wrong', 2, 401);
     }
 
     public function loginByRequest (): NewAccessToken
