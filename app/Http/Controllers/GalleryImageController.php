@@ -46,6 +46,7 @@ class GalleryImageController extends Controller
         return response()->json(
             (new GalleryImageAction())
                 ->setRequest($request)
+                ->makeEloquent()
                 ->getByRequestAndEloquent()
         );
     }
