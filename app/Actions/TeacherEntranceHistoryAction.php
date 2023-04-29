@@ -23,8 +23,8 @@ class TeacherEntranceHistoryAction extends ActionService
                     'teacher_id' => ['required', 'integer', 'exists:teachers,id'],
                     'date' => ['date_format:Y-m-d'],
                     // 'week_day' => ['required', 'between:1,7'],
-                    'entrance' => ['boolean'],
-                    'exit' => ['date_format:H:i'],
+                    // 'entrance' => ['required', 'boolean'],
+                    'exit' => ['boolean'],
                 ],
                 'update' => [
                     'exit' => ['boolean'],
@@ -75,7 +75,7 @@ class TeacherEntranceHistoryAction extends ActionService
         $data['week_day'] = PardisanHelper::getWeekDayByGregorianDate($data['date']);
         // $data['week_day'] = PardisanHelper::getWeekDayByGregorianDate($data['date']);
 
-        if (isset($data['entrance']) && $data['entrance']) $data['entrance'] = date('h:i');
+        $data['entrance'] = date('h:i');
         if (isset($data['exit']) && $data['exit']) $data['exit'] = date('h:i');
 
         $teacherEntrance = TeacherEntranceModel::query()
@@ -106,6 +106,9 @@ class TeacherEntranceHistoryAction extends ActionService
 
     public function update(array $updateData, callable $updating = null): bool|int
     {
+        if (isset($data['entrance']) && $data['entrance']) $data['entrance'] = date('h:i');
+        if (isset($data['exit']) && $data['exit']) $data['exit'] = date('h:i');
+
         if (isset($updateData['exit']))
             foreach ($this->eloquent->get() AS $teacherEntranceHistory)
                 TeacherModel::query()
