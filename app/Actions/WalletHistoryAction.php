@@ -95,7 +95,7 @@ class WalletHistoryAction extends ActionService
 
         $data['status'] = $data['status'] ?? 'failed';
 
-        $student->update([
+        StudentModel::query()->where('id', $student->id)->update([
             'wallet_amount' => $newAmount
         ]);
 
