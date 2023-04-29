@@ -23,11 +23,11 @@ class TeacherEntranceHistoryAction extends ActionService
                     'teacher_id' => ['required', 'integer', 'exists:teachers,id'],
                     'date' => ['date_format:Y-m-d'],
                     // 'week_day' => ['required', 'between:1,7'],
-                    'entrance' => ['required', 'date_format:H:i'],
+                    'entrance' => ['boolean'],
                     'exit' => ['date_format:H:i'],
                 ],
                 'update' => [
-                    'exit' => ['date_format:H:i'],
+                    'exit' => ['boolean'],
                 ],
                 'getQuery' => [
                     'week_day' => ['integer', 'between:1,7'],
@@ -74,6 +74,9 @@ class TeacherEntranceHistoryAction extends ActionService
         $data['jalali_date'] = Helpers::getCustomDateCast($data['date'])['jdate'];
         $data['week_day'] = PardisanHelper::getWeekDayByGregorianDate($data['date']);
         // $data['week_day'] = PardisanHelper::getWeekDayByGregorianDate($data['date']);
+
+        if (isset($data['entrance']) && $data['entrance']) $data['entrance'] = date('h:i');
+        if (isset($data['exit']) && $data['exit']) $data['exit'] = date('h:i');
 
         $teacherEntrance = TeacherEntranceModel::query()
             ->with('teacher')
