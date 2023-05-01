@@ -37,6 +37,7 @@ use App\Http\Controllers\SurveyCategoryController;
 use App\Http\Controllers\MessageTemplateController;
 use App\Http\Controllers\EducationalYearController;
 use App\Http\Controllers\TeacherEntranceController;
+use App\Http\Controllers\HomePageContentController;
 use App\Http\Controllers\StudentFinancialController;
 use App\Http\Controllers\GeneralStatisticController;
 use App\Http\Controllers\TeacherFinancialController;
@@ -82,6 +83,8 @@ Route::get('/gallery_image/{id}', [GalleryImageController::class, 'getById']);
 
 Route::get('/about_us', [AboutUsController::class, 'get']);
 
+Route::get('/home_page_content', [HomePageContentController::class, 'get']);
+
 Route::get('/header', [HeaderController::class, 'get']);
 
 Route::get('/news', [NewsController::class, 'get']);
@@ -113,6 +116,8 @@ Route::group([
     Route::delete('/admin/news/{id}', [NewsController::class, 'deleteById']);
 
     Route::put('/admin/about_us', [AboutUsController::class, 'update']);
+
+    Route::put('/admin/home_page_content', [HomePageContentController::class, 'update']);
 
     Route::put('/admin/header', [HeaderController::class, 'update']);
 
