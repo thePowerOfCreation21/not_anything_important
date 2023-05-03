@@ -36,6 +36,8 @@ class MessageTemplateController extends Controller
         return response()->json(
             (new MessageTemplateAction())
                 ->setRequest($request)
+                ->setValidationRule('get')
+                ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()
         );
     }

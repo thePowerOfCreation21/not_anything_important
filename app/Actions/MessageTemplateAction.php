@@ -23,7 +23,16 @@ class MessageTemplateAction extends ActionService
                     'name' => ['string', 'max:255'],
                     'text' => ['string', 'max:500'],
                     'is_smsable' => ['bool']
+                ],
+                'get' => [
+                    'is_smsable' => ['boolean']
                 ]
+            ])
+            ->setQueryToEloquentClosures([
+                'is_smsable' => function($eloquent, $query)
+                {
+                    $eloquent->where('is_smsable', $query['is_smsable']);
+                }
             ]);
 
         parent::__construct();
