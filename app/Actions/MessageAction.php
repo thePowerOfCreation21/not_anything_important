@@ -26,7 +26,7 @@ class MessageAction extends ActionService
                 'store' => [
                     'type' => ['required', 'string', 'in:sms,notification,toast,message'],
                     'text' => ['string', 'max:500'],
-                    'template_id' => ['string', 'max:20'],
+                    'template_id' => ['integer'],
                     'students' => ['required','array', 'max:100'],
                     'students.*' => ['required', 'integer'],
                     'teachers' => ['required','array', 'max:100'],
