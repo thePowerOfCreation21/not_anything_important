@@ -99,6 +99,7 @@ Route::get('/page/home', [GuestPageController::class, 'getHomePage']);
 Route::group([
     'middleware' => ['auth:admin']
 ], function(){
+    Route::get('/admin/info', [AdminController::class, 'getInfo']);
     Route::get('/admin/student_report_card', [StudentReportCardController::class, 'get']);
     Route::get('/admin/student_report_card/{id}', [StudentReportCardController::class, 'getById']);
 

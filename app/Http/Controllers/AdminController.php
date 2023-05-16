@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\AdminAction;
+use App\Http\Resources\AdminResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -69,4 +70,8 @@ class AdminController extends Controller
         ]);
     }
 
+    public function getInfo (Request $request): JsonResponse
+    {
+        return response()->json(new AdminResource($request->user()));
+    }
 }
