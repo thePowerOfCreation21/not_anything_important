@@ -31,7 +31,7 @@ class AttendanceAction extends ActionService
                     'class_course_id' => ['required', 'integer',],
                     'date' => ['required', 'date_format:Y-m-d'],
                     'description' => ['string', 'max:2500'],
-                    'students' => ['required', 'array', 'max:100'],
+                    'students' => ['array', 'max:100'],
                     'students.*.student_id' => ['required', 'integer'],
                     'students.*.status' => ['required', "in:$allowedAttendanceStudentStatusesString"],
                     'students.*.late' => ['nullable', 'integer', 'min:0', 'max:100']
@@ -111,6 +111,7 @@ class AttendanceAction extends ActionService
     public function store(array $data, callable $storing = null): mixed
     {
         $data['educational_year'] = isset($data['date']) ? PardisanHelper::getEducationalYearByGregorianDate($data['date']) : PardisanHelper::getCurrentEducationalYear();
+        $data['students'] = $data['students'] ?? [];
 
         $classCourse = ClassCourseModel::query()->where('id', $data['class_course_id'])->firstOrFail();
         $class = ClassModel::query()->where('id', $classCourse->class_id)->firstOrFail();
