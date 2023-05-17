@@ -354,9 +354,6 @@ class TeacherAction extends ActionService
 
         throw_if(! Hash::check($data['password'], $teacher->password), CustomException::class, 'password is wrong', '84054', 400);
 
-        if ($teacher->is_block)
-            throw new CustomException('you are blocked', '75521', '400', ['reason' => $teacher->reason_for_blocking]);
-
         return [
             'token' => $teacher->createToken('auth')->plainTextToken
         ];
