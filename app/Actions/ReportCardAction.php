@@ -91,13 +91,16 @@ class ReportCardAction extends ActionService
                 'courses.course',
                 'students'
             ])
+            ->where('id', $data['class_id'])
             ->firstOrFail();
 
         $data['educational_year'] = $data['educational_year'] ?? PardisanHelper::getCurrentEducationalYear();
 
         $reportCard = parent::store($data, $storing);
+        $courses = [];
 
-        $class->courses->map(function($classCourse) use ($reportCard, $class){
+        foreach ($class->courses AS $classCourse)
+        {
             if (!empty($classCourse->course))
             {
                 $reportCardExam = ReportCardExamModel::query()->create([
@@ -116,7 +119,7 @@ class ReportCardAction extends ActionService
                 });
                 ReportCardExamScoreModel::query()->insert($reportCardExamScores);
             }
-        });
+        }
 
         return $reportCard;
     }
