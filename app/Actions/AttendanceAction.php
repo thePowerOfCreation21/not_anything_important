@@ -30,7 +30,7 @@ class AttendanceAction extends ActionService
                 'storeByAdmin' => [
                     'class_course_id' => ['required', 'integer',],
                     'date' => ['required', 'date_format:Y-m-d'],
-                    'description' => ['required', 'string', 'max:2500'],
+                    'description' => ['string', 'max:2500'],
                     'students' => ['required', 'array', 'max:100'],
                     'students.*.student_id' => ['required', 'integer'],
                     'students.*.status' => ['required', "in:$allowedAttendanceStudentStatusesString"],
