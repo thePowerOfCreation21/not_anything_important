@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\AttendanceAction;
 use App\Helpers\PardisanHelper;
+use App\Http\Resources\AttendanceGroupByDateResource;
 use Genocide\Radiocrud\Exceptions\CustomException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -57,6 +58,26 @@ class AttendanceController extends Controller
                 ->setRelations(['classCourse.classModel'])
                 ->mergeQueryWith(['educational_year' => PardisanHelper::getCurrentEducationalYear()])
                 ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getGroupByDate (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new AttendanceAction())
+                ->setRequest($request)
+                ->setValidationRule('getQuery')
+                ->setResource(AttendanceGroupByDateResource::class)
+                ->mergeQueryWith(['educational_year' => PardisanHelper::getCurrentEducationalYear()])
+                ->setOrderBy([])
+                ->makeEloquentViaRequest()
+                ->groupByDate()
                 ->getByRequestAndEloquent()
         );
     }

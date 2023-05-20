@@ -226,4 +226,20 @@ class AttendanceAction extends ActionService
 
         return array_values($result);
     }
+
+    /**
+     * @return $this
+     */
+    public function groupByDate (): static
+    {
+        $this->eloquent = $this
+            ->eloquent
+            ->select(
+                DB::raw("DATE_FORMAT(`date`, '%Y-%m-%d 00:00:00') AS `date`"),
+                DB::raw("count(`id`) as `count`")
+            )
+            ->groupBy(DB::raw("DATE_FORMAT(`date`, '%Y-%m-%d 00:00:00')"));
+
+        return $this;
+    }
 }
