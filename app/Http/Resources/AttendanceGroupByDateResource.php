@@ -16,7 +16,7 @@ class AttendanceGroupByDateResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'date' => Helpers::getCustomDateCast($this->date)->date,
+            'date' => Helpers::getCustomDateCast($this->date),
             'count' => $this->count
         ];
     }

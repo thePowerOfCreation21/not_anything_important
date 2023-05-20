@@ -391,6 +391,7 @@ Route::group([
 
     Route::get('/teacher/attendance', [AttendanceController::class, 'getByTeacher']);
     Route::get('/teacher/attendance/{id}', [AttendanceController::class, 'getByIdByTeacher']);
+    Route::get('/teacher/attendance_group_by_date', [AttendanceController::class, 'getGroupByDateByTeacher']);
 
     Route::get('/teacher/class_course', [ClassCourseController::class, 'getByTeacher']);
 
