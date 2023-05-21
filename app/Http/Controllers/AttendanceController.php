@@ -162,4 +162,19 @@ class AttendanceController extends Controller
         );
     }
 
+    public function getGroupByDateByStudent (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new AttendanceAction())
+                ->setRequest($request)
+                ->setValidationRule('getQuery')
+                ->setResource(AttendanceGroupByDateResource::class)
+                ->mergeQueryWith(['student_id' => $request->user()->id])
+                ->mergeQueryWith(['educational_year' => PardisanHelper::getCurrentEducationalYear()])
+                ->setOrderBy([])
+                ->makeEloquentViaRequest()
+                ->groupByDate()
+                ->getByRequestAndEloquent()
+        );
+    }
 }

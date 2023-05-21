@@ -342,6 +342,7 @@ Route::group([
 
         Route::get('/student/attendance_student', [AttendanceStudentController::class, 'getByStudent']);
         Route::get('/student/attendance_student/{id}', [AttendanceStudentController::class, 'getByIdByStudent']);
+        Route::get('/student/attendance_group_by_date', [AttendanceController::class, 'getGroupByDateByStudent']);
 
         Route::get('/student/class_score_student', [ClassScoreStudentController::class, 'getByStudent']);
         Route::get('/student/class_score_student/{id}', [ClassScoreStudentController::class, 'getByIdByStudent']);

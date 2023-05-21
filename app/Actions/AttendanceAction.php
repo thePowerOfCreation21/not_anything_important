@@ -50,6 +50,7 @@ class AttendanceAction extends ActionService
                     'class_id' => ['string', 'max:20'],
                     'from_date' => ['date_format:Y-m-d'],
                     'to_date' => ['date_format:Y-m-d'],
+                    'date_timestamp' => ['integer']
                 ]
             ])
             ->setCasts([
@@ -80,6 +81,16 @@ class AttendanceAction extends ActionService
                     $eloquent = $eloquent->whereHas('classCourse', function ($q) use($query){
                         $q->where('teacher_id', $query['teacher_id']);
                     });
+                },
+                'student_id' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereHas('attendanceStudents', function ($q) use($query){
+                        $q->where('student_id', $query['student_id']);
+                    });
+                },
+                'date_timestamp' => function(&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->wheredate('date', date('Y-m-d', $query['date_timestamp']));
                 },
                 'from_date' => function (&$eloquent, $query)
                 {
