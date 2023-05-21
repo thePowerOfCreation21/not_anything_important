@@ -106,8 +106,8 @@ class TeacherEntranceHistoryAction extends ActionService
 
     public function update(array $updateData, callable $updating = null): bool|int
     {
-        if (isset($data['entrance']) && $data['entrance']) $data['entrance'] = date('h:i');
-        if (isset($data['exit']) && $data['exit']) $data['exit'] = date('h:i');
+        if (isset($updateData['entrance']) && $updateData['entrance']) $updateData['entrance'] = date('h:i');
+        if (isset($updateData['exit']) && $updateData['exit']) $updateData['exit'] = date('h:i');
 
         if (isset($updateData['exit']))
             foreach ($this->eloquent->get() AS $teacherEntranceHistory)
