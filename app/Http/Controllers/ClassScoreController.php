@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Actions\ClassScoreAction;
+use App\Helpers\PardisanHelper;
+use App\Http\Resources\GroupByDateResource;
 use Genocide\Radiocrud\Exceptions\CustomException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -59,6 +61,26 @@ class ClassScoreController extends Controller
                     'submitter'
                 ])
                 ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getGroupByDate (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new ClassScoreAction())
+                ->setRequest($request)
+                ->setValidationRule('getQuery')
+                ->setResource(GroupByDateResource::class)
+                ->mergeQueryWith(['educational_year' => PardisanHelper::getCurrentEducationalYear()])
+                ->setOrderBy(['date' => 'DESC'])
+                ->makeEloquentViaRequest()
+                ->groupByDate()
                 ->getByRequestAndEloquent()
         );
     }
@@ -167,6 +189,27 @@ class ClassScoreController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getGroupByDateByTeacher (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new ClassScoreAction())
+                ->setRequest($request)
+                ->setValidationRule('getQuery')
+                ->setResource(GroupByDateResource::class)
+                ->mergeQueryWith(['educational_year' => PardisanHelper::getCurrentEducationalYear()])
+                ->mergeQueryWith(['teacher_id' => $request->user()->id])
+                ->setOrderBy(['date' => 'DESC'])
+                ->makeEloquentViaRequest()
+                ->groupByDate()
+                ->getByRequestAndEloquent()
+        );
+    }
+
+    /**
      * @param string $id
      * @param Request $request
      * @return JsonResponse
@@ -184,6 +227,27 @@ class ClassScoreController extends Controller
                 ->mergeQueryWith(['teacher_id' => $request->user()->id])
                 ->makeEloquent()
                 ->getById($id)
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getGroupByDateByStudent (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new ClassScoreAction())
+                ->setRequest($request)
+                ->setValidationRule('getQuery')
+                ->setResource(GroupByDateResource::class)
+                ->mergeQueryWith(['educational_year' => PardisanHelper::getCurrentEducationalYear()])
+                ->mergeQueryWith(['student_id' => $request->user()->id])
+                ->setOrderBy(['date' => 'DESC'])
+                ->makeEloquentViaRequest()
+                ->groupByDate()
+                ->getByRequestAndEloquent()
         );
     }
 }

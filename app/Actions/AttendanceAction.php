@@ -51,7 +51,7 @@ class AttendanceAction extends ActionService
                     'class_id' => ['string', 'max:20'],
                     'from_date' => ['date_format:Y-m-d'],
                     'to_date' => ['date_format:Y-m-d'],
-                    'date_timestamp' => ['integer']
+                    'date_timestamp' => ['integer'],
                 ]
             ])
             ->setCasts([

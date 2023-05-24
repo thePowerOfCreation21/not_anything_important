@@ -192,6 +192,7 @@ Route::group([
     Route::delete('/admin/class_course/{id}', [ClassCourseController::class, 'deleteById']);
 
     Route::post('/admin/class/score', [ClassScoreController::class, 'storeByAdmin']);
+    Route::get('/admin/class/score/group_by_date', [ClassScoreController::class, 'getGroupByDate']);
     Route::put('/admin/class/score/{id}', [ClassScoreController::class, 'updateById']);
     Route::delete('/admin/class/score/{id}', [ClassScoreController::class, 'deleteById']);
     Route::get('/admin/class/score/{id}', [ClassScoreController::class, 'getById']);
@@ -346,6 +347,7 @@ Route::group([
         Route::get('/student/attendance_group_by_date', [AttendanceController::class, 'getGroupByDateByStudent']);
 
         Route::get('/student/class_score_student', [ClassScoreStudentController::class, 'getByStudent']);
+        Route::get('/student/class_score/group_by_date', [ClassScoreController::class, 'getGroupByDateByStudent']);
         Route::get('/student/class_score_student/{id}', [ClassScoreStudentController::class, 'getByIdByStudent']);
 
         Route::get('/student/class_report', [ClassReportsController::class, 'getByStudent']);
@@ -384,6 +386,7 @@ Route::group([
     Route::put('/teacher/class_score/{id}', [ClassScoreController::class, 'updateByIdByTeacher']);
     Route::delete('/teacher/class_score/{id}', [ClassScoreController::class, 'deleteByIdByTeacher']);
     Route::get('/teacher/class_score', [ClassScoreController::class, 'getByTeacher']);
+    Route::get('/teacher/class_score/group_by_date', [ClassScoreController::class, 'getGroupByDateByTeacher']);
     Route::get('/teacher/class_score/{id}', [ClassScoreController::class, 'getByIdByTeacher']);
 
     Route::post('/teacher/class_file', [ClassFileController::class, 'storeByTeacher']);
