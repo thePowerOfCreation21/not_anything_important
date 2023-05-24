@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\AttendanceAction;
 use App\Helpers\PardisanHelper;
-use App\Http\Resources\AttendanceGroupByDateResource;
+use App\Http\Resources\GroupByDateResource;
 use Genocide\Radiocrud\Exceptions\CustomException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -73,9 +73,9 @@ class AttendanceController extends Controller
             (new AttendanceAction())
                 ->setRequest($request)
                 ->setValidationRule('getQuery')
-                ->setResource(AttendanceGroupByDateResource::class)
+                ->setResource(GroupByDateResource::class)
                 ->mergeQueryWith(['educational_year' => PardisanHelper::getCurrentEducationalYear()])
-                ->setOrderBy([])
+                ->setOrderBy(['date' => 'DESC'])
                 ->makeEloquentViaRequest()
                 ->groupByDate()
                 ->getByRequestAndEloquent()
@@ -152,10 +152,10 @@ class AttendanceController extends Controller
             (new AttendanceAction())
                 ->setRequest($request)
                 ->setValidationRule('getQuery')
-                ->setResource(AttendanceGroupByDateResource::class)
+                ->setResource(GroupByDateResource::class)
                 ->mergeQueryWith(['teacher_id' => $request->user()->id])
                 ->mergeQueryWith(['educational_year' => PardisanHelper::getCurrentEducationalYear()])
-                ->setOrderBy([])
+                ->setOrderBy(['date' => 'DESC'])
                 ->makeEloquentViaRequest()
                 ->groupByDate()
                 ->getByRequestAndEloquent()
@@ -168,10 +168,10 @@ class AttendanceController extends Controller
             (new AttendanceAction())
                 ->setRequest($request)
                 ->setValidationRule('getQuery')
-                ->setResource(AttendanceGroupByDateResource::class)
+                ->setResource(GroupByDateResource::class)
                 ->mergeQueryWith(['student_id' => $request->user()->id])
                 ->mergeQueryWith(['educational_year' => PardisanHelper::getCurrentEducationalYear()])
-                ->setOrderBy([])
+                ->setOrderBy(['date' => 'DESC'])
                 ->makeEloquentViaRequest()
                 ->groupByDate()
                 ->getByRequestAndEloquent()

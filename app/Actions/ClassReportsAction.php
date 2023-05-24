@@ -7,6 +7,8 @@ use App\Http\Resources\ClassReportsResource;
 use App\Models\ClassReportsModel;
 use Genocide\Radiocrud\Helpers;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ClassReportsAction extends ActionService
 {
@@ -31,6 +33,7 @@ class ClassReportsAction extends ActionService
                 'getQuery' => [
                     'from_date' => ['date_format:Y-m-d'],
                     'to_date' => ['date_format:Y-m-d'],
+                    'date_timestamp' => ['integer'],
                     'class_course_id' => ['integer'],
                     'class_id' => ['integer'],
                     'course_id' => ['integer']
@@ -38,6 +41,7 @@ class ClassReportsAction extends ActionService
                 'getByStudent' => [
                     'from_date' => ['date_format:Y-m-d'],
                     'to_date' => ['date_format:Y-m-d'],
+                    'date_timestamp' => ['integer'],
                     'class_course_id' => ['integer'],
                     'class_id' => ['integer'],
                     'course_id' => ['integer']
@@ -56,6 +60,10 @@ class ClassReportsAction extends ActionService
                 'to_date' => function (&$eloquent, $query)
                 {
                     $eloquent = $eloquent->whereDate('date', '<=', $query['from_date']);
+                },
+                'date_timestamp' => function(&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->wheredate('date', date('Y-m-d', $query['date_timestamp']));
                 },
                 'class_course_id' => function (&$eloquent, $query)
                 {
@@ -99,5 +107,32 @@ class ClassReportsAction extends ActionService
         }
 
         return array_values($hashMapDateToClassReport);
+    }
+
+    /**
+     * @return $this
+     */
+    public function groupByDate (): static
+    {
+        $this->eloquent = $this
+            ->eloquent
+            ->select(
+                DB::raw("DATE_FORMAT(`date`, '%Y-%m-%d 00:00:00') AS `date`"),
+                DB::raw("count(`id`) as `count`")
+            )
+            ->groupBy(DB::raw("DATE_FORMAT(`date`, '%Y-%m-%d 00:00:00')"));
+
+        $sql = $this->eloquent->toSql();
+
+        $bindings = array_map(
+            fn ($parameter) => is_string($parameter) ? "'$parameter'" : $parameter,
+            $this->eloquent->getBindings()
+        );
+
+        $sql = Str::replaceArray('?', $bindings, $sql);
+
+        $this->eloquent = DB::table(DB::raw("($sql) AS sub"));
+
+        return $this;
     }
 }

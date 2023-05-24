@@ -15,6 +15,7 @@ use Genocide\Radiocrud\Helpers;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
 use Genocide\Radiocrud\Services\SendSMSService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Morilog\Jalali\CalendarUtils;
 
 class AttendanceAction extends ActionService
@@ -250,6 +251,17 @@ class AttendanceAction extends ActionService
                 DB::raw("count(`id`) as `count`")
             )
             ->groupBy(DB::raw("DATE_FORMAT(`date`, '%Y-%m-%d 00:00:00')"));
+
+        $sql = $this->eloquent->toSql();
+
+        $bindings = array_map(
+            fn ($parameter) => is_string($parameter) ? "'$parameter'" : $parameter,
+            $this->eloquent->getBindings()
+        );
+
+        $sql = Str::replaceArray('?', $bindings, $sql);
+
+        $this->eloquent = DB::table(DB::raw("($sql) AS sub"));
 
         return $this;
     }

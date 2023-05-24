@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Genocide\Radiocrud\Helpers;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class AttendanceGroupByDateResource extends JsonResource
+class GroupByDateResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

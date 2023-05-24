@@ -181,6 +181,7 @@ Route::group([
     Route::post('/admin/class/reports', [ClassReportsController::class, 'store']);
     Route::get('/admin/class/reports', [ClassReportsController::class, 'get']);
     Route::get('/admin/class/reports/custom_format', [ClassReportsController::class, 'getInCustomFormat']);
+    Route::get('/admin/class/reports/group_by_date', [ClassReportsController::class, 'getGroupByDate']);
     Route::get('/admin/class/reports/{id}', [ClassReportsController::class, 'getById']);
     Route::put('/admin/class/reports/{id}', [ClassReportsController::class, 'updateById']);
 
@@ -348,6 +349,7 @@ Route::group([
         Route::get('/student/class_score_student/{id}', [ClassScoreStudentController::class, 'getByIdByStudent']);
 
         Route::get('/student/class_report', [ClassReportsController::class, 'getByStudent']);
+        Route::get('/student/class_report/group_by_date', [ClassReportsController::class, 'getGroupByDateByStudent']);
         Route::get('/student/class_report/custom_format', [ClassReportsController::class, 'getInCustomFormatByStudent']);
         Route::get('/student/class_report/{id}', [ClassReportsController::class, 'getByIdByStudent']);
 
@@ -402,6 +404,7 @@ Route::group([
     Route::get('/teacher/teacher_financial', [TeacherFinancialController::class, 'getByTeacher']);
 
     Route::get('/teacher/class_report', [ClassReportsController::class, 'getByTeacher']);
+    Route::get('/teacher/class_report/group_by_date', [ClassReportsController::class, 'getGroupByDateByTeacher']);
     Route::get('/teacher/class_report/custom_format', [ClassReportsController::class, 'getByTeacher']);
     Route::get('/teacher/class_report/{id}', [ClassReportsController::class, 'getByIdByTeacher']);
 

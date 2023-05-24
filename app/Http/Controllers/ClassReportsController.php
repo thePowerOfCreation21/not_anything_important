@@ -6,6 +6,8 @@ use App\Actions\ClassAction;
 use App\Actions\ClassReportsAction;
 use App\Actions\CourseAction;
 use App\Actions\TeacherAction;
+use App\Helpers\PardisanHelper;
+use App\Http\Resources\GroupByDateResource;
 use Genocide\Radiocrud\Exceptions\CustomException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -177,6 +179,68 @@ class ClassReportsController extends Controller
                 ->mergeQueryWith(['teacher_id' => $request->user()->id])
                 ->makeEloquentViaRequest()
                 ->getById($id)
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getGroupByDate (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new ClassReportsAction())
+                ->setRequest($request)
+                ->setValidationRule('getQuery')
+                ->setResource(GroupByDateResource::class)
+                ->mergeQueryWith(['educational_year' => PardisanHelper::getCurrentEducationalYear()])
+                ->setOrderBy(['date' => 'DESC'])
+                ->makeEloquentViaRequest()
+                ->groupByDate()
+                ->getByRequestAndEloquent()
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getGroupByDateByTeacher (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new ClassReportsAction())
+                ->setRequest($request)
+                ->setValidationRule('getQuery')
+                ->setResource(GroupByDateResource::class)
+                ->mergeQueryWith(['educational_year' => PardisanHelper::getCurrentEducationalYear()])
+                ->mergeQueryWith(['teacher_id' => $request->user()->id])
+                ->setOrderBy(['date' => 'DESC'])
+                ->makeEloquentViaRequest()
+                ->groupByDate()
+                ->getByRequestAndEloquent()
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getGroupByDateByStudent (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new ClassReportsAction())
+                ->setRequest($request)
+                ->setValidationRule('getByStudent')
+                ->setResource(GroupByDateResource::class)
+                ->mergeQueryWith(['educational_year' => PardisanHelper::getCurrentEducationalYear()])
+                ->mergeQueryWith(['student_id' => $request->user()->id])
+                ->setOrderBy(['date' => 'DESC'])
+                ->makeEloquentViaRequest()
+                ->groupByDate()
+                ->getByRequestAndEloquent()
         );
     }
 }
