@@ -4,6 +4,7 @@ namespace App\Actions;
 
 use App\Helpers\PardisanHelper;
 use App\Http\Resources\TeacherResource;
+use App\Imports\TeacherSkillsImport;
 use App\Models\TeacherModel;
 use App\Models\TeacherSkillModel;
 use App\Models\TeacherWorkExperienceModel;
@@ -13,6 +14,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use JetBrains\PhpStorm\ArrayShape;
+use Maatwebsite\Excel\Facades\Excel;
 use Throwable;
 
 class TeacherAction extends ActionService
@@ -55,6 +57,8 @@ class TeacherAction extends ActionService
                     'partner_birth_place' => ['nullable', 'string', 'max:250'],
                     'password' => ['required', 'string', 'max:100'],
                     'educational_year' => ['string', 'max:50'],
+                    'work_experiences_file' => ['nullable', 'file', 'mimes:xlx,xls,xlsx', 'max:2048'],
+                    'skills_file' => ['nullable', 'file', 'mimes:xlx,xls,xlsx', 'max:2048'],
 
 
                     // work experiences
@@ -231,6 +235,9 @@ class TeacherAction extends ActionService
         $data['password'] = Hash::make($data['password']);
 
         $teacher = parent::store($data, $storing);
+
+        if (isset($data['skills_file']))
+            Excel::import(new TeacherSkillsImport($teacher->id), $data['skills_file']);
 
         $this->storeTeacherWorkExperiences($teacher->id, $data['workExperiences'] ?? []);
 

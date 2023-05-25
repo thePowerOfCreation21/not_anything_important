@@ -20,6 +20,7 @@ class ClassScoreStudentAction extends ActionService
                     'course_id' => ['integer'],
                     'class_id' => ['string', 'max:20'],
                     'student_id' => ['string', 'max:20'],
+                    'date_timestamp' => ['integer'],
                     'from_date' => ['date_format:Y-m-d'],
                     'to_date' => ['date_format:Y-m-d'],
                 ],
@@ -28,6 +29,7 @@ class ClassScoreStudentAction extends ActionService
                     'class_course_id' => ['string', 'max:20'],
                     'course_id' => ['integer'],
                     'class_id' => ['string', 'max:20'],
+                    'date_timestamp' => ['integer'],
                     'from_date' => ['date_format:Y-m-d'],
                     'to_date' => ['date_format:Y-m-d'],
                 ]
@@ -65,6 +67,12 @@ class ClassScoreStudentAction extends ActionService
                         $q->whereHas('classCourse', function ($q) use($query){
                             $q->where('class_course.course_id', $query['course_id']);
                         });
+                    });
+                },
+                'date_timestamp' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->whereHas('classScore', function ($q) use($query){
+                        $q->where('date', date('Y-m-d', $query['date_timestamp']));
                     });
                 },
                 'from_date' => function (&$eloquent, $query)
