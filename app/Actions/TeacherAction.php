@@ -5,6 +5,7 @@ namespace App\Actions;
 use App\Helpers\PardisanHelper;
 use App\Http\Resources\TeacherResource;
 use App\Imports\TeacherSkillsImport;
+use App\Imports\TeacherWorkExperiencesImport;
 use App\Models\TeacherModel;
 use App\Models\TeacherSkillModel;
 use App\Models\TeacherWorkExperienceModel;
@@ -238,6 +239,9 @@ class TeacherAction extends ActionService
 
         if (isset($data['skills_file']))
             Excel::import(new TeacherSkillsImport($teacher->id), $data['skills_file']);
+
+        if (isset($data['work_experiences_file']))
+            Excel::import(new TeacherWorkExperiencesImport($teacher->id), $data['work_experiences_file']);
 
         $this->storeTeacherWorkExperiences($teacher->id, $data['workExperiences'] ?? []);
 
