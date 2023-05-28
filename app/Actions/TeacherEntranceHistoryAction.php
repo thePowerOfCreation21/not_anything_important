@@ -30,7 +30,7 @@ class TeacherEntranceHistoryAction extends ActionService
                     'exit' => ['boolean'],
                 ],
                 'getQuery' => [
-                    'week_day' => ['integer', 'between:1,7'],
+                    'week_day' => ['integer', 'between:0,6'],
                     'teacher_id' => ['integer'],
                     'from_date' => ['date_format:Y-m-d'],
                     'to_date' => ['date_format:Y-m-d'],

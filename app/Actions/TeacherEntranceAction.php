@@ -16,20 +16,20 @@ class TeacherEntranceAction extends ActionService
             ->setResource(TeacherEntranceResource::class)
             ->setValidationRules([
                 'store' => [
-                    'week_day' => ['required', 'integer', 'between:1,7'],
+                    'week_day' => ['required', 'integer', 'between:0,6'],
                     'teacher_id' => ['required', 'integer', 'exists:teachers,id'],
                     'entrance' => ['required', 'date_format:H:i'],
                     'exit' => ['date_format:H:i'],
                 ],
                 'update' => [
-                    'week_day' => ['integer', 'between:1,7'],
+                    'week_day' => ['integer', 'between:0,6'],
                     'teacher_id' => ['integer', 'exists:teachers,id'],
                     'entrance' => ['date_format:H:i'],
                     'exit' => ['nullable', 'date_format:H:i'],
                 ],
                 'getQuery' => [
                     'teacher_id' => ['integer'],
-                    'week_day' => ['integer', 'between:1,7']
+                    'week_day' => ['integer', 'between:0,6']
                 ]
             ])
             ->setQueryToEloquentClosures([
