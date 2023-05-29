@@ -372,7 +372,8 @@ class TeacherAction extends ActionService
         throw_if(! Hash::check($data['password'], $teacher->password), CustomException::class, 'password is wrong', '84054', 400);
 
         return [
-            'token' => $teacher->createToken('auth')->plainTextToken
+            'token' => $teacher->createToken('auth')->plainTextToken,
+            'user' => $teacher
         ];
     }
 

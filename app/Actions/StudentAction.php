@@ -514,11 +514,11 @@ class StudentAction extends ActionService
      * @param StudentModel|Model $student
      * @return array
      */
-    #[ArrayShape(['student' => "mixed", 'token' => "mixed"])]
+    #[ArrayShape(['user' => "mixed", 'token' => "mixed"])]
     protected function getLoginInfoByStudent (StudentModel|Model $student): array
     {
         return [
-            'student' => $this->applyResourceToEntity($student),
+            'user' => $this->applyResourceToEntity($student),
             'token' => $student->createToken('auth')->plainTextToken
         ];
     }
