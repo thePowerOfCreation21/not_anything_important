@@ -394,7 +394,7 @@ class StudentAction extends ActionService
     {
         if (StudentModel::where('meli_code', $data['meli_code'])->exists())
         {
-            throw new CustomException('this meli_code is already taken', 1000);
+            throw new CustomException('this meli_code is already taken', 986585);
         }
 
         $data['full_name'] = $data['first_name'] . ' ' . @$data['last_name'];
@@ -428,7 +428,7 @@ class StudentAction extends ActionService
 
             if (StudentModel::where('id', '!=', $entity->id)->where('meli_code', $updateData['meli_code'])->exists())
             {
-                throw new CustomException('this meli_code is already taken', 1000);
+                throw new CustomException('this meli_code is already taken', 986585);
             }
 
             $updateData['full_name'] = ($updateData['first_name'] ?? $entity->first_name) . ' ' . ($updateData['last_name'] ?? $entity->last_name);

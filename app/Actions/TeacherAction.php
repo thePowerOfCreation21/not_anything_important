@@ -31,7 +31,7 @@ class TeacherAction extends ActionService
                     'full_name' => ['required', 'string', 'max:150'],
                     'father_name' => ['nullable', 'string', 'max:150'],
                     'birth_certificate_number' => ['nullable', 'string', 'max:50'],
-                    'national_id' => ['required', 'string', 'max:50', 'unique:teachers'],
+                    'national_id' => ['required', 'string', 'max:50'],
                     'birth_certificate_location' => ['nullable', 'string', 'max:500'],
                     'birth_location' => ['nullable', 'string', 'max:500'],
                     'birth_date' => ['nullable', 'string', 'max:50'],
@@ -226,6 +226,7 @@ class TeacherAction extends ActionService
      * @param array $data
      * @param callable|null $storing
      * @return mixed
+     * @throws CustomException
      */
     public function store(array $data, callable $storing = null): mixed
     {
@@ -234,6 +235,11 @@ class TeacherAction extends ActionService
         $data['educational_year'] = $data['educational_year'] ?? PardisanHelper::getCurrentEducationalYear();
 
         $data['password'] = Hash::make($data['password']);
+
+        if (TeacherModel::query()->where('national_id', $data['national_id'])->exists())
+        {
+            throw new CustomException('this national_id is already taken', 986585);
+        }
 
         $teacher = parent::store($data, $storing);
 
@@ -304,7 +310,7 @@ class TeacherAction extends ActionService
 
                 if (isset($updateData['national_id']) && TeacherModel::query()->where('id', '!=', $entity->id)->where('national_id', $updateData['national_id'])->exists())
                 {
-                    throw new CustomException('national id already taken', 2100, 401);
+                    throw new CustomException('national id already taken', 2100, 986585);
                 }
             }
             if (is_callable($updating))
