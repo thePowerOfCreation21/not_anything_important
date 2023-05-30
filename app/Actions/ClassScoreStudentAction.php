@@ -72,7 +72,7 @@ class ClassScoreStudentAction extends ActionService
                 'date_timestamp' => function (&$eloquent, $query)
                 {
                     $eloquent = $eloquent->whereHas('classScore', function ($q) use($query){
-                        $q->where('date', date('Y-m-d', $query['date_timestamp']));
+                        $q->whereDate('date', date('Y-m-d', $query['date_timestamp']));
                     });
                 },
                 'from_date' => function (&$eloquent, $query)
