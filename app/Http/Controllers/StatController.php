@@ -18,4 +18,15 @@ class StatController extends Controller
             (new StatAction())->getByStudentId($request->user()->id)
         );
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getByTeacher (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new StatAction())->getByTeacherId($request->user()->id)
+        );
+    }
 }
