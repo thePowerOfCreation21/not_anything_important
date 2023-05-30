@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\StatController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\OtherController;
@@ -371,6 +372,8 @@ Route::group([
 
         Route::get('/student/message', [MessageReceiverPivotController::class, 'getByStudent']);
         Route::get('/student/message/{id}', [MessageReceiverPivotController::class, 'getByIdByStudent']);
+
+        Route::get('/student/stat', [StatController::class, 'getByStudent']);
     });
 });
 
@@ -416,6 +419,18 @@ Route::group([
 
     Route::get('/teacher/message', [MessageReceiverPivotController::class, 'getByTeacher']);
     Route::get('/teacher/message/{id}', [MessageReceiverPivotController::class, 'getByIdByTeacher']);
+});
+
+Route::get('test', function (){
+    $surveys = \App\Models\SurveyCategoryModel::query()
+        ->where('type', 'student')
+        ->whereDoesntHave('surveyAnswers', function ($q){
+            $q->where('participant_id', 49);
+        })
+        ->where('is_active', true)
+        ->toSql();
+
+    return response()->json($surveys);
 });
 
 // Route::get('/admin2/create', function(){
