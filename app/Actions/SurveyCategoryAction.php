@@ -29,7 +29,7 @@ class SurveyCategoryAction extends ActionService
                 'get' => [
                     'student_id' => ['integer'],
                     'type' => ['in:student,teacher'],
-                    'is_active' => ['boolean']
+                    'is_active' => ['boolean'],
                 ],
                 'getByStudent' => [
                     'is_active' => ['boolean']
@@ -46,6 +46,18 @@ class SurveyCategoryAction extends ActionService
                 'is_active' => function (&$eloquent, $query)
                 {
                     $eloquent = $eloquent->where('is_active', $query['is_active']);
+                },
+                'has_answered' => function (&$eloquent, $query)
+                {
+                    $user_id = $query['student_id'] ?? $query['teacher_id'] ?? null;
+                    if ($query['has_answered'])
+                        $eloquent = $eloquent->whereHas('surveyAnswers', function ($q) use($query, $user_id){
+                            $q->where('participant_id', $user_id);
+                        });
+                    else
+                        $eloquent = $eloquent->whereDoesntHave('surveyAnswers', function ($q) use($query, $user_id){
+                            $q->where('participant_id', $user_id);
+                        });
                 }
             ]);
         parent::__construct();

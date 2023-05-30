@@ -24,4 +24,9 @@ class SurveyCategoryModel extends Model
     {
         return $this->hasMany(SurveyModel::class, 'survey_category_id', 'id');
     }
+
+    public function surveyAnswers (): HasMany
+    {
+        return $this->hasMany(SurveyAnswerModel::class, 'survey_category_id', 'id');
+    }
 }
