@@ -59,7 +59,7 @@ class StatAction
                     FROM
                          `message_receiver_pivot`
                     WHERE
-                        `receiver_type` = 'App\\\\Models\\\\StudentModel' AND receiver_id = '$teacher_id' AND `is_seen` = 0
+                        `receiver_type` = 'App\\\\Models\\\\TeacherModel' AND receiver_id = '$teacher_id' AND `is_seen` = 0
                 ) AS `unread_messages_count`
             ")
         )->first();
