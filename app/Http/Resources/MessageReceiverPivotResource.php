@@ -18,6 +18,7 @@ class MessageReceiverPivotResource extends JsonResource
         return [
             'id' => $this->id,
             'message_id' => $this->message_id,
+            'message' => new MessageResource($this->whenLoaded('message')),
             'receiver_type' => PardisanHelper::getUserTypeByUserClass($this->receiver_type),
             'receiver_id' => $this->receiver_id,
             'is_seen' => $this->is_seen
