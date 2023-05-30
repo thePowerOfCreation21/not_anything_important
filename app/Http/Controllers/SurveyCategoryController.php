@@ -86,7 +86,7 @@ class SurveyCategoryController extends Controller
                 ->setRequest($request)
                 ->setValidationRule('getByStudent')
                 ->setRelations(['surveys'])
-                ->mergeQueryWith(['type' => 'student'])
+                ->mergeQueryWith(['type' => 'student', 'is_active' => true])
                 ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()
         );
@@ -120,7 +120,7 @@ class SurveyCategoryController extends Controller
                 ->setRequest($request)
                 ->setValidationRule('getByTeacher')
                 ->setRelations(['surveys'])
-                ->mergeQueryWith(['type' => 'teacher'])
+                ->mergeQueryWith(['type' => 'teacher', 'is_active' => true])
                 ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()
         );
