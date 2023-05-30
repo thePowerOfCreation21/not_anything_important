@@ -24,6 +24,8 @@ class MessageReceiverPivotModel extends Model
         'is_seen' => 'boolean'
     ];
 
+    public $timestamps = false;
+
     public function message (): BelongsTo
     {
         return $this->belongsTo(MessageModel::class, 'message_id', 'id');
