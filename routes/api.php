@@ -423,18 +423,6 @@ Route::group([
     Route::get('/teacher/stat', [StatController::class, 'getByTeacher']);
 });
 
-Route::get('test', function (){
-    $surveys = \App\Models\SurveyCategoryModel::query()
-        ->where('type', 'student')
-        ->whereDoesntHave('surveyAnswers', function ($q){
-            $q->where('participant_id', 49);
-        })
-        ->where('is_active', true)
-        ->toSql();
-
-    return response()->json($surveys);
-});
-
 // Route::get('/admin2/create', function(){
 //    return \App\Models\AdminModel::query()->create([
 //        'user_name' => 'admin',

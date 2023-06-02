@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\RemoveEmptyDateForUpdate;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -39,6 +40,7 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
+            \App\Http\Middleware\RemoveEmptyDateForUpdate::class,
             \App\Http\Middleware\SetAcceptJsonMiddleware::class,
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
