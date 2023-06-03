@@ -473,7 +473,7 @@ class StudentAction extends ActionService
 
         $student = StudentModel::query()->findOrFail($studentId);
 
-        (new SendSMSService())->sendOTP([$student->phone_number, $student->father_mobile_number, $student->mother_mobile_number], 'UserBlocked', $student->full_name);
+        (new SendSMSService())->sendOTP([$student->mobile_number, $student->father_mobile_number, $student->mother_mobile_number], 'UserBlocked', $student->full_name);
 
         return StudentModel::where('id', $studentId)
             ->update([
