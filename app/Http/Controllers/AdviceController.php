@@ -40,7 +40,7 @@ class AdviceController extends Controller
             (new AdviceAction())
                 ->setRequest($request)
                 ->setValidationRule('getQuery')
-                ->setRelations(['student'])
+                ->setRelations(['student', 'adviceDate', 'adviceHour'])
                 ->mergeQueryWith(['educational_year' => PardisanHelper::getCurrentEducationalYear()])
                 ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()

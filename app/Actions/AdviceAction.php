@@ -70,7 +70,14 @@ class AdviceAction extends ActionService
                 },
                 'search' => function (&$eloquent, $query)
                 {
-                    $eloquent = $eloquent->where('status', 'LIKE', "%{$query['search']}%");
+                    $eloquent = $eloquent
+                        ->where(function ($q) use($query){
+                            $q
+                                ->where('status', 'LIKE', "%{$query['search']}%")
+                                ->orWhereHas('student', function ($q) use($query){
+                                    $q->where('full_name', 'LIKE', "%{$query['search']}%")
+                                });
+                        });
                 }
             ]);
         parent::__construct();
