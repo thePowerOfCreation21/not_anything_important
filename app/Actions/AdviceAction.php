@@ -75,7 +75,7 @@ class AdviceAction extends ActionService
                             $q
                                 ->where('status', 'LIKE', "%{$query['search']}%")
                                 ->orWhereHas('student', function ($q) use($query){
-                                    $q->where('full_name', 'LIKE', "%{$query['search']}%")
+                                    $q->where('full_name', 'LIKE', "%{$query['search']}%");
                                 });
                         });
                 }
