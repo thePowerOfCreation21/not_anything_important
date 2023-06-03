@@ -411,7 +411,12 @@ class StudentAction extends ActionService
 
         $data['password'] = Hash::make($data['password']);
 
-        return parent::store($data, $storing);
+        $student =  parent::store($data, $storing);
+
+        if ($student->register_status == 'pending')
+            (new SendSMSService())->sendOTP([$student->mobile_number, $student->father_mobile_number, $student->mother_mobile_number], 'successfulRegisterRequest', $student->id);
+
+        return $student;
     }
 
     /**
