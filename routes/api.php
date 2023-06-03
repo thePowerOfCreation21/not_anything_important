@@ -318,7 +318,10 @@ Route::group([
 });
 
 Route::group([
-    'middleware' => ['auth:student']
+    'middleware' => [
+        'auth:student',
+        'CheckIfStudentIsBlockedMiddleware'
+    ]
 ], function(){
     Route::get('/student/info', [StudentController::class, 'getInfo']);
     Route::post('/student/change_password', [StudentController::class, 'changePassword']);
