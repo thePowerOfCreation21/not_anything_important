@@ -17,7 +17,7 @@ class AboutUs extends KeyValueConfigService
     protected array|string $validationRule = [
         'text' => ['nullable', 'string', 'max:25000'],
         'image' => ['file', 'mimes:png,jpg,jpeg,svg', 'max:5000'],
-        'video' => ['file', 'mimes:mp4,webm,ogg,3gp,3g2,3gpp,3gpp2', 'max:10000'],
+        'video' => ['file', 'mimes:mp4,webm,ogg,3gp,3g2,3gpp,3gpp2', 'max:20000'],
     ];
 
     protected array $casts = [
