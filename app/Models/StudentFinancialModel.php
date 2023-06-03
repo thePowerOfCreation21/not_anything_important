@@ -27,7 +27,6 @@ class StudentFinancialModel extends Model
 
     protected $casts = [
         'amount' => 'integer',
-        'paid' => 'boolean'
     ];
 
     public $timestamps = false;
