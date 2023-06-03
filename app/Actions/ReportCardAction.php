@@ -27,6 +27,11 @@ class ReportCardAction extends ActionService
                     'educational_year' => ['string', 'max:100'],
                     'class_id' => ['required', 'integer']
                 ],
+                'update' => [
+                    'title' => ['string', 'max:150'],
+                    'month' => ['string', 'max:100'],
+                    'educational_year' => ['string', 'max:100'],
+                ],
                 'get' => [
                     'class_id' => ['integer'],
                     'month' => ['string', 'max:100'],

@@ -105,6 +105,7 @@ Route::group([
     Route::get('/admin/student_report_card/{id}', [StudentReportCardController::class, 'getById']);
 
     Route::post('/admin/report_card', [ReportCardController::class, 'store']);
+    Route::put('/admin/report_card/{id}', [ReportCardController::class, 'updateById']);
     Route::get('/admin/report_card', [ReportCardController::class, 'get']);
     Route::get('/admin/report_card/{id}', [ReportCardController::class, 'getById']);
     Route::get('/admin/report_card/issue', [ReportCardController::class, 'issueReportCards']);
