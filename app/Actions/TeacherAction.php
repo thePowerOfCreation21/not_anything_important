@@ -294,6 +294,9 @@ class TeacherAction extends ActionService
      */
     public function update(array $updateData, callable $updating = null): bool|int
     {
+        if(isset($updateData['password']))
+            $updateData['password'] = Hash::make($updateData['password']);
+
         $updating = function ($eloquent, &$updateData) use ($updating)
         {
             foreach ($eloquent->get() AS $entity)
