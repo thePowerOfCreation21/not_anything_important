@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\SurveyCategoryAction;
+use App\Helpers\PardisanHelper;
 use Genocide\Radiocrud\Exceptions\CustomException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -54,6 +55,7 @@ class SurveyCategoryController extends Controller
                 ->setRequest($request)
                 ->setValidationRule('get')
                 ->setRelations(['surveys'])
+                ->mergeQueryWith(['educational_year' => PardisanHelper::getCurrentEducationalYear()])
                 ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()
         );
@@ -89,7 +91,8 @@ class SurveyCategoryController extends Controller
                 ->mergeQueryWith([
                     'type' => 'student',
                     'is_active' => true,
-                    'has_answered' => false
+                    'has_answered' => false,
+                    'educational_year' => PardisanHelper::getCurrentEducationalYear()
                 ])
                 ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()
