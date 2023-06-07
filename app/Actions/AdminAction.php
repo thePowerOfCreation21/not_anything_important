@@ -23,11 +23,13 @@ class AdminAction extends ActionService
             ->setResource(AdminResource::class)
             ->setValidationRules([
                 'store' => [
+                    'full_name' => ['required', 'string', 'max:150'],
                     'user_name' => ['required', 'string', 'max:25', 'unique:admins'],
                     'password' => ['required', 'string', 'max:150'],
                     'privileges' => ['array','max:'.count(AdminModel::$privileges_list)]
                 ],
                 'update' => [
+                    'full_name' => ['required', 'string', 'max:150'],
                     'user_name' => ['string', 'max:25', 'unique:admins'],
                     'password' => ['string', 'max:150'],
                     'privileges' => ['array','max:'.count(AdminModel::$privileges_list)]
