@@ -17,7 +17,8 @@ class SurveyCategoryModel extends Model
         'text',
         'participants_count',
         'is_active',
-        'type'
+        'type',
+        'educational_year'
     ];
 
     public function surveys (): HasMany

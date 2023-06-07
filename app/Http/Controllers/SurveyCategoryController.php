@@ -38,7 +38,7 @@ class SurveyCategoryController extends Controller
             'message' => 'success',
             'data' => (new SurveyCategoryAction())
                 ->setRequest($request)
-                ->setValidationRule($request)
+                ->setValidationRule('update')
                 ->updateByIdAndRequest($id)
         ]);
     }
