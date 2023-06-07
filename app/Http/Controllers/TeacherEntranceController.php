@@ -75,6 +75,7 @@ class TeacherEntranceController extends Controller
     }
 
     /**
+     * @param string $id
      * @return JsonResponse
      */
     public function deleteById (string $id): JsonResponse
@@ -83,5 +84,38 @@ class TeacherEntranceController extends Controller
             'message' => 'ok',
             'data' => (new TeacherEntranceAction())->deleteById($id)
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByTeacher (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new TeacherEntranceAction())
+                ->setRequest($request)
+                ->setValidationRule('getByTeacher')
+                ->mergeQueryWith(['teacher_id' => $request->user()->id])
+                ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
+    }
+
+    /**
+     * @param string $id
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByIdByTeacher (string $id, Request $request): JsonResponse
+    {
+        return response()->json(
+            (new TeacherEntranceAction())
+                ->mergeQueryWith(['teacher_id' => $request->user()->id])
+                ->makeEloquent()
+                ->getById($id)
+        );
     }
 }

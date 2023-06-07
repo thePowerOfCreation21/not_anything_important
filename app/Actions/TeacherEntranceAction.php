@@ -30,6 +30,9 @@ class TeacherEntranceAction extends ActionService
                 'getQuery' => [
                     'teacher_id' => ['integer'],
                     'week_day' => ['integer', 'between:0,6']
+                ],
+                'getByTeacher' => [
+                    'week_day' => ['integer', 'between:0,6']
                 ]
             ])
             ->setQueryToEloquentClosures([

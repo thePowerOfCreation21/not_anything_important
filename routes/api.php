@@ -384,6 +384,9 @@ Route::group([
 Route::group([
     'middleware' => ['auth:teacher']
 ], function (){
+    Route::get('/teacher/entrance', [TeacherEntranceController::class, 'getByTeacher']);
+    Route::get('/teacher/entrance/{id}', [TeacherEntranceController::class, 'getByIdByTeacher']);
+
     Route::post('/teacher/survey_answer', [SurveyAnswerController::class, 'store']);
 
     Route::get('/teacher/survey_category', [SurveyCategoryController::class, 'getByTeacher']);
