@@ -387,6 +387,9 @@ Route::group([
     Route::get('/teacher/entrance', [TeacherEntranceController::class, 'getByTeacher']);
     Route::get('/teacher/entrance/{id}', [TeacherEntranceController::class, 'getByIdByTeacher']);
 
+    Route::get('/teacher/entrance_history', [TeacherEntranceHistoryController::class, 'getByTeacher']);
+    Route::get('/teacher/entrance_history/{id}', [TeacherEntranceHistoryController::class, 'getByIdByTeacher']);
+
     Route::post('/teacher/survey_answer', [SurveyAnswerController::class, 'store']);
 
     Route::get('/teacher/survey_category', [SurveyCategoryController::class, 'getByTeacher']);

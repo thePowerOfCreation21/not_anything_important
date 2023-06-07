@@ -62,21 +62,6 @@ class TeacherEntranceHistoryController extends Controller
     /**
      * @param string $id
      * @return JsonResponse
-     * @throws CustomException
-     */
-    public function getById (string $id): JsonResponse
-    {
-        return response()->json(
-            (new TeacherEntranceHistoryAction())
-                ->setRelations(['teacher'])
-                ->makeEloquent()
-                ->getById($id)
-        );
-    }
-
-    /**
-     * @param string $id
-     * @return JsonResponse
      */
     public function deleteById (string $id): JsonResponse
     {
@@ -84,5 +69,38 @@ class TeacherEntranceHistoryController extends Controller
             'message' => 'ok',
             'data' => (new TeacherEntranceHistoryAction())->deleteById($id)
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByTeacher (Request $request): JsonResponse
+    {
+        return response()->json(
+            (new TeacherEntranceHistoryAction())
+                ->setRequest($request)
+                ->setValidationRule('getByTeacher')
+                ->mergeQueryWith(['teacher_id' => $request->user()->id])
+                ->makeEloquentViaRequest()
+                ->getByRequestAndEloquent()
+        );
+    }
+
+    /**
+     * @param string $id
+     * @param Request $request
+     * @return JsonResponse
+     * @throws CustomException
+     */
+    public function getByIdByTeacher (string $id, Request $request): JsonResponse
+    {
+        return response()->json(
+            (new TeacherEntranceHistoryAction())
+                ->mergeQueryWith(['teacher_id' => $request->user()->id])
+                ->makeEloquent()
+                ->getById($id)
+        );
     }
 }

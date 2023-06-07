@@ -34,6 +34,11 @@ class TeacherEntranceHistoryAction extends ActionService
                     'teacher_id' => ['integer'],
                     'from_date' => ['date_format:Y-m-d'],
                     'to_date' => ['date_format:Y-m-d'],
+                ],
+                'getByTeacher' => [
+                    'week_day' => ['integer', 'between:0,6'],
+                    'from_date' => ['date_format:Y-m-d'],
+                    'to_date' => ['date_format:Y-m-d'],
                 ]
             ])
             ->setCasts([
