@@ -21,7 +21,7 @@ class CheckIfStudentIsBlockedMiddleware
 
         if ($user->is_block)
         {
-            throw new CustomException('student is blocked', 607, 403, ['reason_for_blocking' => $user->reason_for_blocking]);
+            throw new CustomException('student is blocked', 556397, 403, ['block_reason' => $user->reason_for_blocking]);
         }
 
         return $next($request);
