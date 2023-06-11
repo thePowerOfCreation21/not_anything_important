@@ -39,7 +39,7 @@ class AttendanceController extends Controller
             'message' => 'ok',
             'data' => (new AttendanceAction())
                 ->setRequest($request)
-                ->setValidationRule('updateById')
+                ->setValidationRule('updateByAdmin')
                 ->updateByIdAndRequest($id)
         ]);
     }

@@ -60,6 +60,7 @@ class StudentAction extends ActionService
                     'father_father_name' => ['nullable', 'string', 'max:150'],
                     'father_birth_certificate_number' => ['nullable', 'string', 'max:25'],
                     'father_birth_certificate_serie_number' => ['nullable', 'string', 'max:25'],
+                    'father_birth_certificate_serial_number' => ['nullable', 'string', 'max:25'],
                     'father_birth_certificate_issued_location' => ['nullable', 'string', 'max:1500'],
                     'father_birth_location' => ['nullable', 'string', 'max:1500'],
                     'father_birth_date' => ['nullable', 'string', 'max:50'],
