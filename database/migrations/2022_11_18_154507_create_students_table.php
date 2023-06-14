@@ -41,6 +41,7 @@ return new class extends Migration
             $table->string('mobile_number', 50)->nullable();
             $table->string('phone_number', 50)->nullable();
             $table->string('phone_number_of_close_relative', 50)->nullable();
+            $table->string('previous_school', 250)->nullable();
             $table->string('father_first_name', 150)->nullable();
             $table->string('father_last_name', 150)->nullable();
             $table->string('father_father_name', 150)->nullable();

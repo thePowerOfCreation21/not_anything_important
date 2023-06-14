@@ -42,6 +42,7 @@ class StudentModel extends Model
         'mobile_number',
         'phone_number',
         'phone_number_of_close_relative',
+        'previous_school',
         'father_first_name',
         'father_last_name',
         'father_father_name',
