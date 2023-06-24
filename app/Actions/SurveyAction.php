@@ -94,9 +94,9 @@ class SurveyAction extends ActionService
      */
     public function update(array $updateData, callable $updating = null): bool|int
     {
-        foreach ($this->startEloquentIfIsNull()->eloquent AS $survey)
+        foreach ($this->startEloquentIfIsNull()->eloquent->get() AS $survey)
         {
-            if (isset($data['options'])) $this->storeSurveyOptionsFromRequest($data['options'], $survey->id, true);
+            if (isset($updateData['options'])) $this->storeSurveyOptionsFromRequest($updateData['options'], $survey->id, true);
         }
         return parent::update($updateData, $updating);
     }
