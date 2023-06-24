@@ -207,7 +207,7 @@ class AttendanceAction extends ActionService
             {
                 DB::table('attendance_student')
                     ->where('attendance_id', $id)
-                    ->where('student_id', $updateData['student_id'])
+                    ->where('student_id', $attendanceStudent['student_id'])
                     ->update($attendanceStudent);
             }
 
