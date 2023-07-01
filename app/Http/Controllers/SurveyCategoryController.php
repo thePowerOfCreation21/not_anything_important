@@ -92,7 +92,8 @@ class SurveyCategoryController extends Controller
                     'type' => 'student',
                     'is_active' => true,
                     'has_answered' => false,
-                    'educational_year' => PardisanHelper::getCurrentEducationalYear()
+                    'educational_year' => PardisanHelper::getCurrentEducationalYear(),
+                    'student_id' => $request->user()->id
                 ])
                 ->makeEloquentViaRequest()
                 ->getByRequestAndEloquent()
