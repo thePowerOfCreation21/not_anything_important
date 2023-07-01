@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Actions;
+
 use App\Http\Resources\StudentDisciplineResource;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
 use App\Helpers\PardisanHelper;
@@ -18,22 +19,22 @@ class StudentDisciplineAction extends ActionService
                     'student_id' => ['required', 'string', 'max:20'],
                     'title' => ['required', 'string', 'max:250'],
                     'description' => ['required', 'string', 'max:500'],
-                    'date' => ['required', 'date_format:Y-m-d']
+                    'date' => ['required', 'string']
                 ],
                 'update' => [
                     'title' => ['string', 'max:250'],
                     'description' => ['string', 'max:500'],
-                    'date' => ['date_format:Y-m-d']
+                    'date' => ['string']
                 ],
                 'getQuery' => [
                     'student_id' => ['string', 'max:20'],
-                    'from_date' => ['date_format:Y-m-d'],
-                    'to_date' => ['date_format:Y-m-d'],
+                    'from_date' => ['string'],
+                    'to_date' => ['string'],
                     'educational_year' => ['string', 'max:50']
                 ],
                 'getByStudent' => [
-                    'from_date' => ['date_format:Y-m-d'],
-                    'to_date' => ['date_format:Y-m-d'],
+                    'from_date' => ['string'],
+                    'to_date' => ['string'],
                     'educational_year' => ['string', 'max:50']
                 ]
             ])
@@ -46,18 +47,14 @@ class StudentDisciplineAction extends ActionService
                 'student_id' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->where('student_id', $query['student_id']);
                 },
-                'from_date' => function (&$eloquent, $query)
-                {
+                'from_date' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->whereDate('date', '>=', $query['from_date']);
                 },
-                'to_date' => function (&$eloquent, $query)
-                {
+                'to_date' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->whereDate('date', '<=', $query['to_date']);
                 },
-                'educational_year' => function (&$eloquent, $query)
-                {
-                    if ($query['educational_year']  != '*')
-                    {
+                'educational_year' => function (&$eloquent, $query) {
+                    if ($query['educational_year']  != '*') {
                         $eloquent = $eloquent->where('educational_year', $query['educational_year']);
                     }
                 }
@@ -75,8 +72,7 @@ class StudentDisciplineAction extends ActionService
 
     public function update(array $updateData, callable $updating = null): bool|int
     {
-        if(isset($updateData['date']))
-        {
+        if (isset($updateData['date'])) {
             $updateData['educational_year'] = PardisanHelper::getEducationalYearByGregorianDate($updateData['date']);
         }
 

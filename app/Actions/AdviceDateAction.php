@@ -16,15 +16,15 @@ class AdviceDateAction extends ActionService
             ->setResource(AdviceDateResource::class)
             ->setValidationRules([
                 'store' => [
-                    'date' => ['required', 'date_format:Y-m-d']
+                    'date' => ['required', 'string']
                 ],
                 'update' => [
-                    'date' => ['date_format:Y-m-d']
+                    'date' => ['string']
                 ],
                 'getQuery' => [
                     'educational_year' => ['string', 'max:50'],
-                    'from_date' => ['date_format:Y-m-d'],
-                    'to_date' => ['date_format:Y-m-d'],
+                    'from_date' => ['string'],
+                    'to_date' => ['string'],
                 ]
             ])
             ->setCasts([
@@ -33,19 +33,15 @@ class AdviceDateAction extends ActionService
                 'to_date' => ['jalali_to_gregorian:Y-m-d'],
             ])
             ->setQueryToEloquentClosures([
-                'educational_year' => function (&$eloquent, $query)
-                {
-                    if ($query['educational_year']  != '*')
-                    {
+                'educational_year' => function (&$eloquent, $query) {
+                    if ($query['educational_year']  != '*') {
                         $eloquent = $eloquent->where('educational_year', $query['educational_year']);
                     }
                 },
-                'from_date' => function (&$eloquent, $query)
-                {
+                'from_date' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->whereDate('date', '>=', $query['from_date']);
                 },
-                'to_date' => function (&$eloquent, $query)
-                {
+                'to_date' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->whereDate('date', '<=', $query['to_date']);
                 },
             ]);
@@ -61,8 +57,7 @@ class AdviceDateAction extends ActionService
 
     public function update(array $updateData, callable $updating = null): bool|int
     {
-        if(isset($updateData['date']))
-        {
+        if (isset($updateData['date'])) {
             $updateData['educational_year'] = PardisanHelper::getEducationalYearByGregorianDate($updateData['date']);
         }
 

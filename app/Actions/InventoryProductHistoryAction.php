@@ -23,13 +23,13 @@ class InventoryProductHistoryAction extends ActionService
                     'inventory_product_id' => ['required', 'integer'],
                     'action' => ['required', 'in:' . $allowedActionsString],
                     'amount' => ['required', 'integer', 'between:1,100000000'],
-                    'date' => ['required', 'date_format:Y-m-d H:i']
+                    'date' => ['required', 'string']
                 ],
                 'getQuery' => [
                     'inventory_product_id' => ['integer'],
                     'inventory_product_code' => ['string', 'max:50'],
-                    'from_date' => ['date_format:Y-m-d'],
-                    'to_date' => ['date_format:Y-m-d'],
+                    'from_date' => ['string'],
+                    'to_date' => ['string'],
                 ]
             ])
             ->setCasts([
@@ -38,22 +38,18 @@ class InventoryProductHistoryAction extends ActionService
                 'to_date' => ['jalali_to_gregorian:Y-m-d'],
             ])
             ->setQueryToEloquentClosures([
-                'inventory_product_id' => function (&$eloquent, $query)
-                {
+                'inventory_product_id' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->where('inventory_product_id', $query['inventory_product_id']);
                 },
-                'inventory_product_code' => function (&$eloquent, $query)
-                {
-                    $eloquent = $eloquent->whereHas('inventoryProduct', function($q) use ($query){
+                'inventory_product_code' => function (&$eloquent, $query) {
+                    $eloquent = $eloquent->whereHas('inventoryProduct', function ($q) use ($query) {
                         $q->where('code', $query['inventory_product_code']);
                     });
                 },
-                'from_date' => function (&$eloquent, $query)
-                {
+                'from_date' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->whereDate('date', '>=', $query['from_date']);
                 },
-                'to_date' => function (&$eloquent, $query)
-                {
+                'to_date' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->whereDate('date', '<=', $query['to_date']);
                 },
             ])
@@ -64,7 +60,7 @@ class InventoryProductHistoryAction extends ActionService
     /**
      * @return string[]
      */
-    public function getAllowedActions (): array
+    public function getAllowedActions(): array
     {
         return ['increase', 'decrease'];
     }
@@ -75,7 +71,7 @@ class InventoryProductHistoryAction extends ActionService
      * @param bool $reverse
      * @return int
      */
-    protected function castAmountByAction (int $amount, string $action, bool $reverse = false): int
+    protected function castAmountByAction(int $amount, string $action, bool $reverse = false): int
     {
         $amount =  $action == 'decrease' ? -$amount : $amount;
         return $reverse ? -$amount : $amount;
@@ -88,7 +84,7 @@ class InventoryProductHistoryAction extends ActionService
      * @throws CustomException
      * @throws \Throwable
      */
-    protected function updateInventoryProductStock (array $data, bool $reverse = false): object
+    protected function updateInventoryProductStock(array $data, bool $reverse = false): object
     {
         $inventoryProduct = (new InventoryProductAction())
             ->applyResource(false)
@@ -125,8 +121,7 @@ class InventoryProductHistoryAction extends ActionService
      */
     public function delete(callable $deleting = null): mixed
     {
-        foreach ($this->getEloquent()->get() AS $inventoryProductHistory)
-        {
+        foreach ($this->getEloquent()->get() as $inventoryProductHistory) {
             $this->updateInventoryProductStock($inventoryProductHistory->toArray(), true);
         }
 

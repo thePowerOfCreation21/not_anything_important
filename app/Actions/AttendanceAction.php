@@ -30,7 +30,7 @@ class AttendanceAction extends ActionService
             ->setValidationRules([
                 'storeByAdmin' => [
                     'class_course_id' => ['required', 'integer',],
-                    'date' => ['required', 'date_format:Y-m-d'],
+                    'date' => ['required', 'string'],
                     'description' => ['string', 'max:2500'],
                     'students' => ['array', 'max:100'],
                     'students.*.student_id' => ['required', 'integer'],
@@ -40,7 +40,7 @@ class AttendanceAction extends ActionService
                 'updateByAdmin' => [
                     'class_course_id' => ['string', 'max:20'],
                     'date' => ['string', 'max:2500'],
-                    'description' => ['date_format:Y-m-d'],
+                    'description' => ['string', 'max:2500'],
                     'students' => ['array', 'max:100'],
                     'students.*.student_id' => ['required', 'string', 'max:20'],
                     'students.*.status' => ["in:$allowedAttendanceStudentStatusesString"],
@@ -49,8 +49,8 @@ class AttendanceAction extends ActionService
                 'getQuery' => [
                     'class_course_id' => ['string', 'max:20'],
                     'class_id' => ['string', 'max:20'],
-                    'from_date' => ['date_format:Y-m-d'],
-                    'to_date' => ['date_format:Y-m-d'],
+                    'from_date' => ['string'],
+                    'to_date' => ['string'],
                     'date_timestamp' => ['integer'],
                 ]
             ])
@@ -60,45 +60,36 @@ class AttendanceAction extends ActionService
                 'to_date' => ['jalali_to_gregorian:Y-m-d'],
             ])
             ->setQueryToEloquentClosures([
-                'educational_year' => function (&$eloquent, $query)
-                {
-                    if ($query['educational_year']  != '*')
-                    {
+                'educational_year' => function (&$eloquent, $query) {
+                    if ($query['educational_year']  != '*') {
                         $eloquent = $eloquent->where('educational_year', $query['educational_year']);
                     }
                 },
-                'class_id' => function (&$eloquent, $query)
-                {
-                    $eloquent = $eloquent->whereHas('classCourse', function($q) use($query){
+                'class_id' => function (&$eloquent, $query) {
+                    $eloquent = $eloquent->whereHas('classCourse', function ($q) use ($query) {
                         $q->where('class_id', $query['class_id']);
                     });
                 },
-                'class_course_id' => function (&$eloquent, $query)
-                {
+                'class_course_id' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->where('class_course_id', $query['class_course_id']);
                 },
-                'teacher_id' => function (&$eloquent, $query)
-                {
-                    $eloquent = $eloquent->whereHas('classCourse', function ($q) use($query){
+                'teacher_id' => function (&$eloquent, $query) {
+                    $eloquent = $eloquent->whereHas('classCourse', function ($q) use ($query) {
                         $q->where('teacher_id', $query['teacher_id']);
                     });
                 },
-                'student_id' => function (&$eloquent, $query)
-                {
-                    $eloquent = $eloquent->whereHas('attendanceStudents', function ($q) use($query){
+                'student_id' => function (&$eloquent, $query) {
+                    $eloquent = $eloquent->whereHas('attendanceStudents', function ($q) use ($query) {
                         $q->where('student_id', $query['student_id']);
                     });
                 },
-                'date_timestamp' => function(&$eloquent, $query)
-                {
+                'date_timestamp' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->wheredate('date', date('Y-m-d', $query['date_timestamp']));
                 },
-                'from_date' => function (&$eloquent, $query)
-                {
+                'from_date' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->whereDate('date', '>=', $query['from_date']);
                 },
-                'to_date' => function (&$eloquent, $query)
-                {
+                'to_date' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->whereDate('date', '<=', $query['from_date']);
                 },
             ])
@@ -110,7 +101,7 @@ class AttendanceAction extends ActionService
     /**
      * @return string[]
      */
-    public function getAllowedAttendanceStudentStatuses (): array
+    public function getAllowedAttendanceStudentStatuses(): array
     {
         return ['present', 'absent', 'late'];
     }
@@ -138,8 +129,7 @@ class AttendanceAction extends ActionService
 
         $smsStudentIds = []; // list of id of students we may send sms to them
 
-        foreach ($data['students'] AS $attendanceStudent)
-        {
+        foreach ($data['students'] as $attendanceStudent) {
             $attendanceStudentsHashMap[$attendanceStudent['student_id']] = [
                 'student_id' => $attendanceStudent['student_id'],
                 'status' => $attendanceStudent['status'],
@@ -147,16 +137,14 @@ class AttendanceAction extends ActionService
                 'attendance_id' => $attendance->id
             ];
 
-            if ($attendanceStudent['status'] != 'present')
-            {
+            if ($attendanceStudent['status'] != 'present') {
                 $smsStudentIds[] = $attendanceStudent['student_id'];
             }
         }
 
         $classStudents = DB::table('class_student')->where('class_id', $class->id)->get();
 
-        foreach ($classStudents AS $classStudent)
-        {
+        foreach ($classStudents as $classStudent) {
             $attendanceStudentsHashMap[$classStudent->student_id] ??= [
                 'attendance_id' => $attendance->id,
                 'student_id' => $classStudent->student_id,
@@ -170,14 +158,10 @@ class AttendanceAction extends ActionService
             ->where('last_time_sms_sent', '!=', $currentDate)
             ->get(); // list of students we will send sms to them
 
-        foreach ($smsStudents AS $smsStudent)
-        {
-            if ($attendanceStudentsHashMap[$smsStudent->id]['status'] == 'absent')
-            {
+        foreach ($smsStudents as $smsStudent) {
+            if ($attendanceStudentsHashMap[$smsStudent->id]['status'] == 'absent') {
                 (new SendSMSService())->sendOTP([$smsStudent->father_mobile_number, $smsStudent->father_mobile_number], 'studentAbsent', $smsStudent->full_name ?? 'unknown', $data['jalali_date']);
-            }
-            else
-            {
+            } else {
                 (new SendSMSService())->sendOTP([$smsStudent->father_mobile_number, $smsStudent->father_mobile_number], 'studentLate', $smsStudent->full_name ?? 'unknown', $data['jalali_date']);
             }
         }
@@ -201,18 +185,15 @@ class AttendanceAction extends ActionService
      */
     public function updateByIdAndRequest(string $id, callable $updating = null): bool|int
     {
-        $updating = function ($eloquent, $updateData) use ($updating, $id)
-        {
-            foreach ($updateData['students'] ?? [] AS $attendanceStudent)
-            {
+        $updating = function ($eloquent, $updateData) use ($updating, $id) {
+            foreach ($updateData['students'] ?? [] as $attendanceStudent) {
                 DB::table('attendance_student')
                     ->where('attendance_id', $id)
                     ->where('student_id', $attendanceStudent['student_id'])
                     ->update($attendanceStudent);
             }
 
-            if (is_callable($updating))
-            {
+            if (is_callable($updating)) {
                 $updating($eloquent, $updateData);
             }
         };
@@ -223,14 +204,13 @@ class AttendanceAction extends ActionService
     /**
      * @return array
      */
-    public function getAndCastForTeacher (): array
+    public function getAndCastForTeacher(): array
     {
         $attendances = $this->eloquent->get();
 
         $result = [];
 
-        foreach ($attendances AS $attendance)
-        {
+        foreach ($attendances as $attendance) {
             $date = explode(' ', $attendance->date)[0];
             $result['date'] = Helpers::getCustomDateCast($date);
             $result[$date]['attendances'] = $attendance;
@@ -242,7 +222,7 @@ class AttendanceAction extends ActionService
     /**
      * @return $this
      */
-    public function groupByDate (): static
+    public function groupByDate(): static
     {
         $this->eloquent = $this
             ->eloquent

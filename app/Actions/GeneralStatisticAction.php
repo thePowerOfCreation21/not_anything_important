@@ -16,8 +16,8 @@ class GeneralStatisticAction extends ActionService
         $this
             ->setValidationRules([
                 'getQuery' => [
-                    'from_date' => ['date_format:Y-m-d'],
-                    'to_date' => ['date_format:Y-m-d'],
+                    'from_date' => ['string'],
+                    'to_date' => ['string'],
                 ]
             ])
             ->setCasts([
@@ -33,7 +33,7 @@ class GeneralStatisticAction extends ActionService
      * @return int[]
      */
     #[ArrayShape(['paid' => "int|mixed", 'not_paid' => "int|mixed", 'total' => "int|mixed"])]
-    public function getStudentFinancialStatistics (array $query): array
+    public function getStudentFinancialStatistics(array $query): array
     {
         $stats = [
             'paid' => 0,
@@ -46,15 +46,10 @@ class GeneralStatisticAction extends ActionService
                 ->setQuery($query)
                 ->makeEloquent()
                 ->getByEloquent()
-            AS $studentFinancial
-        )
-        {
-            if ($studentFinancial->paid)
-            {
+            as $studentFinancial) {
+            if ($studentFinancial->paid) {
                 $stats['paid'] += $studentFinancial->amount;
-            }
-            else
-            {
+            } else {
                 $stats['not_paid'] += $studentFinancial->amount;
             }
             $stats['total'] += $studentFinancial->amount;
@@ -68,7 +63,7 @@ class GeneralStatisticAction extends ActionService
      * @return int[]
      */
     #[ArrayShape(['total' => "int|mixed"])]
-    public function getTeacherFinancialStatistics (array $query): array
+    public function getTeacherFinancialStatistics(array $query): array
     {
         $stats = [
             'total' => 0
@@ -79,9 +74,7 @@ class GeneralStatisticAction extends ActionService
                 ->setQuery($query)
                 ->makeEloquent()
                 ->getByEloquent()
-            AS $teacherFinancial
-        )
-        {
+            as $teacherFinancial) {
             $stats['total'] += $teacherFinancial->amount;
         }
 
@@ -93,7 +86,7 @@ class GeneralStatisticAction extends ActionService
      * @return int[]
      */
     #[ArrayShape(['total' => "int|mixed"])]
-    public function getFinancialStatistics (array $query): array
+    public function getFinancialStatistics(array $query): array
     {
         $stats = [
             'total' => 0
@@ -104,9 +97,7 @@ class GeneralStatisticAction extends ActionService
                 ->setQuery($query)
                 ->makeEloquent()
                 ->getByEloquent()
-            AS $financial
-        )
-        {
+            as $financial) {
             $stats['total'] += $financial->amount;
         }
 
@@ -118,7 +109,7 @@ class GeneralStatisticAction extends ActionService
      * @return array
      */
     #[ArrayShape(['student_financial' => "int[]", 'teacher_financial' => "int[]", 'financial' => "int[]"])]
-    public function get (array $query): array
+    public function get(array $query): array
     {
         $query['educational_year'] = $query['educational_year'] ?? PardisanHelper::getCurrentEducationalYear();
 
@@ -134,7 +125,7 @@ class GeneralStatisticAction extends ActionService
      * @throws CustomException
      */
     #[ArrayShape(['student_financial' => "int[]", 'teacher_financial' => "int[]", 'financial' => "int[]"])]
-    public function getByRequest (): array
+    public function getByRequest(): array
     {
         return $this->get($this->getDataFromRequest());
     }

@@ -26,7 +26,7 @@ class ClassScoreAction extends ActionService
             ->setValidationRules([
                 'storeByAdmin' => [
                     'class_course_id' => ['required', 'string', 'max:20'],
-                    'date' => ['required', 'date_format:Y-m-d H:i'],
+                    'date' => ['required', 'string'],
                     'educational_year' => ['nullable', 'string', 'min:2', 'max:50'],
                     'max_score' => ['numeric', 'between:1,999.99'],
                     // 'students' => ['required', 'array', 'max:100'],
@@ -35,7 +35,7 @@ class ClassScoreAction extends ActionService
                 ],
                 'storeByTeacher' => [
                     'class_course_id' => ['required', 'string', 'max:20'],
-                    'date' => ['required', 'date_format:Y-m-d H:i'],
+                    'date' => ['required', 'string'],
                     'educational_year' => ['nullable', 'string', 'min:2', 'max:50'],
                     'max_score' => ['numeric', 'between:0,999.99'],
                     // 'students' => ['required', 'array', 'max:100'],
@@ -44,7 +44,7 @@ class ClassScoreAction extends ActionService
                 ],
                 'updateByAdmin' => [
                     // 'class_course_id' => ['string', 'max:20'],
-                    'date' => ['date_format:Y-m-d H:i'],
+                    'date' => ['string'],
                     'educational_year' => ['string', 'min:2', 'max:50'],
                     'max_score' => ['numeric', 'between:0,999.99'],
                     // 'students' => ['array', 'max:100'],
@@ -53,7 +53,7 @@ class ClassScoreAction extends ActionService
                 ],
                 'updateByTeacher' => [
                     // 'class_course_id' => ['string', 'max:20'],
-                    'date' => ['date_format:Y-m-d H:i'],
+                    'date' => ['string'],
                     'educational_year' => ['string', 'min:2', 'max:50'],
                     'max_score' => ['numeric', 'between:0,999.99'],
                     // 'students' => ['array', 'max:100'],
@@ -63,8 +63,8 @@ class ClassScoreAction extends ActionService
                 'getQuery' => [
                     'class_course_id' => ['string', 'max:20'],
                     'class_id' => ['string', 'max:20'],
-                    'from_date' => ['date_format:Y-m-d'],
-                    'to_date' => ['date_format:Y-m-d'],
+                    'from_date' => ['string'],
+                    'to_date' => ['string'],
                     'date_timestamp' => ['integer'],
                 ]
             ])->setCasts([
@@ -73,38 +73,31 @@ class ClassScoreAction extends ActionService
                 'to_date' => ['jalali_to_gregorian:Y-m-d'],
             ])
             ->setQueryToEloquentClosures([
-                'class_id' => function (&$eloquent, $query)
-                {
-                    $eloquent = $eloquent->whereHas('classCourse', function($q) use($query){
+                'class_id' => function (&$eloquent, $query) {
+                    $eloquent = $eloquent->whereHas('classCourse', function ($q) use ($query) {
                         $q->where('class_id', $query['class_id']);
                     });
                 },
-                'class_course_id' => function (&$eloquent, $query)
-                {
+                'class_course_id' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->where('class_course_id', $query['class_course_id']);
                 },
-                'teacher_id' => function (&$eloquent, $query)
-                {
-                    $eloquent = $eloquent->whereHas('classCourse', function ($q) use ($query){
+                'teacher_id' => function (&$eloquent, $query) {
+                    $eloquent = $eloquent->whereHas('classCourse', function ($q) use ($query) {
                         $q->where('class_course.teacher_id', $query['teacher_id']);
                     });
                 },
-                'student_id' => function (&$eloquent, $query)
-                {
-                    $eloquent = $eloquent->whereHas('classScoreStudents', function ($q) use($query){
+                'student_id' => function (&$eloquent, $query) {
+                    $eloquent = $eloquent->whereHas('classScoreStudents', function ($q) use ($query) {
                         $q->where('student_id', $query['student_id']);
                     });
                 },
-                'date_timestamp' => function(&$eloquent, $query)
-                {
+                'date_timestamp' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->wheredate('date', date('Y-m-d', $query['date_timestamp']));
                 },
-                'from_date' => function (&$eloquent, $query)
-                {
+                'from_date' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->whereDate('date', '>=', $query['from_date']);
                 },
-                'to_date' => function (&$eloquent, $query)
-                {
+                'to_date' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->whereDate('date', '<=', $query['from_date']);
                 },
             ])
@@ -117,7 +110,7 @@ class ClassScoreAction extends ActionService
      * @throws CustomException
      */
     #[ArrayShape(['submitter_type' => "string", 'submitter_id' => "mixed"])]
-    public function getSubmitterByRequest (): array
+    public function getSubmitterByRequest(): array
     {
         $user = $this->getUserFromRequest();
 
@@ -154,11 +147,14 @@ class ClassScoreAction extends ActionService
         $data['educational_year'] = $data['educational_year'] ?? PardisanHelper::getCurrentEducationalYear();
 
         throw_if(
-            is_a($data['submitter_type'], TeacherModel::class) && ! ClassCourseModel::query()
+            is_a($data['submitter_type'], TeacherModel::class) && !ClassCourseModel::query()
                 ->where('id', $data['class_course_id'])
                 ->where('teacher_id', $data['submitter_id'])
                 ->exists(),
-            CustomException::class, 'class_course_id is wrong', '47562', '400'
+            CustomException::class,
+            'class_course_id is wrong',
+            '47562',
+            '400'
         );
 
         $classScore = parent::store($data, $storing);
@@ -167,15 +163,13 @@ class ClassScoreAction extends ActionService
         $classScoreStudentsHashMap = [];
         $studentIds = [];
 
-        foreach ($data['students'] AS $classScoreStudent)
-        {
+        foreach ($data['students'] as $classScoreStudent) {
             $classScoreStudentsHashMap[$classScoreStudent['student_id']] = $classScoreStudent;
             $classScoreStudentsHashMap[$classScoreStudent['student_id']]['class_score_id'] = $classScore->id;
             $studentIds[] = $classScoreStudent['student_id'];
         }
 
-        foreach (StudentModel::query()->whereIn('id', $studentIds)->get() AS $student)
-        {
+        foreach (StudentModel::query()->whereIn('id', $studentIds)->get() as $student) {
             // TODO: send sms to student's parent
             $classScoreStudents[] = $classScoreStudentsHashMap[$student->id];
         }
@@ -208,12 +202,9 @@ class ClassScoreAction extends ActionService
      */
     public function update(array $updateData, callable $updating = null): bool|int
     {
-        $updating = function ($eloquent, $updateData) use ($updating)
-        {
-            foreach ($eloquent->get() AS $classScore)
-            {
-                foreach ($updateData['students'] ?? [] AS $classScoreStudent)
-                {
+        $updating = function ($eloquent, $updateData) use ($updating) {
+            foreach ($eloquent->get() as $classScore) {
+                foreach ($updateData['students'] ?? [] as $classScoreStudent) {
                     ClassScoreStudentModel::query()
                         ->where('class_score_id', $classScore->id)
                         ->where('student_id', $classScoreStudent['student_id'])
@@ -221,8 +212,7 @@ class ClassScoreAction extends ActionService
                 }
             }
 
-            if (is_callable($updating))
-            {
+            if (is_callable($updating)) {
                 $updating($eloquent, $updateData);
             }
         };
@@ -233,7 +223,7 @@ class ClassScoreAction extends ActionService
     /**
      * @return $this
      */
-    public function groupByDate (): static
+    public function groupByDate(): static
     {
         $this->eloquent = $this
             ->eloquent

@@ -28,8 +28,8 @@ class WalletHistoryAction extends ActionService
                     'student_id' => ['string', 'max:20']
                 ],
                 'getByStudent' => [
-                    'from_created_at' => ['date_format:Y-m-d'],
-                    'to_created_at' => ['date_format:Y-m-d'],
+                    'from_created_at' => ['string'],
+                    'to_created_at' => ['string'],
                 ]
             ])
             ->setCasts([
@@ -37,16 +37,13 @@ class WalletHistoryAction extends ActionService
                 'to_created_at' => ['jalali_to_gregorian:Y-m-d'],
             ])
             ->setQueryToEloquentClosures([
-                'student_id' => function (&$eloquent, $query)
-                {
+                'student_id' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->where('student_id', $query['student_id']);
                 },
-                'from_created_at' => function (&$eloquent, $query)
-                {
+                'from_created_at' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->whereDate('created_at', '>=', $query['from_created_at']);
                 },
-                'to_created_at' => function (&$eloquent, $query)
-                {
+                'to_created_at' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->whereDate('created_at', '<=', $query['from_created_at']);
                 },
             ]);
@@ -66,8 +63,7 @@ class WalletHistoryAction extends ActionService
 
         $newAmount = $data['action'] == 'increase' ? $student->wallet_amount + $data['amount'] : $student->wallet_amount - $data['amount'];
 
-        if($newAmount < 0)
-        {
+        if ($newAmount < 0) {
             throw new CustomException('the value you entered is greater than the current amount in student wallet', 30, Response::HTTP_BAD_REQUEST);
         }
 

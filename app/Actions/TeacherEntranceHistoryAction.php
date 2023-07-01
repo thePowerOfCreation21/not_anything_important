@@ -21,7 +21,7 @@ class TeacherEntranceHistoryAction extends ActionService
             ->setValidationRules([
                 'store' => [
                     'teacher_id' => ['required', 'integer', 'exists:teachers,id'],
-                    'date' => ['date_format:Y-m-d'],
+                    'date' => ['string'],
                     // 'week_day' => ['required', 'between:1,7'],
                     // 'entrance' => ['required', 'boolean'],
                     'exit' => ['boolean'],
@@ -32,13 +32,13 @@ class TeacherEntranceHistoryAction extends ActionService
                 'getQuery' => [
                     'week_day' => ['integer', 'between:0,6'],
                     'teacher_id' => ['integer'],
-                    'from_date' => ['date_format:Y-m-d'],
-                    'to_date' => ['date_format:Y-m-d'],
+                    'from_date' => ['string'],
+                    'to_date' => ['string'],
                 ],
                 'getByTeacher' => [
                     'week_day' => ['integer', 'between:0,6'],
-                    'from_date' => ['date_format:Y-m-d'],
-                    'to_date' => ['date_format:Y-m-d'],
+                    'from_date' => ['string'],
+                    'to_date' => ['string'],
                 ]
             ])
             ->setCasts([
@@ -47,20 +47,16 @@ class TeacherEntranceHistoryAction extends ActionService
                 'to_date' => ['jalali_to_gregorian:Y-m-d'],
             ])
             ->setQueryToEloquentClosures([
-                'teacher_id' => function (&$eloquent, $query)
-                {
+                'teacher_id' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->where('teacher_id', $query['teacher_id']);
                 },
-                'from_date' => function (&$eloquent, $query)
-                {
+                'from_date' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->whereDate('date', '>=', $query['from_date']);
                 },
-                'to_date' => function (&$eloquent, $query)
-                {
+                'to_date' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->whereDate('date', '<=', $query['from_date']);
                 },
-                'week_day' => function (&$eloquent, $query)
-                {
+                'week_day' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->where('week_day', $query['week_day']);
                 }
             ]);
@@ -88,12 +84,10 @@ class TeacherEntranceHistoryAction extends ActionService
             ->where('week_day', $data['week_day'])
             ->firstOrFail();
 
-        if (strtotime($data['entrance']) > strtotime($teacherEntrance->entrance))
-        {
+        if (strtotime($data['entrance']) > strtotime($teacherEntrance->entrance)) {
             $data['late_string'] = Helpers::persianTimeElapsedString($data['entrance'], $teacherEntrance->entrance, full: true);
 
-            if (! empty($teacherEntrance->teacher?->phone_number))
-                (new SendSMSService())->sendOTP($teacherEntrance->teacher->phone_number, 'teacherLate', $data['jalali_date'], $data['late_string']);
+            if (!empty($teacherEntrance->teacher?->phone_number)) (new SendSMSService())->sendOTP($teacherEntrance->teacher->phone_number, 'teacherLate', $data['jalali_date'], $data['late_string']);
         }
 
         $updateTeacherData = [
@@ -115,7 +109,7 @@ class TeacherEntranceHistoryAction extends ActionService
         if (isset($updateData['exit']) && $updateData['exit']) $updateData['exit'] = date('h:i');
 
         if (isset($updateData['exit']))
-            foreach ($this->eloquent->get() AS $teacherEntranceHistory)
+            foreach ($this->eloquent->get() as $teacherEntranceHistory)
                 TeacherModel::query()
                     ->where('id', $teacherEntranceHistory->teacher_id)
                     ->update([

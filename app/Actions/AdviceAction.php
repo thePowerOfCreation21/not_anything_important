@@ -28,14 +28,14 @@ class AdviceAction extends ActionService
                 'getQuery' => [
                     'student_id' => ['integer'],
                     'search' => ['string', 'max:255'],
-                    'from_date' => ['date_format:Y-m-d'],
-                    'to_date' => ['date_format:Y-m-d'],
+                    'from_date' => ['string'],
+                    'to_date' => ['string'],
                     'educational_year' => ['string', 'max:50']
                 ],
                 'getByStudent' => [
                     'search' => ['string', 'max:255'],
-                    'from_date' => ['date_format:Y-m-d'],
-                    'to_date' => ['date_format:Y-m-d'],
+                    'from_date' => ['string'],
+                    'to_date' => ['string'],
                     'educational_year' => ['string', 'max:50']
                 ]
             ])
@@ -45,36 +45,30 @@ class AdviceAction extends ActionService
                 'to_date' => ['jalali_to_gregorian:Y-m-d'],
             ])
             ->setQueryToEloquentClosures([
-                'student_id' => function (&$eloquent, $query)
-                {
+                'student_id' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->where('student_id', $query['student_id']);
                 },
-                'from_date' => function (&$eloquent, $query)
-                {
-                    $eloquent = $eloquent->whereHas('adviceDate', function($q) use ($query){
+                'from_date' => function (&$eloquent, $query) {
+                    $eloquent = $eloquent->whereHas('adviceDate', function ($q) use ($query) {
                         $q->whereDate('advice_dates.date', '>=', $query['from_date']);
                     });
                 },
-                'to_date' => function (&$eloquent, $query)
-                {
-                    $eloquent = $eloquent->whereHas('adviceDate', function($q) use ($query){
+                'to_date' => function (&$eloquent, $query) {
+                    $eloquent = $eloquent->whereHas('adviceDate', function ($q) use ($query) {
                         $q->whereDate('advice_dates.date', '<=', $query['to_date']);
                     });
                 },
-                'educational_year' => function (&$eloquent, $query)
-                {
-                    if ($query['educational_year']  != '*')
-                    {
+                'educational_year' => function (&$eloquent, $query) {
+                    if ($query['educational_year']  != '*') {
                         $eloquent = $eloquent->where('educational_year', $query['educational_year']);
                     }
                 },
-                'search' => function (&$eloquent, $query)
-                {
+                'search' => function (&$eloquent, $query) {
                     $eloquent = $eloquent
-                        ->where(function ($q) use($query){
+                        ->where(function ($q) use ($query) {
                             $q
                                 ->where('status', 'LIKE', "%{$query['search']}%")
-                                ->orWhereHas('student', function ($q) use($query){
+                                ->orWhereHas('student', function ($q) use ($query) {
                                     $q->where('full_name', 'LIKE', "%{$query['search']}%");
                                 });
                         });
@@ -85,8 +79,7 @@ class AdviceAction extends ActionService
 
     public function update(array $updateData, callable $updating = null): bool|int
     {
-        if(isset($updateData['date']))
-        {
+        if (isset($updateData['date'])) {
             $updateData['educational_year'] = PardisanHelper::getEducationalYearByGregorianDate($updateData['date']);
         }
 
@@ -97,7 +90,7 @@ class AdviceAction extends ActionService
      * @return mixed
      * @throws CustomException|Throwable
      */
-    public function storeByStudentByRequest (): mixed
+    public function storeByStudentByRequest(): mixed
     {
         return $this->store(
             array_merge($this->getDataFromRequest(), ['student_id' => $this->request->user()->id])
@@ -126,7 +119,10 @@ class AdviceAction extends ActionService
                 ->where('advice_date_id', $data['advice_date_id'])
                 // ->where('hour_id', $data['hour_id'])
                 ->exists(),
-            CustomException::class, 'this student already has advice in this date', '37102', 400
+            CustomException::class,
+            'this student already has advice in this date',
+            '37102',
+            400
         );
 
         return parent::store($data, $storing);

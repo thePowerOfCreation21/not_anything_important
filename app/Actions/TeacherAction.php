@@ -113,8 +113,8 @@ class TeacherAction extends ActionService
                     'class_id' => ['string', 'max:20'],
                     'register_status' => ['string', 'max:150'],
                     'educational_year' => ['string', 'max:50'],
-                    'from_created_at' => ['date_format:Y-m-d'],
-                    'to_created_at' => ['date_format:Y-m-d'],
+                    'from_created_at' => ['string'],
+                    'to_created_at' => ['string'],
                     'search' => ['string', 'max:150'],
                     'week_day' => ['between:1,7']
                 ],
@@ -132,40 +132,32 @@ class TeacherAction extends ActionService
                 'partner_file' => ['file', 'nullable']
             ])
             ->setQueryToEloquentClosures([
-                'class_id' => function (&$eloquent, $query)
-                {
-                    $eloquent = $eloquent->whereHas('classCourses', function ($q) use ($query){
+                'class_id' => function (&$eloquent, $query) {
+                    $eloquent = $eloquent->whereHas('classCourses', function ($q) use ($query) {
                         $q->where('class_id', $query['class_id']);
                     });
                 },
-                'educational_year' => function (&$eloquent, $query)
-                {
-                    if ($query['educational_year']  != '*')
-                    {
+                'educational_year' => function (&$eloquent, $query) {
+                    if ($query['educational_year']  != '*') {
                         $eloquent = $eloquent->where('educational_year', $query['educational_year']);
                     }
                 },
-                'register_status' => function (&$eloquent, $query)
-                {
+                'register_status' => function (&$eloquent, $query) {
                     $query['register_status'] = is_string($query['register_status']) ? explode(',', $query['register_status']) : $query['register_status'];
 
                     $eloquent = $eloquent->whereIn('register_status', $query['register_status']);
                 },
-                'search' => function (&$eloquent, $query)
-                {
+                'search' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->where('full_name', 'LIKE', "%{$query['search']}%");
                 },
-                'from_created_at' => function (&$eloquent, $query)
-                {
+                'from_created_at' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->whereDate('created_at', '>=', $query['from_created_at']);
                 },
-                'to_created_at' => function (&$eloquent, $query)
-                {
+                'to_created_at' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->whereDate('created_at', '<=', $query['to_created_at']);
                 },
-                'week_day' => function (&$eloquent, $query)
-                {
-                    $eloquent = $eloquent->whereHas('entrances', function ($q) use($query){
+                'week_day' => function (&$eloquent, $query) {
+                    $eloquent = $eloquent->whereHas('entrances', function ($q) use ($query) {
                         $q->where('week_day', $query['week_day']);
                     });
                 },
@@ -179,10 +171,9 @@ class TeacherAction extends ActionService
      * @param string $defaultRegisterStatus
      * @return $this
      */
-    public function setDefaultRegisterStatus (string $defaultRegisterStatus): static
+    public function setDefaultRegisterStatus(string $defaultRegisterStatus): static
     {
-        if (in_array($defaultRegisterStatus, $this->getAllowedRegisterStatuses()))
-        {
+        if (in_array($defaultRegisterStatus, $this->getAllowedRegisterStatuses())) {
             $this->defaultRegisterStatus = $defaultRegisterStatus;
         }
         return $this;
@@ -191,7 +182,7 @@ class TeacherAction extends ActionService
     /**
      * @return string
      */
-    public function getDefaultRegisterStatus (): string
+    public function getDefaultRegisterStatus(): string
     {
         return $this->defaultRegisterStatus;
     }
@@ -199,7 +190,7 @@ class TeacherAction extends ActionService
     /**
      * @return string[]
      */
-    public function getAllowedRegisterStatuses (): array
+    public function getAllowedRegisterStatuses(): array
     {
         return ['added_by_admin', 'accepted', 'rejected', 'pending'];
     }
@@ -212,8 +203,7 @@ class TeacherAction extends ActionService
      */
     protected function uploadFile(UploadedFile $file, string $path = '/uploads', string $fieldName = null): string
     {
-        if (empty($path))
-        {
+        if (empty($path)) {
             $path = '/uploads';
         }
 
@@ -236,8 +226,7 @@ class TeacherAction extends ActionService
 
         $data['password'] = Hash::make($data['password']);
 
-        if (TeacherModel::query()->where('national_id', $data['national_id'])->exists())
-        {
+        if (TeacherModel::query()->where('national_id', $data['national_id'])->exists()) {
             throw new CustomException('this national_id is already taken', 986585);
         }
 
@@ -261,10 +250,9 @@ class TeacherAction extends ActionService
      * @param array $workExperiences
      * @return mixed
      */
-    public function storeTeacherWorkExperiences (string $teacherId, array $workExperiences): mixed
+    public function storeTeacherWorkExperiences(string $teacherId, array $workExperiences): mixed
     {
-        foreach ($workExperiences AS $key => $workExperience)
-        {
+        foreach ($workExperiences as $key => $workExperience) {
             $workExperiences[$key]['teacher_id'] = $teacherId;
         }
 
@@ -276,10 +264,9 @@ class TeacherAction extends ActionService
      * @param array $skills
      * @return mixed
      */
-    public function storeTeacherSkills (string $teacherId, array $skills): mixed
+    public function storeTeacherSkills(string $teacherId, array $skills): mixed
     {
-        foreach ($skills AS $key => $skill)
-        {
+        foreach ($skills as $key => $skill) {
             $skills[$key]['teacher_id'] = $teacherId;
         }
 
@@ -294,30 +281,24 @@ class TeacherAction extends ActionService
      */
     public function update(array $updateData, callable $updating = null): bool|int
     {
-        if(isset($updateData['password']))
+        if (isset($updateData['password']))
             $updateData['password'] = Hash::make($updateData['password']);
 
-        $updating = function ($eloquent, &$updateData) use ($updating)
-        {
-            foreach ($eloquent->get() AS $entity)
-            {
-                if (array_key_exists('file', $updateData) && is_file($entity->file))
-                {
+        $updating = function ($eloquent, &$updateData) use ($updating) {
+            foreach ($eloquent->get() as $entity) {
+                if (array_key_exists('file', $updateData) && is_file($entity->file)) {
                     unlink($entity->file);
                 }
 
-                if (array_key_exists('partner_file', $updateData) && is_file($entity->partner_file))
-                {
+                if (array_key_exists('partner_file', $updateData) && is_file($entity->partner_file)) {
                     unlink($entity->partner_file);
                 }
 
-                if (isset($updateData['national_id']) && TeacherModel::query()->where('id', '!=', $entity->id)->where('national_id', $updateData['national_id'])->exists())
-                {
+                if (isset($updateData['national_id']) && TeacherModel::query()->where('id', '!=', $entity->id)->where('national_id', $updateData['national_id'])->exists()) {
                     throw new CustomException('national id already taken', 986585, 400);
                 }
             }
-            if (is_callable($updating))
-            {
+            if (is_callable($updating)) {
                 $updating($eloquent, $updateData);
             }
         };
@@ -329,7 +310,7 @@ class TeacherAction extends ActionService
      * @param string $id
      * @return mixed
      */
-    public function acceptById (string $id): mixed
+    public function acceptById(string $id): mixed
     {
         return TeacherModel::where('id', $id)
             ->update([
@@ -341,7 +322,7 @@ class TeacherAction extends ActionService
      * @param string $id
      * @return mixed
      */
-    public function rejectById (string $id): mixed
+    public function rejectById(string $id): mixed
     {
         return TeacherModel::where('id', $id)
             ->update([
@@ -355,7 +336,7 @@ class TeacherAction extends ActionService
      * @throws Throwable
      */
     #[ArrayShape(['token' => "mixed"])]
-    public function loginByRequest (): array
+    public function loginByRequest(): array
     {
         return $this->login(
             $this->setValidationRule('login')->getDataFromRequest()
@@ -368,11 +349,11 @@ class TeacherAction extends ActionService
      * @throws Throwable
      */
     #[ArrayShape(['token' => "mixed"])]
-    public function login (array $data): array
+    public function login(array $data): array
     {
         $teacher = TeacherModel::query()->where('national_id', $data['national_id'])->firstOrFail();
 
-        throw_if(! Hash::check($data['password'], $teacher->password), CustomException::class, 'password is wrong', '84054', 400);
+        throw_if(!Hash::check($data['password'], $teacher->password), CustomException::class, 'password is wrong', '84054', 400);
 
         return [
             'token' => $teacher->createToken('auth')->plainTextToken,
@@ -385,7 +366,7 @@ class TeacherAction extends ActionService
      * @throws CustomException
      * @throws Throwable
      */
-    public function changePasswordByRequest (): bool
+    public function changePasswordByRequest(): bool
     {
         return $this->changePassword(
             $this->setValidationRule('changePassword')->getDataFromRequest(),
@@ -399,9 +380,9 @@ class TeacherAction extends ActionService
      * @return bool
      * @throws Throwable
      */
-    public function changePassword (array $data, TeacherModel $teacher): bool
+    public function changePassword(array $data, TeacherModel $teacher): bool
     {
-        throw_if(! Hash::check($data['current_password'], $teacher->password), CustomException::class, 'current_password is wrong', '978244', 400);
+        throw_if(!Hash::check($data['current_password'], $teacher->password), CustomException::class, 'current_password is wrong', '978244', 400);
 
         $teacher->password = Hash::make($data['new_password']);
         return $teacher->save();

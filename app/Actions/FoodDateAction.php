@@ -19,7 +19,7 @@ class FoodDateAction extends ActionService
             ->setResource(FoodDateResource::class)
             ->setValidationRules([
                 'store' => [
-                    'date' => ['required', 'date_format:Y-m-d'],
+                    'date' => ['required', 'string'],
                     'foods' => ['required', 'array', 'max:100'],
                     'foods.*' => ['integer']
                 ]
@@ -44,14 +44,13 @@ class FoodDateAction extends ActionService
             'date' => $data['date']
         ]);
 
-        $foods = FoodModel::query()->whereIn('id', $data['foods'])->whereDoesntHave('foodDates', function($q) use($foodDate){
+        $foods = FoodModel::query()->whereIn('id', $data['foods'])->whereDoesntHave('foodDates', function ($q) use ($foodDate) {
             $q->where('food_dates.id', $foodDate->id);
         })->get();
 
         $foodDateFoodPivots = [];
 
-        foreach ($foods AS $food)
-        {
+        foreach ($foods as $food) {
             $foodDateFoodPivots[] = [
                 'food_date_id' => $foodDate->id,
                 'food_id' => $food->id

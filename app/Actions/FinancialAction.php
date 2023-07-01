@@ -19,24 +19,24 @@ class FinancialAction extends ActionService
                 'store' => [
                     'title' => ['required', 'string', 'max:255'],
                     'description' => ['required', 'string', 'max:500'],
-                    'financial_type_id' => ['required','string', 'max:20'],
+                    'financial_type_id' => ['required', 'string', 'max:20'],
                     'amount' => ['required', 'integer', 'max:10000000000'],
                     'educational_year' => ['string', 'max:25'],
-                    'date' => ['required', 'date_format:Y-m-d']
+                    'date' => ['required', 'string']
                 ],
                 'update' => [
-                    'title' => [ 'string', 'max:255'],
+                    'title' => ['string', 'max:255'],
                     'description' => ['string', 'max:500'],
-                    'amount' => ['int', 'min:0','max:10000000000'],
+                    'amount' => ['int', 'min:0', 'max:10000000000'],
                     'educational_year' => ['string', 'max:25'],
-                    'date' => ['date_format:Y-m-d']
+                    'date' => ['string']
                 ],
                 'getQuery' => [
                     'educational_year' => ['string', 'max:50'],
                     'financial_type_id' => ['string', 'max:20'],
                     'search' => ['string', 'max:255'],
-                    'from_date' => ['date_format:Y-m-d'],
-                    'to_date' => ['date_format:Y-m-d'],
+                    'from_date' => ['string'],
+                    'to_date' => ['string'],
                 ]
             ])
             ->setCasts([
@@ -45,27 +45,21 @@ class FinancialAction extends ActionService
                 'to_date' => ['jalali_to_gregorian:Y-m-d'],
             ])
             ->setQueryToEloquentClosures([
-                'financial_type_id' => function (&$eloquent, $query)
-                {
+                'financial_type_id' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->where('financial_type_id', $query['financial_type_id']);
                 },
-                'from_date' => function (&$eloquent, $query)
-                {
+                'from_date' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->whereDate('date', '>=', $query['from_date']);
                 },
-                'to_date' => function (&$eloquent, $query)
-                {
+                'to_date' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->whereDate('date', '<=', $query['to_date']);
                 },
-                'educational_year' => function (&$eloquent, $query)
-                {
-                    if ($query['educational_year']  != '*')
-                    {
+                'educational_year' => function (&$eloquent, $query) {
+                    if ($query['educational_year']  != '*') {
                         $eloquent = $eloquent->where('educational_year', $query['educational_year']);
                     }
                 },
-                'search' => function (&$eloquent, $query)
-                {
+                'search' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->where('title', 'LIKE', "%{$query['search']}%");
                 }
             ]);

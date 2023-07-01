@@ -28,8 +28,8 @@ class StudentFinancialAction extends ActionService
                     'receipt_number' => ['nullable', 'string', 'max:50'],
                     'student_id' => ['required', 'string', 'max:20'],
                     'amount' => ['required', 'string', 'max:25'],
-                    'date' => ['required', 'date_format:Y-m-d'],
-                    'payment_date' => ['nullable', 'date_format:Y-m-d'],
+                    'date' => ['required', 'string'],
+                    'payment_date' => ['nullable', 'string'],
                     'paid' => ['bool'],
                     'check_image' => ['nullable', 'file', 'mimes:png,jpg,jpeg,svg', 'max:3000']
                 ],
@@ -38,8 +38,8 @@ class StudentFinancialAction extends ActionService
                     'check_number' => ['nullable', 'string', 'max:50'],
                     'receipt_number' => ['nullable', 'string', 'max:50'],
                     'amount' => ['int', 'min:0', 'max:100000000'],
-                    'date' => ['date_format:Y-m-d'],
-                    'payment_date' => ['nullable', 'date_format:Y-m-d'],
+                    'date' => ['string'],
+                    'payment_date' => ['nullable', 'string'],
                     'paid' => ['bool'],
                     'check_image' => ['nullable', 'file', 'mimes:png,jpg,jpeg,svg', 'max:3000']
                 ],
@@ -50,15 +50,15 @@ class StudentFinancialAction extends ActionService
                 'getQuery' => [
                     'payment_type' => ['in:check,cash'],
                     'student_id' => ['string', 'max:20'],
-                    'from_date' => ['date_format:Y-m-d'],
-                    'to_date' => ['date_format:Y-m-d'],
+                    'from_date' => ['string'],
+                    'to_date' => ['string'],
                     'can_send_sms' => ['boolean'],
                     'educational_year' => ['string', 'max:50']
                 ],
                 'getByStudent' => [
                     'payment_type' => ['in:check,cash'],
-                    'from_date' => ['date_format:Y-m-d'],
-                    'to_date' => ['date_format:Y-m-d'],
+                    'from_date' => ['string'],
+                    'to_date' => ['string'],
                     'can_send_sms' => ['boolean'],
                     'educational_year' => ['string', 'max:50']
                 ]
@@ -71,31 +71,24 @@ class StudentFinancialAction extends ActionService
                 'check_image' => ['file', 'nullable']
             ])
             ->setQueryToEloquentClosures([
-                'payment_type' => function(&$eloquent, $query)
-                {
+                'payment_type' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->where('payment_type', $query['payment_type']);
                 },
-                'student_id' => function (&$eloquent, $query)
-                {
+                'student_id' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->where('student_id', $query['student_id']);
                 },
-                'educational_year' => function (&$eloquent, $query)
-                {
-                    if ($query['educational_year']  != '*')
-                    {
+                'educational_year' => function (&$eloquent, $query) {
+                    if ($query['educational_year']  != '*') {
                         $eloquent = $eloquent->where('educational_year', $query['educational_year']);
                     }
                 },
-                'from_date' => function (&$eloquent, $query)
-                {
+                'from_date' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->whereDate('date', '>=', $query['from_date']);
                 },
-                'to_date' => function (&$eloquent, $query)
-                {
+                'to_date' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->whereDate('date', '<=', $query['from_date']);
                 },
-                'can_send_sms' => function (&$eloquent, $query)
-                {
+                'can_send_sms' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->canSendSms($query['can_send_sms']);
                 }
             ]);
@@ -141,15 +134,12 @@ class StudentFinancialAction extends ActionService
      */
     public function update(array $updateData, callable $updating = null): bool|int
     {
-        $updating = function (&$eloquent, $updateData) use ($updating)
-        {
-            if(isset($updateData['date']))
-            {
+        $updating = function (&$eloquent, $updateData) use ($updating) {
+            if (isset($updateData['date'])) {
                 $updateData['educational_year'] = PardisanHelper::getEducationalYearByGregorianDate($updateData['date']);
             }
 
-            foreach ($eloquent->get() AS $studentFinancial)
-            {
+            foreach ($eloquent->get() as $studentFinancial) {
                 /*
                 $studentFinancialGeneralStatistic = (new GeneralStatisticAction())->getFirstByLabelAndEducationalYearOrCreate('student_financial', $studentFinancial->educational_year);
 
@@ -178,14 +168,12 @@ class StudentFinancialAction extends ActionService
                 $newGeneralStatistic->save();
                 */
 
-                if (array_key_exists('check_image', $updateData) && is_file($studentFinancial->check_image))
-                {
+                if (array_key_exists('check_image', $updateData) && is_file($studentFinancial->check_image)) {
                     unlink($studentFinancial->check_image);
                 }
             }
 
-            if (is_callable($updating))
-            {
+            if (is_callable($updating)) {
                 $updating($eloquent, $updateData);
             }
         };
@@ -199,10 +187,8 @@ class StudentFinancialAction extends ActionService
      */
     public function delete(callable $deleting = null): mixed
     {
-        $deleting = function (&$eloquent) use ($deleting)
-        {
-            foreach ($eloquent->get() AS $studentFinancial)
-            {
+        $deleting = function (&$eloquent) use ($deleting) {
+            foreach ($eloquent->get() as $studentFinancial) {
                 /*
                 $studentFinancialGeneralStatistic = (new GeneralStatisticAction())->getFirstByLabelAndEducationalYearOrCreate('student_financial', $studentFinancial->educational_year);
 
@@ -218,14 +204,12 @@ class StudentFinancialAction extends ActionService
                 $studentFinancialGeneralStatistic->save();
                 */
 
-                if (is_file($studentFinancial->check_image))
-                {
+                if (is_file($studentFinancial->check_image)) {
                     unlink($studentFinancial->check_image);
                 }
             }
 
-            if (is_callable($deleting))
-            {
+            if (is_callable($deleting)) {
                 $deleting($eloquent);
             }
         };
@@ -237,7 +221,7 @@ class StudentFinancialAction extends ActionService
      * @return bool
      * @throws CustomException
      */
-    public function sendSmsByRequest (): bool
+    public function sendSmsByRequest(): bool
     {
         return $this->sendSmsByIds(
             $this->getDataFromRequest()['student_financials'] ?? []
@@ -248,25 +232,19 @@ class StudentFinancialAction extends ActionService
      * @param array $studentFinancialIds
      * @return bool
      */
-    public function sendSmsByIds (array $studentFinancialIds): bool
+    public function sendSmsByIds(array $studentFinancialIds): bool
     {
         $currentTime = time();
 
-        foreach (
-            StudentFinancialModel::query()
+        foreach (StudentFinancialModel::query()
                 ->whereHas('student')
                 ->canSendSms()
                 ->whereIn('id', $studentFinancialIds)
                 ->get()
-            AS $studentFinancial
-        )
-        {
-            if (strtotime($studentFinancial->date) <= $currentTime)
-            {
+            as $studentFinancial) {
+            if (strtotime($studentFinancial->date) <= $currentTime) {
                 // TODO: send overdue payment sms
-            }
-            else
-            {
+            } else {
                 // TODO: send near-due payment sms
             }
         }
@@ -278,7 +256,7 @@ class StudentFinancialAction extends ActionService
      * @return int
      * @throws CustomException
      */
-    public function updatePaidByListByRequest ()
+    public function updatePaidByListByRequest()
     {
         $data = $this
             ->setValidationRule('updatePaidByList')
@@ -287,22 +265,21 @@ class StudentFinancialAction extends ActionService
         $paidList = [];
         $notPaidList = [];
 
-        foreach ($data['list'] AS $item)
-        {
+        foreach ($data['list'] as $item) {
             if ($item['paid'])
                 $paidList[] = $item['student_financial_id'];
             else
                 $notPaidList[] = $item['student_financial_id'];
         }
 
-        if(! empty($paidList))
+        if (!empty($paidList))
             StudentFinancialModel::query()
                 ->whereIn('id', $paidList)
                 ->update([
                     'paid' => true
                 ]);
 
-        if(! empty($notPaidList))
+        if (!empty($notPaidList))
             StudentFinancialModel::query()
                 ->whereIn('id', $notPaidList)
                 ->update([

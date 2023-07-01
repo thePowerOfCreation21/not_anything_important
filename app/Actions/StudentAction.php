@@ -272,8 +272,8 @@ class StudentAction extends ActionService
                     'educational_year' => ['string', 'max:50'],
                     'search' => ['string', 'max:150'],
                     'register_status' => ['string', 'max:150'],
-                    'from_created_at' => ['date_format:Y-m-d'],
-                    'to_created_at' => ['date_format:Y-m-d'],
+                    'from_created_at' => ['string'],
+                    'to_created_at' => ['string'],
                 ],
                 'login' => [
                     'meli_code' => ['required', 'string', 'max:25'],
@@ -300,39 +300,31 @@ class StudentAction extends ActionService
                 'to_created_at' => ['jalali_to_gregorian:Y-m-d'],
             ])
             ->setQueryToEloquentClosures([
-                'class_id' => function (&$eloquent, $query)
-                {
-                    $eloquent = $eloquent->whereHas('classes', function($q) use ($query){
+                'class_id' => function (&$eloquent, $query) {
+                    $eloquent = $eloquent->whereHas('classes', function ($q) use ($query) {
                         $q->where('classes.id', $query['class_id']);
                     });
                 },
-                'level' => function (&$eloquent, $query)
-                {
+                'level' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->where('level', $query['level']);
                 },
-                'educational_year' => function (&$eloquent, $query)
-                {
-                    if ($query['educational_year']  != '*')
-                    {
+                'educational_year' => function (&$eloquent, $query) {
+                    if ($query['educational_year']  != '*') {
                         $eloquent = $eloquent->where('educational_year', $query['educational_year']);
                     }
                 },
-                'search' => function (&$eloquent, $query)
-                {
+                'search' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->where('full_name', 'LIKE', "%{$query['search']}%");
                 },
-                'register_status' => function (&$eloquent, $query)
-                {
+                'register_status' => function (&$eloquent, $query) {
                     $query['register_status'] = is_string($query['register_status']) ? explode(',', $query['register_status']) : $query['register_status'];
 
                     $eloquent = $eloquent->whereIn('register_status', $query['register_status']);
                 },
-                'from_created_at' => function (&$eloquent, $query)
-                {
+                'from_created_at' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->whereDate('created_at', '>=', $query['from_created_at']);
                 },
-                'to_created_at' => function (&$eloquent, $query)
-                {
+                'to_created_at' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->whereDate('created_at', '<=', $query['to_created_at']);
                 }
             ]);
@@ -344,10 +336,9 @@ class StudentAction extends ActionService
      * @param string $defaultRegisterStatus
      * @return $this
      */
-    public function setDefaultRegisterStatus (string $defaultRegisterStatus): static
+    public function setDefaultRegisterStatus(string $defaultRegisterStatus): static
     {
-        if (in_array($defaultRegisterStatus, $this->getAllowedRegisterStatuses()))
-        {
+        if (in_array($defaultRegisterStatus, $this->getAllowedRegisterStatuses())) {
             $this->defaultRegisterStatus = $defaultRegisterStatus;
         }
         return $this;
@@ -356,7 +347,7 @@ class StudentAction extends ActionService
     /**
      * @return string
      */
-    public function getDefaultRegisterStatus (): string
+    public function getDefaultRegisterStatus(): string
     {
         return $this->defaultRegisterStatus;
     }
@@ -364,7 +355,7 @@ class StudentAction extends ActionService
     /**
      * @return string[]
      */
-    public function getAllowedRegisterStatuses (): array
+    public function getAllowedRegisterStatuses(): array
     {
         return ['added_by_admin', 'accepted', 'rejected', 'pending'];
     }
@@ -377,8 +368,7 @@ class StudentAction extends ActionService
      */
     protected function uploadFile(UploadedFile $file, string $path = '/uploads', string $fieldName = null): string
     {
-        if (empty($path))
-        {
+        if (empty($path)) {
             $path = '/uploads';
         }
 
@@ -396,20 +386,17 @@ class StudentAction extends ActionService
      */
     public function store(array $data, callable $storing = null): mixed
     {
-        if (StudentModel::where('meli_code', $data['meli_code'])->exists())
-        {
+        if (StudentModel::where('meli_code', $data['meli_code'])->exists()) {
             throw new CustomException('this meli_code is already taken', 986585);
         }
 
         $data['full_name'] = $data['first_name'] . ' ' . @$data['last_name'];
 
-        if (! isset($data['register_status']))
-        {
+        if (!isset($data['register_status'])) {
             $data['register_status'] = $this->getDefaultRegisterStatus();
         }
 
-        if (! isset($data['educational_year']))
-        {
+        if (!isset($data['educational_year'])) {
             $data['educational_year'] = PardisanHelper::getCurrentEducationalYear();
         }
 
@@ -417,8 +404,7 @@ class StudentAction extends ActionService
 
         $student =  parent::store($data, $storing);
 
-        if ($student->register_status == 'pending')
-            (new SendSMSService())->sendOTP([$student->mobile_number, $student->father_mobile_number, $student->mother_mobile_number], 'successfulRegisterRequest', $student->id);
+        if ($student->register_status == 'pending') (new SendSMSService())->sendOTP([$student->mobile_number, $student->father_mobile_number, $student->mother_mobile_number], 'successfulRegisterRequest', $student->id);
 
         return $student;
     }
@@ -431,34 +417,28 @@ class StudentAction extends ActionService
      */
     public function update(array $updateData, callable $updating = null): bool|int
     {
-        $updating = function ($eloquent, &$updateData) use ($updating)
-        {
+        $updating = function ($eloquent, &$updateData) use ($updating) {
             $entity = $this->getFirstByEloquent($eloquent);
 
-            if (StudentModel::where('id', '!=', $entity->id)->where('meli_code', $updateData['meli_code'])->exists())
-            {
+            if (StudentModel::where('id', '!=', $entity->id)->where('meli_code', $updateData['meli_code'])->exists()) {
                 throw new CustomException('this meli_code is already taken', 986585);
             }
 
             $updateData['full_name'] = ($updateData['first_name'] ?? $entity->first_name) . ' ' . ($updateData['last_name'] ?? $entity->last_name);
 
-            if (array_key_exists('file', $updateData) && is_file($entity->file))
-            {
+            if (array_key_exists('file', $updateData) && is_file($entity->file)) {
                 unlink($entity->file);
             }
 
-            if (array_key_exists('report_card_pdf', $updateData) && is_file($entity->report_card_pdf))
-            {
+            if (array_key_exists('report_card_pdf', $updateData) && is_file($entity->report_card_pdf)) {
                 unlink($entity->report_card_pdf);
             }
 
-            if (isset($updateData['password']))
-            {
+            if (isset($updateData['password'])) {
                 $updateData['password'] = Hash::make($updateData['password']);
             }
 
-            if (is_callable($updating))
-            {
+            if (is_callable($updating)) {
                 $updating($eloquent, $updateData);
             }
         };
@@ -471,7 +451,7 @@ class StudentAction extends ActionService
      * @return mixed
      * @throws CustomException
      */
-    public function blockByRequest (string $studentId): mixed
+    public function blockByRequest(string $studentId): mixed
     {
         $data = $this->getDataFromRequest();
 
@@ -490,7 +470,7 @@ class StudentAction extends ActionService
      * @param string $studentId
      * @return mixed
      */
-    public function unblock (string $studentId): mixed
+    public function unblock(string $studentId): mixed
     {
         return StudentModel::where('id', $studentId)
             ->update([
@@ -503,7 +483,7 @@ class StudentAction extends ActionService
      * @param string $studentId
      * @return mixed
      */
-    public function acceptById (string $studentId): mixed
+    public function acceptById(string $studentId): mixed
     {
         return StudentModel::where('id', $studentId)
             ->update([
@@ -515,7 +495,7 @@ class StudentAction extends ActionService
      * @param string $studentId
      * @return mixed
      */
-    public function rejectById (string $studentId): mixed
+    public function rejectById(string $studentId): mixed
     {
         return StudentModel::where('id', $studentId)
             ->update([
@@ -528,7 +508,7 @@ class StudentAction extends ActionService
      * @return array
      */
     #[ArrayShape(['user' => "mixed", 'token' => "mixed"])]
-    protected function getLoginInfoByStudent (StudentModel|Model $student): array
+    protected function getLoginInfoByStudent(StudentModel|Model $student): array
     {
         return [
             'user' => $this->applyResourceToEntity($student),
@@ -542,12 +522,11 @@ class StudentAction extends ActionService
      * @throws CustomException
      */
     #[ArrayShape(['student' => "mixed", 'token' => "mixed"])]
-    public function login (array $data): array
+    public function login(array $data): array
     {
         $student = StudentModel::query()->where('meli_code', $data['meli_code'])->first();
 
-        if (!empty($student) && Hash::check($data['password'], $student->password))
-        {
+        if (!empty($student) && Hash::check($data['password'], $student->password)) {
             if ($student->is_block)
                 throw new CustomException('you are blocked', '75521', '400', ['reason' => $student->reason_for_blocking]);
             return $this->getLoginInfoByStudent($student);
@@ -561,7 +540,7 @@ class StudentAction extends ActionService
      * @throws CustomException
      */
     #[ArrayShape(['student' => "mixed", 'token' => "mixed"])]
-    public function loginByRequest (): array
+    public function loginByRequest(): array
     {
         return $this->login($this->getDataFromRequest());
     }
@@ -571,14 +550,14 @@ class StudentAction extends ActionService
      * @return StudentModel
      * @throws Throwable
      */
-    public function sendOtp (StudentModel|Model $student): StudentModel
+    public function sendOtp(StudentModel|Model $student): StudentModel
     {
         throw_if($student->otp_expires_at > time(), CustomException::class, 'otp already sent', '16562', 400);
 
         $otp = random_int(111111, 999999);
 
         // TODO: send sms
-        if (! empty($student->mobile_number)) (new SendSMSService())->sendOTP($student->mobile_number, 'studentResetPasswordOTP', $otp);
+        if (!empty($student->mobile_number)) (new SendSMSService())->sendOTP($student->mobile_number, 'studentResetPasswordOTP', $otp);
 
         $student->otp_expires_at = time() + 120;
         $student->otp = Hash::make($otp);
@@ -592,7 +571,7 @@ class StudentAction extends ActionService
      * @throws CustomException
      * @throws Throwable
      */
-    public function sendOtpByRequest (): StudentModel
+    public function sendOtpByRequest(): StudentModel
     {
         $data = $this->getDataFromRequest();
 
@@ -605,7 +584,7 @@ class StudentAction extends ActionService
      * @throws Throwable
      */
     #[ArrayShape(['student' => "mixed", 'token' => "mixed"])]
-    public function checkOtp (array $data): array
+    public function checkOtp(array $data): array
     {
         $student = StudentModel::query()->where('mobile_number', $data['mobile_number'])->firstOrFail();
 
@@ -623,7 +602,7 @@ class StudentAction extends ActionService
      * @throws Throwable
      */
     #[ArrayShape(['student' => "mixed", 'token' => "mixed"])]
-    public function checkOtpByRequest (): array
+    public function checkOtpByRequest(): array
     {
         return $this->checkOtp($this->getDataFromRequest());
     }
@@ -634,11 +613,14 @@ class StudentAction extends ActionService
      * @return Model|StudentModel
      * @throws Throwable
      */
-    public function changePassword (StudentModel|Model $student, array $data): Model|StudentModel
+    public function changePassword(StudentModel|Model $student, array $data): Model|StudentModel
     {
         throw_if(
             !$student->should_change_password && (!isset($data['current_password']) || !Hash::check($data['current_password'], $student->password)),
-            CustomException::class, 'current password should be set and should be equal to current password of student', '923686', 400
+            CustomException::class,
+            'current password should be set and should be equal to current password of student',
+            '923686',
+            400
         );
 
         $student->should_change_password = false;
@@ -653,7 +635,7 @@ class StudentAction extends ActionService
      * @throws CustomException
      * @throws Throwable
      */
-    public function changePasswordByRequest (): Model|StudentModel
+    public function changePasswordByRequest(): Model|StudentModel
     {
         return $this->changePassword($this->request->user(), $this->getDataFromRequest());
     }

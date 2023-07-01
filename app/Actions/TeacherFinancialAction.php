@@ -18,13 +18,13 @@ class TeacherFinancialAction extends ActionService
                 'store' => [
                     'teacher_id' => ['required', 'string', 'max:20'],
                     'amount' => ['required', 'int', 'min:0', 'max:100000000'],
-                    'date' => ['required', 'date_format:Y-m-d'],
+                    'date' => ['required', 'string'],
                     'receipt_image' => ['nullable', 'file', 'mimes:png,jpg,jpeg,svg', 'max:3000'],
                     'description' => ['nullable', 'string', 'max:2500']
                 ],
                 'update' => [
                     'amount' => ['int', 'min:0', 'max:100000000'],
-                    'date' => ['date_format:Y-m-d'],
+                    'date' => ['string'],
                     'receipt_image' => ['nullable', 'file', 'mimes:png,jpg,jpeg,svg', 'max:3000'],
                     'description' => ['nullable', 'string', 'max:2500']
                 ],
@@ -41,14 +41,11 @@ class TeacherFinancialAction extends ActionService
                 'receipt_image' => ['nullable', 'file']
             ])
             ->setQueryToEloquentClosures([
-                'teacher_id' => function (&$eloquent, $query)
-                {
+                'teacher_id' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->where('teacher_id', $query['teacher_id']);
                 },
-                'educational_year' => function (&$eloquent, $query)
-                {
-                    if ($query['educational_year']  != '*')
-                    {
+                'educational_year' => function (&$eloquent, $query) {
+                    if ($query['educational_year']  != '*') {
                         $eloquent = $eloquent->where('educational_year', $query['educational_year']);
                     }
                 }
@@ -79,22 +76,17 @@ class TeacherFinancialAction extends ActionService
 
     public function update(array $updateData, callable $updating = null): bool|int
     {
-        $updating = function (&$eloquent, $updateData) use ($updating)
-        {
-            if(isset($updateData['date']))
-            {
+        $updating = function (&$eloquent, $updateData) use ($updating) {
+            if (isset($updateData['date'])) {
                 $updateData['educational_year'] = PardisanHelper::getEducationalYearByGregorianDate($updateData['date']);
             }
 
-            foreach ($eloquent->get() AS $teacherFinancial)
-            {
-                if (array_key_exists('receipt_image', $updateData) && is_file($teacherFinancial->receipt_image))
-                {
+            foreach ($eloquent->get() as $teacherFinancial) {
+                if (array_key_exists('receipt_image', $updateData) && is_file($teacherFinancial->receipt_image)) {
                     unlink($teacherFinancial->receipt_image);
                 }
             }
-            if(is_callable($updating))
-            {
+            if (is_callable($updating)) {
                 $updating($eloquent, $updateData);
             }
         };
@@ -104,10 +96,8 @@ class TeacherFinancialAction extends ActionService
 
     public function delete(callable $deleting = null): mixed
     {
-        $deleting = function (&$eloquent) use ($deleting)
-        {
-            foreach ($eloquent->get() AS $teacherFinancial)
-            {
+        $deleting = function (&$eloquent) use ($deleting) {
+            foreach ($eloquent->get() as $teacherFinancial) {
                 /*
                 $teacherFinancialGeneralStatistic = (new GeneralStatisticAction())->getFirstByLabelAndEducationalYearOrCreate('teacher_financial', $teacherFinancial->educational_year);
 
@@ -117,8 +107,7 @@ class TeacherFinancialAction extends ActionService
                 */
             }
 
-            if(is_callable($deleting))
-            {
+            if (is_callable($deleting)) {
                 $deleting($eloquent);
             }
         };
