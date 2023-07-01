@@ -31,7 +31,7 @@ class SurveyAnswerAction extends ActionService
      * @throws \Throwable
      * @throws CustomException
      */
-    public function storeAnswerByRequest (): bool
+    public function storeAnswerByRequest(): bool
     {
         $data = $this
             ->setValidationRule('store')
@@ -41,11 +41,12 @@ class SurveyAnswerAction extends ActionService
         $participantClass = get_class($participant);
 
         throw_if(
-            ! SurveyCategoryModel::query()
+            !SurveyCategoryModel::query()
                 ->where('id', $data['survey_category_id'])
                 ->where('is_active', true)
                 ->exists(),
-            CustomException::class, 'survey_category_id is wrong (maybe survey category is not active)'
+            CustomException::class,
+            'survey_category_id is wrong (maybe survey category is not active)'
         );
 
         throw_if(
@@ -54,21 +55,25 @@ class SurveyAnswerAction extends ActionService
                 ->where('participant_type', $participantClass)
                 ->where('survey_category_id', $data['survey_category_id'])
                 ->exists(),
-            CustomException::class, 'participant already answered this survey category', '92477', 400
+            CustomException::class,
+            'participant already answered this survey category',
+            '92477',
+            400
         );
 
         $hashMapSurveyId = [];
         $surveyAnswers = [];
+
+        $surveyCategory = SurveyCategoryModel::query()
+            ->where('id', $data['survey_category_id'])->first();
 
         $surveyOptions = SurveyOptionModel::query()
             ->where('survey_category_id', $data['survey_category_id'])
             ->whereIn('id', $data['options'])
             ->get();
 
-        foreach ($surveyOptions AS $surveyOption)
-        {
-            if (! isset($hashMapSurveyId[$surveyOption->survey_id]))
-            {
+        foreach ($surveyOptions as $surveyOption) {
+            if (!isset($hashMapSurveyId[$surveyOption->survey_id])) {
                 $hashMapSurveyId[$surveyOption->survey_id] = 1;
 
                 $surveyAnswers[] = [
@@ -78,6 +83,17 @@ class SurveyAnswerAction extends ActionService
                     'survey_id' => $surveyOption->survey_id,
                     'survey_option_id' => $surveyOption->id
                 ];
+                $surveyOption->update([
+                    'participants_count' => $surveyOption->participants_count + 1,
+                ]);
+                $survey = SurveyModel::query()
+                    ->where('id', $surveyOption->survey_id)->first();
+                $survey->update([
+                    'participants_count' => $survey->participants_count + 1,
+                ]);
+                $surveyCategory->update([
+                    'participants_count' => $surveyCategory->participants_count + 1,
+                ]);
             }
         }
 
