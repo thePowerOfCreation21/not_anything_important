@@ -383,7 +383,8 @@ class TeacherAction extends ActionService
     public function changePassword(array $data, TeacherModel $teacher): bool
     {
         throw_if(!Hash::check($data['current_password'], $teacher->password), CustomException::class, 'current_password is wrong', '978244', 400);
-
+        throw_if(($teacher->register_status == 'rejected'), CustomException::class, 'Your register status is rejected', '934556', 400);
+        throw_if(($teacher->register_status == 'pending'), CustomException::class, 'Your register status is pending', '987565', 400);
         $teacher->password = Hash::make($data['new_password']);
         return $teacher->save();
     }
