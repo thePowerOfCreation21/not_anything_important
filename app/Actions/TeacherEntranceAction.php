@@ -79,8 +79,8 @@ class TeacherEntranceAction extends ActionService
         {
             throw_if(
                 TeacherEntranceModel::query()
-                    ->where('teacher_id', $updateData['teacher_id'])
-                    ->where('week_day', $updateData['week_day'])
+                    ->where('teacher_id', $teacherEntrance->teacher_id)
+                    ->where('week_day', $teacherEntrance->week_day)
                     ->where('id', '!=', $teacherEntrance->id)
                     ->exists(),
                 CustomException::class,

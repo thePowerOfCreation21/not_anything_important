@@ -82,7 +82,17 @@ class TeacherEntranceHistoryAction extends ActionService
         $teacherEntrance = TeacherEntranceModel::query()
             ->with('teacher')
             ->where('week_day', $data['week_day'])
+            ->where('teacher_id', $data['teacher_id'])
             ->firstOrFail();
+
+//        dd([
+//            'entrance' => $data['entrance'],
+//            'teacher_entrance' => $teacherEntrance->entrance,
+//            'entrance_time' => strtotime($data['entrance']),
+//            'teacher_entrance_time' => strtotime($teacherEntrance->entrance),
+//            'week_day' => $data['week_day'],
+//            'teacher_entrance_array' => $teacherEntrance->toArray()
+//        ]);
 
         if (strtotime($data['entrance']) > strtotime($teacherEntrance->entrance)) {
             $data['late_string'] = Helpers::persianTimeElapsedString($data['entrance'], $teacherEntrance->entrance, full: true);
