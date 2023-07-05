@@ -17,7 +17,12 @@ class StudentDisciplineModel extends Model
         'title',
         'description',
         'date',
-        'educational_year'
+        'educational_year',
+        'is_seen'
+    ];
+
+    protected $casts = [
+        'is_seen' => 'boolean'
     ];
 
     public $timestamps = false;

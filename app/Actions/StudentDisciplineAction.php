@@ -33,6 +33,7 @@ class StudentDisciplineAction extends ActionService
                     'educational_year' => ['string', 'max:50']
                 ],
                 'getByStudent' => [
+                    'is_seen' => ['bool'],
                     'from_date' => ['string'],
                     'to_date' => ['string'],
                     'educational_year' => ['string', 'max:50']
@@ -46,6 +47,9 @@ class StudentDisciplineAction extends ActionService
             ->setQueryToEloquentClosures([
                 'student_id' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->where('student_id', $query['student_id']);
+                },
+                'is_seen' => function (&$eloquent, $query) {
+                    $query['is_seen'] !== '*' && $eloquent = $eloquent->where('is_seen', $query['is_seen']);
                 },
                 'from_date' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->whereDate('date', '>=', $query['from_date']);
@@ -77,5 +81,15 @@ class StudentDisciplineAction extends ActionService
         }
 
         return parent::update($updateData, $updating);
+    }
+
+    protected function getFirstByEloquent($eloquent = null): object
+    {
+
+        $entity = parent::getFirstByEloquent();
+
+        $this->model::query()->where('id', $entity->id)->update(['is_seen' => true]);
+
+        return $entity;
     }
 }

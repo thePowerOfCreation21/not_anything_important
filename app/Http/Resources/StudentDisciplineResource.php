@@ -22,6 +22,7 @@ class StudentDisciplineResource extends JsonResource
             'description' => $this->description,
             'date' => Helpers::getCustomDateCast($this->date),
             'educational_year' => $this->educational_year,
+            'is_seen' => $this->is_seen,
             'student' => new StudentResource($this->whenLoaded('student'))
         ];
     }
