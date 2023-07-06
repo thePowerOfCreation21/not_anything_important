@@ -524,7 +524,10 @@ class StudentAction extends ActionService
     #[ArrayShape(['student' => "mixed", 'token' => "mixed"])]
     public function login(array $data): array
     {
-        $student = StudentModel::query()->where('meli_code', $data['meli_code'])->first();
+        $student = StudentModel::query()
+            ->whereIn('register_status', ['accepted', 'added_by_admin'])
+            ->where('meli_code', $data['meli_code'])
+            ->first();
 
         if (!empty($student) && Hash::check($data['password'], $student->password)) {
             if ($student->is_block)
