@@ -11,6 +11,7 @@ use App\Models\StudentModel;
 use App\Models\TeacherModel;
 use Genocide\Radiocrud\Exceptions\CustomException;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
+use Genocide\Radiocrud\Services\SendSMSService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use JetBrains\PhpStorm\ArrayShape;
@@ -146,11 +147,13 @@ class ClassScoreAction extends ActionService
     {
         $data['educational_year'] = $data['educational_year'] ?? PardisanHelper::getCurrentEducationalYear();
 
+        $classCourse = ClassCourseModel::query()
+            ->where('id', $data['class_course_id'])
+            ->with('course')
+            ->firstOrFail();
+
         throw_if(
-            is_a($data['submitter_type'], TeacherModel::class) && !ClassCourseModel::query()
-                ->where('id', $data['class_course_id'])
-                ->where('teacher_id', $data['submitter_id'])
-                ->exists(),
+            is_a($data['submitter_type'], TeacherModel::class) && ($classCourse->teacher_id != $data['submitter_id']),
             CustomException::class,
             'class_course_id is wrong',
             '47562',
@@ -170,7 +173,26 @@ class ClassScoreAction extends ActionService
         }
 
         foreach (StudentModel::query()->whereIn('id', $studentIds)->get() as $student) {
-            // TODO: send sms to student's parent
+
+            if (!empty($classCourse->course))
+            {
+                $phoneNumbers = [];
+                if(!empty($student->father_mobile_number))
+                    $phoneNumbers[] = $student->father_mobile_number;
+                if(!empty($student->mother_mobile_number))
+                    $phoneNumbers[] = $student->mother_mobile_number;
+
+                if(!empty($phoneNumbers))
+                    (new SendSMSService())
+                        ->sendOTP(
+                            $phoneNumbers,
+                            'studentScore',
+                            $student->full_name,
+                            $classCourse->course->title,
+                            $classScoreStudentsHashMap[$student->id]['score']
+                        );
+            }
+
             $classScoreStudents[] = $classScoreStudentsHashMap[$student->id];
         }
 
