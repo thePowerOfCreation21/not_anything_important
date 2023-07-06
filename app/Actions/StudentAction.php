@@ -531,7 +531,7 @@ class StudentAction extends ActionService
 
         if (!empty($student) && Hash::check($data['password'], $student->password)) {
             if ($student->is_block)
-                throw new CustomException('you are blocked', '75521', '400', ['reason' => $student->reason_for_blocking]);
+                throw new CustomException('you are blocked', '556397', '400', ['block_reason' => $student->reason_for_blocking]);
             return $this->getLoginInfoByStudent($student);
         }
 
