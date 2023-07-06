@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('description', '500');
             $table->timestamp('date');
             $table->string('educational_year', 50);
+            $table->boolean('is_seen')->default(false);
         });
     }
 
