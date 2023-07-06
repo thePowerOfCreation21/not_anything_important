@@ -351,7 +351,10 @@ class TeacherAction extends ActionService
     #[ArrayShape(['token' => "mixed"])]
     public function login(array $data): array
     {
-        $teacher = TeacherModel::query()->where('national_id', $data['national_id'])->firstOrFail();
+        $teacher = TeacherModel::query()
+            ->whereIn('register_status', ['accepted', 'added_by_admin'])
+            ->where('national_id', $data['national_id'])
+            ->firstOrFail();
 
         throw_if(!Hash::check($data['password'], $teacher->password), CustomException::class, 'password is wrong', '84054', 400);
 
