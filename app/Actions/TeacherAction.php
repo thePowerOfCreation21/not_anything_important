@@ -11,6 +11,7 @@ use App\Models\TeacherSkillModel;
 use App\Models\TeacherWorkExperienceModel;
 use Genocide\Radiocrud\Exceptions\CustomException;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
+use Genocide\Radiocrud\Services\SendSMSService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -231,6 +232,9 @@ class TeacherAction extends ActionService
         }
 
         $teacher = parent::store($data, $storing);
+
+        if ($teacher->register_status == 'pending' && !empty($teacher->phone_number))
+            (new SendSMSService())->sendOTP($teacher->phone_number, 'successfulRegisterRequest', $teacher->id);
 
         if (isset($data['skills_file']))
             Excel::import(new TeacherSkillsImport($teacher->id), $data['skills_file']);
