@@ -54,7 +54,7 @@ class TeacherEntranceHistoryAction extends ActionService
                     $eloquent = $eloquent->whereDate('date', '>=', $query['from_date']);
                 },
                 'to_date' => function (&$eloquent, $query) {
-                    $eloquent = $eloquent->whereDate('date', '<=', $query['from_date']);
+                    $eloquent = $eloquent->whereDate('date', '<=', $query['to_date']);
                 },
                 'week_day' => function (&$eloquent, $query) {
                     $eloquent = $eloquent->where('week_day', $query['week_day']);
