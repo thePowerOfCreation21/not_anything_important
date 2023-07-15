@@ -39,7 +39,7 @@ class StatAction
                          `student_disciplines`
                     WHERE
                           `is_seen` = 0 AND `student_id` = '$student_id'
-                ) AS `unread_disciplines_count`,
+                ) AS `unread_disciplines_count`
             ")
         )->first();
     }
