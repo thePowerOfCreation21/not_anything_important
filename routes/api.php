@@ -11,6 +11,7 @@ use App\Http\Controllers\AdviceController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\HeaderController;
+use App\Http\Controllers\ImportController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\TeacherController;
@@ -100,6 +101,8 @@ Route::get('/page/home', [GuestPageController::class, 'getHomePage']);
 Route::group([
     'middleware' => ['auth:admin']
 ], function(){
+    Route::post('/admin/import_students', [ImportController::class, 'importStudents']);
+
     Route::get('/admin/info', [AdminController::class, 'getInfo']);
     Route::get('/admin/student_report_card', [StudentReportCardController::class, 'get']);
     Route::get('/admin/student_report_card/{id}', [StudentReportCardController::class, 'getById']);
