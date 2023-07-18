@@ -45,7 +45,7 @@ class StudentFinancialModel extends Model
             ->$condition(function ($q){
                 $q
                     ->where('paid', false)
-                    ->whereDate('date', '<=', date('Y-m-d', time() + (86400 * 7)));
+                    ->whereDate('payment_date', '<=', date('Y-m-d', time() + (86400 * 7)));
             });
     }
 }
