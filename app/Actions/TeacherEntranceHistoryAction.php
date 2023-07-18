@@ -76,28 +76,21 @@ class TeacherEntranceHistoryAction extends ActionService
         $data['week_day'] = PardisanHelper::getWeekDayByGregorianDate($data['date']);
         // $data['week_day'] = PardisanHelper::getWeekDayByGregorianDate($data['date']);
 
-        $data['entrance'] = date('h:i');
-        if (isset($data['exit']) && $data['exit']) $data['exit'] = date('h:i');
+        $data['entrance'] = date('H:i');
+        if (isset($data['exit']) && $data['exit']) $data['exit'] = date('H:i');
 
         $teacherEntrance = TeacherEntranceModel::query()
             ->with('teacher')
+            ->whereHas('teacher')
             ->where('week_day', $data['week_day'])
             ->where('teacher_id', $data['teacher_id'])
             ->firstOrFail();
 
-//        dd([
-//            'entrance' => $data['entrance'],
-//            'teacher_entrance' => $teacherEntrance->entrance,
-//            'entrance_time' => strtotime($data['entrance']),
-//            'teacher_entrance_time' => strtotime($teacherEntrance->entrance),
-//            'week_day' => $data['week_day'],
-//            'teacher_entrance_array' => $teacherEntrance->toArray()
-//        ]);
-
         if (strtotime($data['entrance']) > strtotime($teacherEntrance->entrance)) {
             $data['late_string'] = Helpers::persianTimeElapsedString($data['entrance'], $teacherEntrance->entrance, full: true);
 
-            if (!empty($teacherEntrance->teacher?->phone_number)) (new SendSMSService())->sendOTP($teacherEntrance->teacher->phone_number, 'teacherLate', $data['jalali_date'], $data['late_string']);
+            (new SendSMSService())->sendOTP($teacherEntrance->teacher->phone_number, 'teacherLate', explode(' ', $data['jalali_date'])[0], $data['late_string']);
+            // dd(explode(' ', $data['jalali_date'])[0], $data['late_string'], $teacherEntrance->teacher->phone_number);
         }
 
         $updateTeacherData = [
