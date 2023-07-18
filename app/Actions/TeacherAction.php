@@ -356,11 +356,20 @@ class TeacherAction extends ActionService
     public function login(array $data): array
     {
         $teacher = TeacherModel::query()
-            ->whereIn('register_status', ['accepted', 'added_by_admin'])
+            // ->whereIn('register_status', ['accepted', 'added_by_admin'])
             ->where('national_id', $data['national_id'])
             ->firstOrFail();
 
         throw_if(!Hash::check($data['password'], $teacher->password), CustomException::class, 'password is wrong', '84054', 400);
+
+        throw_if(
+            in_array($teacher->register_status, ['accepted', 'added_by_admin']),
+            CustomException::class,
+            'your account has not been accepted yet.',
+            '947912',
+            '400',
+            ['id' => $teacher->id]
+        );
 
         return [
             'token' => $teacher->createToken('auth')->plainTextToken,

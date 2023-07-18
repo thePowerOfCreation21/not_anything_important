@@ -534,7 +534,7 @@ class StudentAction extends ActionService
             if ($student->is_block)
                 throw new CustomException('you are blocked', '556397', '400', ['block_reason' => $student->reason_for_blocking]);
             if (! in_array($student->register_status, ['accepted', 'added_by_admin']))
-                throw new CustomException('your account has not been accepted yet.', '947912', '400', ['student_id' => $student->id]);
+                throw new CustomException('your account has not been accepted yet.', '947912', '400', ['id' => $student->id]);
             return $this->getLoginInfoByStudent($student);
         }
 
