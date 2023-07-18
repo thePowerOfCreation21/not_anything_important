@@ -30,14 +30,20 @@ class TeacherFinancialAction extends ActionService
                 ],
                 'getQuery' => [
                     'teacher_id' => ['string', 'max:20'],
-                    'educational_year' => ['string', 'max:50']
+                    'educational_year' => ['string', 'max:50'],
+                    'from_date' => ['string'],
+                    'to_date' => ['string'],
                 ],
                 'getByTeacher' => [
-                    'educational_year' => ['string', 'max:50']
+                    'educational_year' => ['string', 'max:50'],
+                    'from_date' => ['string'],
+                    'to_date' => ['string'],
                 ],
             ])
             ->setCasts([
                 'date' => ['jalali_to_gregorian:Y-m-d'],
+                'from_date' => ['jalali_to_gregorian:Y-m-d'],
+                'to_date' => ['jalali_to_gregorian:Y-m-d'],
                 'receipt_image' => ['nullable', 'file']
             ])
             ->setQueryToEloquentClosures([
@@ -48,7 +54,13 @@ class TeacherFinancialAction extends ActionService
                     if ($query['educational_year']  != '*') {
                         $eloquent = $eloquent->where('educational_year', $query['educational_year']);
                     }
-                }
+                },
+                'from_date' => function (&$eloquent, $query) {
+                    $eloquent = $eloquent->whereDate('date', '>=', $query['from_date']);
+                },
+                'to_date' => function (&$eloquent, $query) {
+                    $eloquent = $eloquent->whereDate('date', '<=', $query['to_date']);
+                },
             ]);
 
         parent::__construct();

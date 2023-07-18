@@ -90,7 +90,7 @@ class AttendanceAction extends ActionService
                     $eloquent = $eloquent->whereDate('date', '>=', $query['from_date']);
                 },
                 'to_date' => function (&$eloquent, $query) {
-                    $eloquent = $eloquent->whereDate('date', '<=', $query['from_date']);
+                    $eloquent = $eloquent->whereDate('date', '<=', $query['to_date']);
                 },
             ])
             ->setOrderBy(['date' => 'DESC', 'id' => 'DESC']);
