@@ -3,9 +3,11 @@
 namespace App\Actions;
 
 use App\Http\Resources\StudentDisciplineResource;
+use App\Models\StudentModel;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
 use App\Helpers\PardisanHelper;
 use App\Models\StudentDisciplineModel;
+use Genocide\Radiocrud\Services\SendSMSService;
 
 class StudentDisciplineAction extends ActionService
 {
@@ -70,6 +72,8 @@ class StudentDisciplineAction extends ActionService
     public function store(array $data, callable $storing = null): mixed
     {
         $data['educational_year'] = PardisanHelper::getEducationalYearByGregorianDate($data['date']);
+        $student = StudentModel::query()->findOrFail($data['student_id']);
+        (new SendSMSService())->sendOTP([$student->father_mobile_number, $student->mother_mobile_number], 'studentDisciplineAdded', $student->full_name);
 
         return parent::store($data, $storing);
     }
