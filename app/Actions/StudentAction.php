@@ -405,7 +405,7 @@ class StudentAction extends ActionService
         $student =  parent::store($data, $storing);
 
         if ($student->register_status == 'pending' && !empty($student->mobile_number))
-            (new SendSMSService())->sendOTP($student->mobile_number, 'successfulRegisterRequest', $student->id);
+            (new SendSMSService())->sendOTP([$student->mobile_number, $student->father_mobile_number, $student->mother_mobile_number], 'successfulRegisterRequest', $student->id);
 
         return $student;
     }
