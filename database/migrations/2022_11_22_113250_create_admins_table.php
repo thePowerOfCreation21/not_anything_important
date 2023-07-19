@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('admins', function (Blueprint $table) {
             $table->id();
-            $table->string('full_name', 150)->nullable();
+            $table->string('first_name', 150)->nullable();
+            $table->string('last_name', 150)->nullable();
             $table->string('user_name', 25)->unique();
             $table->string('password', 150);
             $table->boolean('is_primary')->default(false)->nullable();
