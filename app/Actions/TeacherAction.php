@@ -363,7 +363,7 @@ class TeacherAction extends ActionService
         throw_if(!Hash::check($data['password'], $teacher->password), CustomException::class, 'password is wrong', '84054', 400);
 
         throw_if(
-            in_array($teacher->register_status, ['accepted', 'added_by_admin']),
+            ! in_array($teacher->register_status, ['accepted', 'added_by_admin']),
             CustomException::class,
             'your account has not been accepted yet.',
             '947912',
