@@ -6,7 +6,9 @@ use App\Helpers\PardisanHelper;
 use App\Http\Resources\StudentFinancialResource;
 use App\Models\StudentFinancialModel;
 use Genocide\Radiocrud\Exceptions\CustomException;
+use Genocide\Radiocrud\Helpers;
 use Genocide\Radiocrud\Services\ActionService\ActionService;
+use Genocide\Radiocrud\Services\SendSMSService;
 
 class StudentFinancialAction extends ActionService
 {
@@ -237,15 +239,23 @@ class StudentFinancialAction extends ActionService
         $currentTime = time();
 
         foreach (StudentFinancialModel::query()
+                ->with('student')
                 ->whereHas('student')
                 ->canSendSms()
                 ->whereIn('id', $studentFinancialIds)
                 ->get()
             as $studentFinancial) {
-            if (strtotime($studentFinancial->date) <= $currentTime) {
-                // TODO: send overdue payment sms
+            $jalali_date = explode(' ', Helpers::getCustomDateCast($studentFinancial->payment_date)->jdate)[0];
+            if (strtotime($studentFinancial->payment_date) <= $currentTime) {
+                if ($studentFinancial->payment_type == 'cash')
+                    (new SendSMSService())->sendOTP([$studentFinancial->student->father_mobile_number, $studentFinancial->student->mother_mobile_number], 'studentFinancialNotPayed', $studentFinancial->student->full_name, $jalali_date);
+                else if ($studentFinancial->payment_type == 'check')
+                    (new SendSMSService())->sendOTP([$studentFinancial->student->father_mobile_number, $studentFinancial->student->mother_mobile_number], 'checkNotPaid', $studentFinancial->student->full_name, $jalali_date, $studentFinancial->check_number);
             } else {
-                // TODO: send near-due payment sms
+                if ($studentFinancial->payment_type == 'cash')
+                    (new SendSMSService())->sendOTP([$studentFinancial->student->father_mobile_number, $studentFinancial->student->mother_mobile_number], 'studentFinancilNearDue', $studentFinancial->student->full_name, $jalali_date);
+                else if ($studentFinancial->payment_type == 'check')
+                    (new SendSMSService())->sendOTP([$studentFinancial->student->father_mobile_number, $studentFinancial->student->mother_mobile_number], 'checkNearDue', $studentFinancial->student->full_name, $studentFinancial->check_number, $jalali_date);
             }
         }
 
