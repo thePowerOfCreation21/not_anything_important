@@ -189,7 +189,8 @@ class ClassScoreAction extends ActionService
                             'studentScore',
                             $student->full_name,
                             $classCourse->course->title,
-                            $classScoreStudentsHashMap[$student->id]['score']
+                            $classScoreStudentsHashMap[$student->id]['score'],
+                            $data['max_score'] ?? '20'
                         );
             }
 
