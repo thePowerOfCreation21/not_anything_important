@@ -26,7 +26,9 @@ class SurveyAction extends ActionService
                 'update' => [
                     'text' => ['string', 'max:5000'],
                     'options' => ['array', 'max:4'],
-                    'options.*' => ['required', 'string', 'max:250'],
+                    'options.*' => ['required', 'array', 'max:4'],
+                    'options.*.option_id' => ['required', 'integer'],
+                    'options.*.title' => ['required', 'string', 'max:250'],
                 ],
                 'getQuery' => [
                     'survey_category_id' => ['integer']
@@ -96,7 +98,15 @@ class SurveyAction extends ActionService
     {
         foreach ($this->startEloquentIfIsNull()->eloquent->get() AS $survey)
         {
-            if (isset($updateData['options'])) $this->storeSurveyOptionsFromRequest($updateData['options'], $survey->id, true);
+            // if (isset($updateData['options'])) $this->storeSurveyOptionsFromRequest($updateData['options'], $survey->id, true);
+            foreach ($updateData['options'] ?? [] AS $optionData)
+            {
+                SurveyOptionModel::query()
+                    ->where('id', $optionData['option_id'])
+                    ->update([
+                        'title' => $optionData['title']
+                    ]);
+            }
         }
         return parent::update($updateData, $updating);
     }

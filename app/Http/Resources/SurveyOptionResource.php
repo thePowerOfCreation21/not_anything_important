@@ -19,6 +19,7 @@ class SurveyOptionResource extends JsonResource
             'title' => $this->title,
             'participants_count' => (int)$this->participants_count,
             'survey' => $this->whenLoaded('survey'),
+            'survey_answers' => SurveyAnswerResource::collection($this->whenLoaded('surveyAnswers'))
         ];
     }
 }

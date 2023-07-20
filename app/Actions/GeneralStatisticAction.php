@@ -16,6 +16,7 @@ class GeneralStatisticAction extends ActionService
         $this
             ->setValidationRules([
                 'getQuery' => [
+                    'educational_year' => ['string', 'max:50'],
                     'from_date' => ['string'],
                     'to_date' => ['string'],
                 ]
@@ -23,6 +24,19 @@ class GeneralStatisticAction extends ActionService
             ->setCasts([
                 'from_date' => ['jalali_to_gregorian:Y-m-d'],
                 'to_date' => ['jalali_to_gregorian:Y-m-d'],
+            ])
+            ->setQueryToEloquentClosures([
+                'educational_year' => function (&$eloquent, $query) {
+                    if ($query['educational_year']  != '*') {
+                        $eloquent = $eloquent->where('educational_year', $query['educational_year']);
+                    }
+                },
+                'from_date' => function (&$eloquent, $query) {
+                    $eloquent = $eloquent->whereDate('date', '>=', $query['from_date']);
+                },
+                'to_date' => function (&$eloquent, $query) {
+                    $eloquent = $eloquent->whereDate('date', '<=', $query['from_date']);
+                },
             ]);
 
         parent::__construct();
