@@ -67,7 +67,10 @@ use App\Http\Controllers\InventoryProductHistoryController;
 |
 */
 
-// Route::post('/import_students', [ImportController::class, 'importStudents']);
+/*
+Route::post('/import_students', [ImportController::class, 'importStudents']);
+Route::post('/import_teachers', [ImportController::class, 'importTeachers']);
+*/
 
 Route::post('/contact_us', [ContactUsMessageController::class, 'store']);
 

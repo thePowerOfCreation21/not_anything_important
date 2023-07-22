@@ -8,13 +8,13 @@ use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 
-class StudentsImport implements ToModel, WithStartRow
+class StudentsImport2 implements ToModel, WithStartRow
 {
     /**
-     * @param array $row
-     *
-     * @return \Illuminate\Database\Eloquent\Model|null
-     */
+    * @param array $row
+    *
+    * @return \Illuminate\Database\Eloquent\Model|null
+    */
     public function model(array $row)
     {
         return new StudentModel([
@@ -31,7 +31,8 @@ class StudentsImport implements ToModel, WithStartRow
             'mother_mobile_number' => '0' . $row[9],
             'phone_number' => $row[10],
             'birth_date' => $row[12],
-            'address' => $row[13],
+            'dominant_hand' => $row[13],
+            'address' => $row[14],
             'password' => Hash::make($row[0] ?? 'null_imported'),
             'register_status' => 'accepted',
             'educational_year' => PardisanHelper::getCurrentEducationalYear()
@@ -40,6 +41,6 @@ class StudentsImport implements ToModel, WithStartRow
 
     public function startRow(): int
     {
-        return 2;
+        return 3;
     }
 }
