@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Imports\StudentsImport;
 use App\Imports\StudentsImport2;
 use App\Imports\StudentsImport3;
+use App\Imports\StudentsImport4;
 use App\Imports\TeachersImport;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -30,6 +31,8 @@ class ImportController extends Controller
             case '3':
                 Excel::import(new StudentsImport3(), $data['file']);
                 break;
+            case '4':
+                Excel::import(new StudentsImport4(), $data['file']);
         }
 
         return response()->json([
