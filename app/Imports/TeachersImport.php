@@ -17,9 +17,11 @@ class TeachersImport implements ToModel, WithStartRow
     */
     public function model(array $row)
     {
+        $row[2] = str_replace('-', '', $row[2] ?? 'null_imported');
+
         return new TeacherModel([
             'full_name' => "{$row[0]}  {$row[1]}",
-            'national_id' => $row[2] ?? 'null_imported',
+            'national_id' => $row[2],
             'birth_certificate_number' => $row[3],
             'birth_certificate_location' => $row[5],
             'birth_date' => $row[6],
@@ -32,7 +34,7 @@ class TeachersImport implements ToModel, WithStartRow
             'partner_job' => $row[15],
             'partner_job_address' => $row[16],
             'register_status' => 'accepted',
-            'password' => Hash::make($row[2] ?? 'null_imported'),
+            'password' => Hash::make($row[2]),
             'educational_year' => PardisanHelper::getCurrentEducationalYear()
         ]);
     }
