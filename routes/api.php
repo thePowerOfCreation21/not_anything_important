@@ -45,6 +45,7 @@ use App\Http\Controllers\GeneralStatisticController;
 use App\Http\Controllers\TeacherFinancialController;
 use App\Http\Controllers\ContactUsContentController;
 use App\Http\Controllers\InventoryProductController;
+use App\Http\Controllers\ContactUsMessageController;
 use App\Http\Controllers\StudentDisciplineController;
 use App\Http\Controllers\AttendanceStudentController;
 use App\Http\Controllers\ClassScoreStudentController;
@@ -65,6 +66,10 @@ use App\Http\Controllers\InventoryProductHistoryController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+// Route::post('/import_students', [ImportController::class, 'importStudents']);
+
+Route::post('/contact_us', [ContactUsMessageController::class, 'store']);
 
 Route::post('/admin/login', [AdminController::class, 'login']);
 
@@ -101,7 +106,11 @@ Route::get('/page/home', [GuestPageController::class, 'getHomePage']);
 Route::group([
     'middleware' => ['auth:admin']
 ], function(){
-    Route::post('/admin/import_students', [ImportController::class, 'importStudents']);
+    Route::get('/admin/stats', [StatController::class, 'getByAdmin']);
+
+    Route::get('/admin/contact_us', [ContactUsMessageController::class, 'get']);
+    Route::get('/admin/contact_us/{id}', [ContactUsMessageController::class, 'getById']);
+    Route::delete('/admin/contact_us/{id}', [ContactUsMessageController::class, 'deleteById']);
 
     Route::get('/admin/info', [AdminController::class, 'getInfo']);
     Route::get('/admin/student_report_card', [StudentReportCardController::class, 'get']);

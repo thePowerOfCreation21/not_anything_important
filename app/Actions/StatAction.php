@@ -72,4 +72,20 @@ class StatAction
             ")
         )->first();
     }
+
+    public function getByAdmin ()
+    {
+        return collect(
+            DB::select("
+                SELECT
+                (
+                    SELECT
+                           count(`id`)
+                    FROM
+                        `contact_us_messages`
+                    WHERE `is_seen` = 0
+                ) AS `unread_contact_us_messages_count`
+            ")
+        )->first();
+    }
 }

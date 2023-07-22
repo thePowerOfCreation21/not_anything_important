@@ -29,4 +29,14 @@ class StatController extends Controller
             (new StatAction())->getByTeacherId($request->user()->id)
         );
     }
+
+    /**
+     * @return JsonResponse
+     */
+    public function getByAdmin (): JsonResponse
+    {
+        return response()->json(
+            (new StatAction())->getByAdmin()
+        );
+    }
 }
