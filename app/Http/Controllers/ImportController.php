@@ -17,7 +17,7 @@ class ImportController extends Controller
     {
         $data = $request->validate([
             'file' => ['required', 'file', 'mimes:xlx,xls,xlsx', 'max:2048'],
-            'number' => ['required', 'in:1,2,3']
+            'number' => ['required', 'in:1,2,3,4']
         ]);
 
         switch ($data['number'])
