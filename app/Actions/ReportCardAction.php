@@ -44,7 +44,7 @@ class ReportCardAction extends ActionService
                     'class_id' => ['integer'],
                     'month' => ['string', 'max:100'],
                     'educational_year' => ['string', 'max:50'],
-                    'level' => ['string', '150'],
+                    'level' => ['string', 'max:150'],
                     'search' => ['string', 'max:150'],
                 ],
             ])
@@ -71,6 +71,10 @@ class ReportCardAction extends ActionService
                     $eloquent = $eloquent->whereHas('classModel', function($q) use($query){
                         $q->where('level', $query['level']);
                     });
+                },
+                'was_issued' => function (&$eloquent, $query)
+                {
+                    $eloquent = $eloquent->where('was_issued', $query['was_issued']);
                 }
             ]);
         parent::__construct();
@@ -82,7 +86,7 @@ class ReportCardAction extends ActionService
      * @return mixed
      * @throws \Throwable
      */
-    protected function store(array $data, callable $storing = null): mixed
+    public function store(array $data, callable $storing = null): mixed
     {
         throw_if(
             ReportCardModel::query()->where('class_id', $data['class_id'])->where('was_issued', false)->exists(),
@@ -98,6 +102,8 @@ class ReportCardAction extends ActionService
             ])
             ->where('id', $data['class_id'])
             ->firstOrFail();
+
+        throw_if(empty($class->students), CustomException::class, 'there is no student to issue report card for', '567443', 400);
 
         $data['educational_year'] = $data['educational_year'] ?? PardisanHelper::getCurrentEducationalYear();
 
@@ -157,7 +163,8 @@ class ReportCardAction extends ActionService
                             'total_score' => 0,
                             'total_ratio' => 0,
                             'scores' => [],
-                            '__level' => $level
+                            '__level' => $level,
+                            'report_card_id' => $reportCard->id,
                         ];
                     }
 
@@ -183,25 +190,30 @@ class ReportCardAction extends ActionService
                             'score' => $reportCardExamScore->score,
                             'course_id' => $reportCardExam->course_id,
                             '__level' => $level,
-                            '__class_id' => $studentReportCard->class_id,
+                            '__class_id' => $studentReportCard['class_id'],
                             '__student_id' => $reportCardExamScore->student_id
                         ];
 
                         $classCourseScoreStats['highest_score_in_class'] = max($classCourseScoreStats['highest_score_in_class'], $reportCardExamScore->score);
                         $classCourseScoreStats['total_score'] += $reportCardExamScore->score;
                         $classCourseScoreStats['course_count']++;
-                        $classCourseScoreStats['average_score'] = $classCourseScoreStats['total_score'] / $classCourseScoreStats['average_score'];
+                        $classCourseScoreStats['average_score'] = $classCourseScoreStats['total_score'] / $classCourseScoreStats['course_count'];
                     }
                 }
             }
         }
 
-        array_multisort($hashMapStudentIdToStudentReportCard, SORT_DESC, array_column($hashMapStudentIdToStudentReportCard, 'average_score'));
+        throw_if(empty($hashMapStudentIdToStudentReportCard), CustomException::class, 'there is no student to issue report card for', '567443', 400);
+
+        $sortedStudentReportCards = $hashMapStudentIdToStudentReportCard;
+        array_multisort($sortedStudentReportCards, SORT_DESC, array_column($sortedStudentReportCards, 'average_score'));
+
+        unset($studentReportCard);
 
         $hashMapLevelToReportCardScoreStats = [];
         $hashMapClassIdToReportCardScoreStats = [];
 
-        foreach ($hashMapStudentIdToStudentReportCard AS &$studentReportCard)
+        foreach ($sortedStudentReportCards AS &$studentReportCard)
         {
             if (!isset($hashMapLevelToReportCardScoreStats[$studentReportCard['__level']]))
             {
@@ -236,7 +248,7 @@ class ReportCardAction extends ActionService
 
             foreach ($studentReportCard['scores'] AS &$studentReportCardScore)
             {
-                if ($studentReportCardScore['score'] < ($hashMapClassIdCourseIdToClassCourseScoreStats["{$studentReportCard['class_id']}.{$studentReportCardScore['course_id']}"] - 2))
+                if ($studentReportCardScore['score'] < ($hashMapClassIdCourseIdToClassCourseScoreStats["{$studentReportCard['class_id']}.{$studentReportCardScore['course_id']}"]['average_score'] - 2))
                 {
                     $studentReportCardScore['has_star'] = true;
                 }
@@ -248,7 +260,7 @@ class ReportCardAction extends ActionService
         array_multisort($allScores, SORT_DESC, array_column($allScores, 'score'));
 
         $hashMapLevelCourseIdToCourseScoreStats = [];
-        $hashMapClassIdCourseIdToCourseScoreStats = [];
+        $hashMapClassIdCourseIdToClassCourseScoreStats = [];
         foreach ($allScores AS $score)
         {
             if (!isset($hashMapLevelCourseIdToCourseScoreStats["{$score['__level']}.{$score['course_id']}"]))
@@ -273,7 +285,7 @@ class ReportCardAction extends ActionService
                 ];
             }
 
-            if ($hashMapClassIdCourseIdToClassCourseScoreStats["{$score['__class_id']}.{$score['course_id']}"] != $score['score'])
+            if ($hashMapClassIdCourseIdToClassCourseScoreStats["{$score['__class_id']}.{$score['course_id']}"]['last_highest_score'] != $score['score'])
             {
                 $hashMapClassIdCourseIdToClassCourseScoreStats["{$score['__class_id']}.{$score['course_id']}"]['last_highest_score'] = $score['score'];
                 $hashMapClassIdCourseIdToClassCourseScoreStats["{$score['__class_id']}.{$score['course_id']}"]['rank']++;
@@ -283,24 +295,23 @@ class ReportCardAction extends ActionService
             $hashMapStudentIdToStudentReportCard[$score['__student_id']]['scores']["{$score['__student_id']}.{$score['course_id']}"]['rank_in_level'] = $hashMapLevelCourseIdToCourseScoreStats["{$score['__level']}.{$score['course_id']}"]['rank'];
         }
 
-        unset($studentReportCard);
-
-        foreach ($hashMapStudentIdToStudentReportCard AS $arrayStudentReportCard)
+        foreach ($hashMapStudentIdToStudentReportCard AS $index => $arrayStudentReportCard)
         {
             $studentReportCard = StudentReportCardModel::query()->create($arrayStudentReportCard);
 
-            foreach ($arrayStudentReportCard['scores'] AS &$studentReportCardScore)
+            foreach ($arrayStudentReportCard['scores'] AS $index => &$studentReportCardScore)
             {
+                unset($arrayStudentReportCard['scores'][$index]['__class_id']);
+                unset($arrayStudentReportCard['scores'][$index]['__level']);
+                unset($arrayStudentReportCard['scores'][$index]['__student_id']);
                 $studentReportCardScore['student_report_card_id'] = $studentReportCard->id;
             }
 
-            StudentReportCardScoreModel::query()->insert(array_values($arrayStudentReportCard));
+            StudentReportCardScoreModel::query()->insert(array_values($arrayStudentReportCard['scores']));
         }
 
-        $this->eloquent->update([
+        return $this->eloquent->update([
             'was_issued' => true
         ]);
-
-        return true;
     }
 }

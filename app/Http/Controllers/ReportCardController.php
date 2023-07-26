@@ -86,17 +86,18 @@ class ReportCardController extends Controller
      */
     public function issueReportCards (Request $request): JsonResponse
     {
-        return response()->json(
-            (new ReportCardAction())
+        return response()->json([
+            'message' => 'report card(s) issued successfully',
+            'data' => (new ReportCardAction())
                 ->setRequest($request)
                 ->setValidationRule('issueReportCards')
                 ->setRelations([
                     'classModel',
                     'reportCardExams' => ['course', 'reportCardExamScores']
                 ])
-                ->mergeQueryWith(['was_issued' => true])
+                ->mergeQueryWith(['was_issued' => false])
                 ->makeEloquentViaRequest()
                 ->issueReportCardsByEloquent()
-        );
+        ]);
     }
 }
